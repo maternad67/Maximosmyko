@@ -55,9 +55,9 @@ const tasks = [
     "", "Pijí všichni", "Piješ ty a osoba nejblíž tobě", "Ruku na sklenici",
     "Hráči s pivem se napijí", "Jdeš na políčko 32", "Piješ!", "Pijí všichni naproti tobě",
     "Nic", "Vyber si s kým budeš pít", "Pijí všichni chlapci",
-    "Dáš si panáka nejtvrdšího alkoholu co máte", "Pije ten kdo má brýle oder čočky",
+    "Dáš si panáka nejtvrdšího alkoholu co máte", "Pije ten kdo má brýle nebo čočky",
     "Hází všichni a kdo hodí sudé číslo tak pije", "Uděláš dřep na jedné noze jinak piješ",
-    "Pije ten nejmenší", "Pijí dívky", "Piješ a jedno kolo mlčíš", "Nic",
+    "Pije den nejmenší", "Pijí dívky", "Piješ a jedno kolo mlčíš", "Nic",
     "Házíš ještě jednou", "Uděláš 2 kotrmelce", "Dej si nealko", "Vracíš se o 2 pole dozadu", "Aby ti to nebylo líto tak piješ!",
     "Piješ a posouváš se o 2 pole vpřed", "Pije ten největší", "Piješ ještě jednou",
     "Dej si panáka", "Nic", "Piješ, když si dáš 2x vybereš někoho kdo si dá s tebou",
@@ -65,7 +65,7 @@ const tasks = [
     "Dáš si paliprdelkoření", "Otoč se 10x jako slon", "Umícháš si drink vítr do plachet",
     "Házíš kostkou, kolik hodíš o tolik se vracíš","Nic", "Dáš si ruskou tequilu", "#KAJINEK kdo se poslední dostane k bráně tak pije",
     "BDSM", "Kategorie", "Napiješ se piva s citronkou", "Dáš si jeden kozelmeister", "Piješ tolik sekund kolik ti je let",
-    "Exni svůj drink a zároveň se přesouváš na pole 63", "Musíš jít na pole kde se nachází assignment hráč","Nic",
+    "Exni svůj drink a zároveň se přesouváš na pole 63", "Musíš jít na pole kde se nachází poslední hráč","Nic",
     "Dáš si vodníkovo sperma", "Dáš si kostku ve smyku", "Zahraješ si kámen nůžky papír s hráčem po levici",
     "Kdo nemá sourozence tak pije", "Zazpívej úryvek tvé oblíbene písně", "Smrdí ti z huby vyčisti si zuby", "Kdo má sourozence tak pije",
     "Dáš si sklenici vody", "ROZCVIČKA!!! skoč 10 panáků", "Nic", "Udělej 10 dřepů", "Pivo, Pivson, Pivíčko",
@@ -209,7 +209,6 @@ function updatePlayerPositions() {
     playerElement.style.borderRadius = "50%";
     playerElement.style.margin = "1px";
     
-    // Zlatá záře kolem figurky aktivního hráče na tahu
     if (index === currentPlayerIndex) {
       playerElement.style.boxShadow = '0 0 8px 3px gold';
     }
@@ -218,7 +217,6 @@ function updatePlayerPositions() {
   });
 }
 
-// Hybridní funkce zvládající objekty i stará volání s číslem políčka z mezipaměti
 function showTask(playerOrPosition) {
   let position;
   let playerName = "";
