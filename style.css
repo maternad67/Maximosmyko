@@ -59,21 +59,16 @@ h1 {
   margin: 10px auto;
 }
 
-/* VÝCHOZÍ ROZVRŽENÍ PRO MOBILY */
 #game {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 110px; 
+  margin-top: 20px;
 }
 
+/* UKAZATEL BEZ FLOATINGU - Roluje přirozeně se stránkou */
 #player-info {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
   background-color: rgba(255, 255, 255, 0.95);
   padding: 12px 20px;
   max-width: 670px;
@@ -83,9 +78,10 @@ h1 {
   grid-template-columns: repeat(2, auto);
   gap: 10px 30px;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
 }
 
 #board {
@@ -95,7 +91,7 @@ h1 {
   gap: 5px;
   margin-bottom: 20px;
   align-items: center;
-  justify-content: center; /* TOTO OPRAVUJE VYOSENÍ POLÍČEK NA STŘED */
+  justify-content: center;
   margin-top: 10px;
   width: 100%;
 }
@@ -212,43 +208,10 @@ button:hover {
   line-height: 1.5;
 }
 
-/* --- ROZVRŽENÍ PRO POČÍTAČE (nad 1000px) --- */
-@media (min-width: 1000px) {
-  #game {
-    display: grid;
-    /* 3 sloupce: levý panel (250px), střed (auto), pravý prázdný (250px pro vyvážení) */
-    grid-template-columns: 250px auto 250px; 
-    align-items: start;
-    max-width: 1300px;
-    width: 95%;
-    margin: 30px auto 0 auto;
-    padding-top: 0;
-  }
-
-  #player-info {
-    grid-column: 1;
-    grid-row: 1 / 5;
-    position: sticky; /* Bude jezdit s obrazovkou dolů */
-    top: 20px;
-    left: auto;
-    transform: none;
-    width: 100%;
-    max-width: 250px;
-    grid-template-columns: 1fr; /* Hráči seřadí pod sebe */
-    margin-bottom: 0;
-  }
-
-  /* Všechny herní prvky vložíme do prostředního sloupce */
-  #controls { grid-column: 2; grid-row: 1; justify-self: center; margin-top: 0; }
-  #task { grid-column: 2; grid-row: 2; justify-self: center; width: 100%; }
-  #board { grid-column: 2; grid-row: 3; justify-self: center; margin-top: 0; }
-  #back-to-menu { grid-column: 2; grid-row: 4; justify-self: center; }
-}
-
 /* RESPONSIVE DESIGN PRO MOBILY */
 @media (max-width: 600px) {
   #game {
-    padding-top: 140px;
+    padding-top: 0;
   }
 
   #board {
@@ -268,7 +231,6 @@ button:hover {
     gap: 5px;
     padding: 8px;
     max-width: 330px;
-    top: 5px;
   }
 
   .player-info-item {
