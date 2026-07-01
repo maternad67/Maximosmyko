@@ -59,20 +59,20 @@ h1 {
   margin: 10px auto;
 }
 
+/* VÝCHOZÍ ROZVRŽENÍ (MOBIL / TABLET) */
 #game {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 110px; /* Bezpečné místo pod fixním panelem na PC */
+  padding-top: 110px; /* Prostor pro fixní lištu nahoře na mobilu */
 }
 
-/* NEPRŮSTŘELNÝ FIXNÍ PANEL: Už nikdy nezmizí */
 #player-info {
   position: fixed;
   top: 10px;
   left: 50%;
-  transform: translateX(-50%); /* Perfektní vycentrování na střed obrazovky */
+  transform: translateX(-50%);
   z-index: 9999;
   background-color: rgba(255, 255, 255, 0.95);
   padding: 12px 20px;
@@ -210,34 +210,42 @@ button:hover {
   line-height: 1.5;
 }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 600px) {
+/* ROZVRŽENÍ PRO POČÍTAČE (OBRAZOVKA NAD 900PX) - SKLÁDÁNÍ VEDLE SEBE */
+@media (min-width: 900px) {
   #game {
-    padding-top: 140px; /* Větší horní prostor na mobilu pro panel s více řádky hráčů */
-  }
-
-  #board {
-    grid-template-columns: repeat(9, 35px);
-    grid-template-rows: repeat(8, 35px);
-    gap: 2px;
-  }
-
-  .cell {
-    min-width: 35px;
-    min-height: 35px;
-    font-size: 10px;
+    display: grid;
+    grid-template-columns: 260px auto; /* Levý sloupec pro info, pravý pro zbytek hry */
+    grid-template-areas:
+      "info controls"
+      "info task"
+      "info board"
+      "info menu";
+    gap: 15px 30px;
+    align-items: start;
+    justify-content: center;
+    max-width: 1100px;
+    width: 95%;
+    margin: 30px auto 0 auto;
+    padding-top: 0; /* Reset mobilního paddingu */
   }
 
   #player-info {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
-    padding: 8px;
-    max-width: 330px;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
+    grid-area: info;
+    position: sticky; /* Na PC bude panel přišpendlený na boku při scrollování */
+    top: 20px;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr; /* Hráči budou pod sebou v jednom sloupci */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    margin-bottom: 0;
   }
 
-  .player-info-item {
-    padding: 4px 8px;
-    font
+  #controls { grid-area: controls; margin-top: 0; }
+  #task { grid-area: task; }
+  #board { grid-area: board; margin-top: 0; }
+  #back-to-menu { grid-area: menu; width: auto; }
+}
+
+/* RESPONS
