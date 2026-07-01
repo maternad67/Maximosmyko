@@ -1,16 +1,15 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  min-height: 100vh; /* Změna z height na min-height, aby se stránka mohla volně natahovat */
+  min-height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* Elegantní prolnutí bílého závoje a obrázku na pozadí, abychom nepotřebovali div .overlay */
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Pozadí drží na místě i při scrollování */
-  padding: 20px 0; /* Bezpečný odstup prvků od horního a dolního okraje displeje */
+  background-attachment: fixed;
+  padding-bottom: 30px;
   box-sizing: border-box;
 }
 
@@ -19,6 +18,7 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
 }
 
 h1 {
@@ -66,6 +66,23 @@ h1 {
   width: 100%;
 }
 
+/* FIXACE UKAZATELE NAHOŘE */
+#player-info {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px 30px;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  border-bottom: 1px solid #ccc;
+}
+
 #board {
   display: grid;
   grid-template-columns: repeat(9, 70px);
@@ -73,6 +90,7 @@ h1 {
   gap: 5px;
   margin-bottom: 20px;
   align-items: center;
+  margin-top: 15px;
 }
 
 #dice-value {
@@ -111,6 +129,7 @@ h1 {
 
 #controls {
   text-align: center;
+  margin-top: 15px;
   margin-bottom: 20px;
 }
 
@@ -146,27 +165,19 @@ button:hover {
 
 .player-info-item {
   background-color: #ffffffcc;
-  padding: 8px 16px;
-  border-radius: 10px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.15);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .player-color {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-}
-
-#player-info {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 10px 30px;
-  justify-content: center;
-  margin-bottom: 20px;
 }
 
 .players-container {
@@ -209,13 +220,14 @@ button:hover {
   }
 
   #player-info {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 5px;
+    padding: 8px;
   }
 
   .player-info-item {
-    width: 90%;
-    font-size: 14px;
+    padding: 4px 8px;
+    font-size: 12px;
   }
 
   button, #manual-roll {
