@@ -59,13 +59,13 @@ h1 {
   margin: 10px auto;
 }
 
-/* PÔVODNÉ ROZVRHNUTIE PRE MOBILY */
+/* VÝCHOZÍ ROZVRŽENÍ PRO MOBILY */
 #game {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 110px;
+  padding-top: 110px; 
 }
 
 #player-info {
@@ -95,7 +95,9 @@ h1 {
   gap: 5px;
   margin-bottom: 20px;
   align-items: center;
+  justify-content: center; /* TOTO OPRAVUJE VYOSENÍ POLÍČEK NA STŘED */
   margin-top: 10px;
+  width: 100%;
 }
 
 #dice-value {
@@ -210,20 +212,13 @@ button:hover {
   line-height: 1.5;
 }
 
-/* OPRAVA: CENTROVANÉ ROZVRHNUTIE PRE POČÍTAČE (OBRAZOVKA NAD 900PX) */
-@media (min-width: 900px) {
+/* --- ROZVRŽENÍ PRO POČÍTAČE (nad 1000px) --- */
+@media (min-width: 1000px) {
   #game {
     display: grid;
-    /* 3 stĺpce: 1. pre info o hráčoch, 2. auto pre hrací plán, 3. rovnaký voľný priestor na vyváženie */
-    grid-template-columns: 1fr auto 1fr; 
-    grid-template-areas:
-      "info controls ."
-      "info task ."
-      "info board ."
-      "info menu .";
-    gap: 15px 30px;
+    /* 3 sloupce: levý panel (250px), střed (auto), pravý prázdný (250px pro vyvážení) */
+    grid-template-columns: 250px auto 250px; 
     align-items: start;
-    justify-content: center;
     max-width: 1300px;
     width: 95%;
     margin: 30px auto 0 auto;
@@ -231,26 +226,26 @@ button:hover {
   }
 
   #player-info {
-    grid-area: info;
-    position: sticky; /* Panel drží na boku pri scrolovaní */
+    grid-column: 1;
+    grid-row: 1 / 5;
+    position: sticky; /* Bude jezdit s obrazovkou dolů */
     top: 20px;
     left: auto;
     transform: none;
     width: 100%;
-    max-width: 260px;
-    justify-self: end; /* Pritlačí sa k stredovému hernému plánu zľava */
-    grid-template-columns: 1fr; /* Hráči pekne pod sebou */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    max-width: 250px;
+    grid-template-columns: 1fr; /* Hráči seřadí pod sebe */
     margin-bottom: 0;
   }
 
-  #controls { grid-area: controls; justify-self: center; margin-top: 0; }
-  #task { grid-area: task; justify-self: center; }
-  #board { grid-area: board; justify-self: center; margin-top: 0; }
-  #back-to-menu { grid-area: menu; justify-self: center; width: auto; }
+  /* Všechny herní prvky vložíme do prostředního sloupce */
+  #controls { grid-column: 2; grid-row: 1; justify-self: center; margin-top: 0; }
+  #task { grid-column: 2; grid-row: 2; justify-self: center; width: 100%; }
+  #board { grid-column: 2; grid-row: 3; justify-self: center; margin-top: 0; }
+  #back-to-menu { grid-column: 2; grid-row: 4; justify-self: center; }
 }
 
-/* RESPONSIVE DESIGN PRE MOBILY */
+/* RESPONSIVE DESIGN PRO MOBILY */
 @media (max-width: 600px) {
   #game {
     padding-top: 140px;
