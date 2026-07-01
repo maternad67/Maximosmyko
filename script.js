@@ -212,9 +212,18 @@ function updatePlayerPositions() {
   });
 }
 
-function showTask(position) {
-  const task = tasks[position];
-  document.getElementById('task-text').innerText = task;
+function showTask(player) {
+  const task = tasks[player.position];
+  
+  // Pokud políčko obsahuje nějaký úkol, vypíšeme ho i se jménem hráče
+  if (task) {
+    document.getElementById('task-text').innerHTML = `
+      <span style="color: ${player.color}; font-weight: bold;">${player.name}</span>, tvůj úkol:<br>
+      <span style="font-size: 1.1em;">${task}</span>
+    `;
+  } else {
+    document.getElementById('task-text').innerText = '';
+  }
 }
 
 function displayPlayerInfo() {
