@@ -55,7 +55,7 @@ const tasks = [
     "", "Pijí všichni", "Piješ ty a osoba nejblíž tobě", "Ruku na sklenici",
     "Hráči s pivem se napijí", "Jdeš na políčko 32", "Piješ!", "Pijí všichni naproti tobě",
     "Nic", "Vyber si s kým budeš pít", "Pijí všichni chlapci",
-    "Dáš si panáka nejtvrdšího alkoholu co máte", "Pije den kdo má brýle nebo čočky",
+    "Dáš si panáka nejtvrdšího alkoholu co máte", "Pije ten kdo má brýle nebo čočky",
     "Hází všichni a kdo hodí sudé číslo tak pije", "Uděláš dřep na jedné noze jinak piješ",
     "Pije ten nejmenší", "Pijí dívky", "Piješ a jedno kolo mlčíš", "Nic",
     "Házíš ještě jednou", "Uděláš 2 kotrmelce", "Dej si nealko", "Vracíš se o 2 pole dozadu", "Aby ti to nebylo líto tak piješ!",
@@ -121,7 +121,7 @@ function movePlayer(steps) {
     alert(`${player.name} hodil ${extraRoll} a posouvá se o ${extraRoll} dál.`);
     player.position += extraRoll;
     updatePlayerPositions();
-    showTask(player); // OPRAVENO: posíláme celého hráče
+    showTask(player);
   } else if (player.position === 22) {
     player.position -= 2;
     alert(`${player.name} skončil na poli 22 a vrací se na pole ${player.position}.`);
@@ -169,7 +169,7 @@ function movePlayer(steps) {
   }
 
   updatePlayerPositions();
-  showTask(player); // OPRAVENO: posíláme celého hráče
+  showTask(player);
 
   if (player.position === 71) {
     alert(`Gratulujeme! ${player.name} vyhrál!`);
@@ -209,7 +209,6 @@ function updatePlayerPositions() {
     playerElement.style.borderRadius = "50%";
     playerElement.style.margin = "1px";
     
-    // OPRAVENO: Zlatá záře se aplikuje uvnitř smyčky pouze pro aktivního hráče
     if (index === currentPlayerIndex) {
       playerElement.style.boxShadow = '0 0 8px 3px gold';
     }
@@ -218,16 +217,35 @@ function updatePlayerPositions() {
   });
 }
 
-function showTask(player) {
-  const task = tasks[player.position];
+// HYBRIDNÍ FUNKCE: Spolehlivě zpracuje objekt hráče i případné staré volání s pouhým číslem pozice
+function showTask(playerOrPosition) {
+  let position;
+  let playerName = "";
+  let playerColor = "black";
+
+  if (typeof playerOrPosition === 'object' && playerOrPosition !== null) {
+    position = playerOrPosition.position;
+    playerName = playerOrPosition.name;
+    playerColor = playerOrPosition.color;
+  } else {
+    // Záložní plán pro případ, že kód z cache poslal jen číslo políčka
+    position = playerOrPosition;
+    const fallbackPlayer = players[currentPlayerIndex];
+    if (fallbackPlayer) {
+      playerName = fallbackPlayer.name;
+      playerColor = fallbackPlayer.color;
+    }
+  }
+
+  const task = tasks[position];
   
   if (task && task !== "Nic" && task !== "") {
     document.getElementById('task-text').innerHTML = `
-      <span style="color: ${player.color}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${player.name}</span>, tvůj úkol:<br>
+      <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:<br>
       <span style="font-size: 1.1em;">${task}</span>
     `;
   } else {
-    document.getElementById('task-text').innerText = '';
+    document.getElementById('task-text').innerHTML = '';
   }
 }
 
