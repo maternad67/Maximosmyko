@@ -9,6 +9,9 @@ body {
   background-image: url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .overlay {
