@@ -64,26 +64,28 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding-top: 110px; /* Bezpečné místo pod fixním panelem na PC */
 }
 
-/* OPRAVA: Elegantní plovoucí ukazatel, který neřeže pozadí */
+/* NEPRŮSTŘELNÝ FIXNÍ PANEL: Už nikdy nezmizí */
 #player-info {
-  position: sticky;
-  top: 10px; /* Plovoucí kousek pod horním okrajem */
-  z-index: 999;
-  background-color: rgba(255, 255, 255, 0.85);
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%); /* Perfektní vycentrování na střed obrazovky */
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 12px 20px;
-  max-width: 670px; /* Šířka lícující s herním plánem na PC */
+  max-width: 670px;
   width: 90%;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, auto);
   gap: 10px 30px;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  border-radius: 12px; /* Kulaté rohy, aby to vypadalo jako karta */
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 #board {
@@ -210,6 +212,10 @@ button:hover {
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 600px) {
+  #game {
+    padding-top: 140px; /* Větší horní prostor na mobilu pro panel s více řádky hráčů */
+  }
+
   #board {
     grid-template-columns: repeat(9, 35px);
     grid-template-rows: repeat(8, 35px);
@@ -222,26 +228,16 @@ button:hover {
     font-size: 10px;
   }
 
-  /* Přizpůsobení plovoucí karty pro mobilní displeje */
   #player-info {
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
     padding: 8px;
-    max-width: 330px; /* Lící s mobilním herním plánem */
+    max-width: 330px;
     top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .player-info-item {
     padding: 4px 8px;
-    font-size: 12px;
-  }
-
-  button, #manual-roll {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-}
+    font
