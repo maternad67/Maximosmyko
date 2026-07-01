@@ -57,7 +57,7 @@ const tasks = [
     "Nic", "Vyber si s kým budeš pít", "Pijí všichni chlapci",
     "Dáš si panáka nejtvrdšího alkoholu co máte", "Pije ten kdo má brýle nebo čočky",
     "Hází všichni a kdo hodí sudé číslo tak pije", "Uděláš dřep na jedné noze jinak piješ",
-    "Pije den nejmenší", "Pijí dívky", "Piješ a jedno kolo mlčíš", "Nic",
+    "Pije ten nejmenší", "Pijí dívky", "Piješ a jedno kolo mlčíš", "Nic",
     "Házíš ještě jednou", "Uděláš 2 kotrmelce", "Dej si nealko", "Vracíš se o 2 pole dozadu", "Aby ti to nebylo líto tak piješ!",
     "Piješ a posouváš se o 2 pole vpřed", "Pije ten největší", "Piješ ještě jednou",
     "Dej si panáka", "Nic", "Piješ, když si dáš 2x vybereš někoho kdo si dá s tebou",
