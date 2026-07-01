@@ -59,13 +59,13 @@ h1 {
   margin: 10px auto;
 }
 
-/* VÝCHOZÍ ROZVRŽENÍ (MOBIL / TABLET) */
+/* PÔVODNÉ ROZVRHNUTIE PRE MOBILY */
 #game {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 110px; /* Prostor pro fixní lištu nahoře na mobilu */
+  padding-top: 110px;
 }
 
 #player-info {
@@ -210,42 +210,83 @@ button:hover {
   line-height: 1.5;
 }
 
-/* ROZVRŽENÍ PRO POČÍTAČE (OBRAZOVKA NAD 900PX) - SKLÁDÁNÍ VEDLE SEBE */
+/* OPRAVA: CENTROVANÉ ROZVRHNUTIE PRE POČÍTAČE (OBRAZOVKA NAD 900PX) */
 @media (min-width: 900px) {
   #game {
     display: grid;
-    grid-template-columns: 260px auto; /* Levý sloupec pro info, pravý pro zbytek hry */
+    /* 3 stĺpce: 1. pre info o hráčoch, 2. auto pre hrací plán, 3. rovnaký voľný priestor na vyváženie */
+    grid-template-columns: 1fr auto 1fr; 
     grid-template-areas:
-      "info controls"
-      "info task"
-      "info board"
-      "info menu";
+      "info controls ."
+      "info task ."
+      "info board ."
+      "info menu .";
     gap: 15px 30px;
     align-items: start;
     justify-content: center;
-    max-width: 1100px;
+    max-width: 1300px;
     width: 95%;
     margin: 30px auto 0 auto;
-    padding-top: 0; /* Reset mobilního paddingu */
+    padding-top: 0;
   }
 
   #player-info {
     grid-area: info;
-    position: sticky; /* Na PC bude panel přišpendlený na boku při scrollování */
+    position: sticky; /* Panel drží na boku pri scrolovaní */
     top: 20px;
     left: auto;
     transform: none;
     width: 100%;
-    max-width: 100%;
-    grid-template-columns: 1fr; /* Hráči budou pod sebou v jednom sloupci */
+    max-width: 260px;
+    justify-self: end; /* Pritlačí sa k stredovému hernému plánu zľava */
+    grid-template-columns: 1fr; /* Hráči pekne pod sebou */
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     margin-bottom: 0;
   }
 
-  #controls { grid-area: controls; margin-top: 0; }
-  #task { grid-area: task; }
-  #board { grid-area: board; margin-top: 0; }
-  #back-to-menu { grid-area: menu; width: auto; }
+  #controls { grid-area: controls; justify-self: center; margin-top: 0; }
+  #task { grid-area: task; justify-self: center; }
+  #board { grid-area: board; justify-self: center; margin-top: 0; }
+  #back-to-menu { grid-area: menu; justify-self: center; width: auto; }
 }
 
-/* RESPONS
+/* RESPONSIVE DESIGN PRE MOBILY */
+@media (max-width: 600px) {
+  #game {
+    padding-top: 140px;
+  }
+
+  #board {
+    grid-template-columns: repeat(9, 35px);
+    grid-template-rows: repeat(8, 35px);
+    gap: 2px;
+  }
+
+  .cell {
+    min-width: 35px;
+    min-height: 35px;
+    font-size: 10px;
+  }
+
+  #player-info {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    padding: 8px;
+    max-width: 330px;
+    top: 5px;
+  }
+
+  .player-info-item {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  button, #manual-roll {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
