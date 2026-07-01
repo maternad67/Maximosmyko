@@ -1,27 +1,17 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh; /* Změna z height na min-height, aby se stránka mohla volně natahovat */
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: url('vnitrekmaximo.jpg');
-  background-size: cover;
-  background-position: center;
+  /* Elegantní prolnutí bílého závoje a obrázku na pozadí, abychom nepotřebovali div .overlay */
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5); /* světle bílý závoj */
-  z-index: -1; /* za obsahem */
+  background-attachment: fixed; /* Pozadí drží na místě i při scrollování */
+  padding: 20px 0; /* Bezpečný odstup prvků od horního a dolního okraje displeje */
+  box-sizing: border-box;
 }
 
 img {
@@ -47,6 +37,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   max-width: 400px;
   width: 90%;
+  transition: all 0.3s ease-in-out;
 }
 
 #setup input, #setup select {
@@ -63,10 +54,6 @@ h1 {
   width: 100%;
 }
 
-#setup {
-  transition: all 0.3s ease-in-out;
-}
-
 #player-names input {
   display: block;
   margin: 10px auto;
@@ -76,6 +63,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 #board {
@@ -97,7 +85,6 @@ h1 {
   50% { transform: scale(1.3); opacity: 1; }
   100% { transform: scale(1); }
 }
-
 
 .cell {
   border: 1px solid #000;
@@ -130,6 +117,7 @@ h1 {
 #task {
   text-align: center;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 #manual-roll {
@@ -194,7 +182,7 @@ button:hover {
 }
 
 #task-text {
-  font-size: 24px;          /* větší text */
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.85);
@@ -205,7 +193,6 @@ button:hover {
   margin: 15px auto;
   line-height: 1.5;
 }
-
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 600px) {
