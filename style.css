@@ -66,21 +66,24 @@ h1 {
   width: 100%;
 }
 
-/* FIXACE UKAZATELE NAHOŘE */
+/* OPRAVA: Elegantní plovoucí ukazatel, který neřeže pozadí */
 #player-info {
   position: sticky;
-  top: 0;
+  top: 10px; /* Plovoucí kousek pod horním okrajem */
   z-index: 999;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 10px 20px;
-  width: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 12px 20px;
+  max-width: 670px; /* Šířka lícující s herním plánem na PC */
+  width: 90%;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, auto);
   gap: 10px 30px;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  border-bottom: 1px solid #ccc;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border-radius: 12px; /* Kulaté rohy, aby to vypadalo jako karta */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
 #board {
@@ -90,7 +93,7 @@ h1 {
   gap: 5px;
   margin-bottom: 20px;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #dice-value {
@@ -219,10 +222,13 @@ button:hover {
     font-size: 10px;
   }
 
+  /* Přizpůsobení plovoucí karty pro mobilní displeje */
   #player-info {
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
     padding: 8px;
+    max-width: 330px; /* Lící s mobilním herním plánem */
+    top: 5px;
   }
 
   .player-info-item {
