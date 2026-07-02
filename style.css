@@ -440,9 +440,17 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     padding-bottom: 20px;
   }
   
-  .header { height: 60px; }
-  .header img { height: 30px; }
-  .header h1 { font-size: 20px; }
+.header { 
+    height: auto; /* Zrušíme fixní výšku i na telefonu */
+    padding: 20px 0 10px 0; 
+  }
+  .header img { 
+    height: 50px; /* Zvětšená korunka na mobilu */
+    margin-bottom: 5px;
+  }
+  .header h1 { 
+    font-size: 28px; /* Větší text na mobilu */
+  }
   
   #game { height: auto; padding: 10px; }
   
