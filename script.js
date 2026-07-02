@@ -1,9 +1,7 @@
-// Připojení obsluhy tlačítek a změn
 document.getElementById('setup-form').addEventListener('submit', startGame);
 document.getElementById('player-count').addEventListener('change', updatePlayerNameFields);
 document.getElementById('roll-dice').addEventListener('click', rollDice);
 
-// Tlačítko zpět do menu
 document.getElementById('back-to-menu').addEventListener('click', () => {
   const confirmBack = confirm("Opravdu chcete zpět do nastavení? Přerušíte tím aktuální hru!");
   if (confirmBack) {
@@ -12,7 +10,6 @@ document.getElementById('back-to-menu').addEventListener('click', () => {
   }
 });
 
-// Tlačítko pro restart hry
 document.getElementById('restart-game').addEventListener('click', () => {
   const confirmRestart = confirm("Opravdu chcete restartovat hru? Všichni hráči se vrátí na start!");
   if (confirmRestart) {
@@ -20,18 +17,15 @@ document.getElementById('restart-game').addEventListener('click', () => {
   }
 });
 
-// Zavírání vlastního upozornění
 document.getElementById('modal-btn').addEventListener('click', () => {
   document.getElementById('custom-modal').classList.add('hidden');
 });
 
-// ZMĚNĚNO NA innerHTML kvůli formátování barev
 function gameAlert(message) {
   document.getElementById('modal-text').innerHTML = message;
   document.getElementById('custom-modal').classList.remove('hidden');
 }
 
-// POMOCNÁ FUNKCE: Obarví a ztuční jméno hráče
 function getColoredName(player) {
   return `<span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.15);">${player.name}</span>`;
 }
@@ -40,6 +34,8 @@ updatePlayerNameFields();
 
 let players = [];
 let currentPlayerIndex = 0;
+let isCampMode = false; // Proměnná pro táborový režim
+let currentTasks = [];
 
 function updatePlayerNameFields() {
   const playerCount = document.getElementById('player-count').value;
@@ -57,6 +53,11 @@ function updatePlayerNameFields() {
 
 function startGame(event) {
   event.preventDefault();
+  
+  // Detekce, zda hrajeme táborový režim
+  isCampMode = document.getElementById('camp-mode-toggle').checked;
+  currentTasks = isCampMode ? campTasks : adultTasks;
+
   const playerCount = document.getElementById('player-count').value;
   players = [];
   for (let i = 0; i < playerCount; i++) {
@@ -77,8 +78,8 @@ function startGame(event) {
   updateTurnIndicator(); 
 }
 
-// Seznam úkolů pro každé pole
-const tasks = [
+// KLASICKÉ ÚKOLY
+const adultTasks = [
     "", "Pijí všichni", "Piješ ty a osoba nejblíž tobě", "Ruku na sklenici",
     "Hráči s pivem se napijí", "Jdeš na políčko 32", "Piješ!", "Pijí všichni naproti tobě",
     "Nic", "Vyber si s kým budeš pít", "Pijí všichni chlapci",
@@ -99,6 +100,30 @@ const tasks = [
     "Dáš si malé pivo brčkem", "Želva","Přesouváš se na pole 46",
     "Házíš znovu pokud hodíš liché číslo tak piješ", "VYPROŠŤOVÁK dej si lák od okurek", "Hází všichni, kdo hodí číslo 6 tak pije",
     "JAZYKOLAM","Nic", "BODYSHOT","Jdeš na pole 61", "SMYK"
+];
+
+// TÁBOROVÉ / DĚTSKÉ ÚKOLY
+const campTasks = [
+    "", "Všichni dělají 5 dřepů", "Cvičíš ty a osoba nejblíž tobě", "Ruku na hlavu! Poslední dělá 5 kliků",
+    "Kdo má na sobě něco modrého (jako voda), dělá dřep", "Jdeš na políčko 32", "Cvičíš!", "Všichni naproti tobě dělají žabáky",
+    "Nic", "Vyber si, s kým uděláš 10 dřepů", "Cvičí všichni kluci",
+    "Zazpívej nahlas kousek vodácké nebo táborové písničky", "Cvičí ten, kdo má brýle",
+    "Hází všichni: kdo hodí sudé, oběhne stůl", "Uděláš dřep na jedné noze, jinak 10 kliků",
+    "Cvičí ten nejmenší", "Cvičí holky", "Děláš 5 kliků a jedno kolo mlčíš", "Nic",
+    "Házíš ještě jednou", "Uděláš 2 kotrmelce", "Běž se napít čisté vody", "Vracíš se o 2 pole dozadu", "Aby ti to nebylo líto, udělej 5 dřepů!",
+    "Udělej 3 žabáky a posouváš se o 2 pole vpřed", "Cvičí ten největší", "Házíš ještě jednou",
+    "Udělej 5 kliků", "Nic", "Děláš 10 dřepů, vybereš někoho, kdo je dělá s tebou",
+    "Udělej 10 kliků", "Oběhni tábor/místnost", "Ostatní ti vymyslí tajný vodácký úkol", "Urči 2 hráče, kteří budou cvičit",
+    "Předveď, jak pádluješ na lodi", "Otoč se 10x jako slon", "Oběhni stany/stůl jako vítr",
+    "Házíš kostkou, kolik hodíš, o tolik se vracíš","Nic", "Stůj 10 vteřin na jedné noze jako volavka", "Poslední, kdo se dotkne země, cvičí",
+    "Předveď jakékoliv zvíře", "Vyjmenuj 5 řek v ČR (nebo cvičíš)", "Usmívej se celé další kolo", "Udělej 10 žabáků", "Udělej tolik dřepů, kolik ti je let",
+    "Vyskoč 5x co nejvýš a přesouváš se na pole 63", "Musíš jít na pole, kde se nachází poslední hráč","Nic",
+    "Zazpívej Holka modrooká", "Vydrž 30 vteřin v prkně (plank)", "Zahraješ si kámen nůžky papír s hráčem po levici",
+    "Kdo nemá sourozence, dělá dřepy", "Vymysli rým na slovo VODA", "Běž si umýt ruce", "Kdo má sourozence, dělá dřepy",
+    "Vypij celou sklenici vody", "ROZCVIČKA!!! Skoč 10 panáků", "Nic", "Udělej 10 dřepů", "Zakřič táborový pokřik!",
+    "Zavři oči a stůj na jedné noze", "Předveď želvu","Přesouváš se na pole 46",
+    "Házíš znovu, pokud hodíš liché číslo, cvičíš", "Jdi obejmout strom (nebo stůl)", "Hází všichni, kdo hodí číslo 6, dělá 10 dřepů",
+    "JAZYKOLAM: Tři sta třiatřicet stříbrných stříkaček...","Nic", "Udělej most (nebo 5 kliků)","Jdeš na pole 61", "Zatleskej si!"
 ];
 
 function generateBoard() {
@@ -159,9 +184,9 @@ function movePlayer(steps) {
       const throwValue = Math.floor(Math.random() * 6) + 1;
       resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
       if (throwValue % 2 === 0) { 
-        resultMessage += "Je to sudé, PIJE!<br>";
+        resultMessage += isCampMode ? "Je to sudé, DŘEPUJE!<br>" : "Je to sudé, PIJE!<br>";
       } else {
-        resultMessage += "Nepije.<br>";
+        resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
       }
     });
     gameAlert(resultMessage);
@@ -174,7 +199,7 @@ function movePlayer(steps) {
     gameAlert(`${getColoredName(player)} skončil na poli 22 a vrací se na pole ${player.position}.`);
   } else if (player.position === 24) {
     player.position = 26;
-    gameAlert("Piješ! a posouváš se na pole 26");
+    gameAlert(isCampMode ? "Cvičíš! a posouváš se na pole 26" : "Piješ! a posouváš se na pole 26");
   } else if (player.position === 37) {
     const random = Math.floor(Math.random() * 6) + 1;
     player.position -= random;
@@ -196,9 +221,9 @@ function movePlayer(steps) {
     const extraRoll = Math.floor(Math.random() * 6) + 1;
     let msg = `${getColoredName(player)} skončil na poli 64 – Házíš znovu!<br><br>`;
     if (extraRoll % 2 === 0) {
-      msg += `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!`;
+      msg += isCampMode ? `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!` : `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!`;
     } else {
-      msg += `Hodil jsi liché číslo (${extraRoll}) – piješ!`;
+      msg += isCampMode ? `Hodil jsi liché číslo (${extraRoll}) – děláš 5 dřepů!` : `Hodil jsi liché číslo (${extraRoll}) – piješ!`;
     }
     gameAlert(msg);
   } else if (player.position === 66) {
@@ -207,9 +232,9 @@ function movePlayer(steps) {
       const throwValue = Math.floor(Math.random() * 6) + 1;
       resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
       if (throwValue === 6) {
-        resultMessage += "Pije!<br>";
+        resultMessage += isCampMode ? "CVIČÍ!<br>" : "Pije!<br>";
       } else {
-        resultMessage += "Nepije.<br>";
+        resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
       }
     });
     gameAlert(resultMessage);
@@ -284,7 +309,8 @@ function showTask(playerOrPosition) {
     position = playerOrPosition;
   }
 
-  const task = tasks[position];
+  // Zde se vybírá z aktuálního pole úkolů (podle zvoleného režimu)
+  const task = currentTasks[position];
   
   if (task && task !== "Nic" && task !== "") {
     document.getElementById('task-text').innerHTML = `
