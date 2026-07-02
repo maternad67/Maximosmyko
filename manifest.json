@@ -1,0 +1,20 @@
+{
+  "name": "MAXIMO SMYKO",
+  "short_name": "Maximosmyko",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f1c40f",
+  "icons": [
+    {
+      "src": "korunka.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "korunka.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
