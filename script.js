@@ -109,11 +109,20 @@ function rollDice() {
   
   const currentPlayer = players[currentPlayerIndex];
   
-  document.getElementById('dice-value').innerHTML = `<span class="roll-label">${currentPlayer.name} hodil:</span>${diceValue}`;
+  // Vložení textu o tom, kdo co hodil
+  document.getElementById('turn-indicator').innerHTML = `
+    <span style="color: ${currentPlayer.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${currentPlayer.name}</span> 
+    hodil kostkou: <strong style="font-size: 1.3em; color: #333;">${diceValue}</strong>
+  `;
   
   players[currentPlayerIndex].lastRoll = diceValue;
-  movePlayer(diceValue);
-  displayPlayerInfo();
+  
+  // Zpoždění spuštění tahu, aby se text nahoře stihl bezpečně vykreslit
+  setTimeout(() => {
+    movePlayer(diceValue);
+    displayPlayerInfo();
+  }, 50);
+  
   document.getElementById('manual-roll').value = '';
 }
 
@@ -192,13 +201,10 @@ function movePlayer(steps) {
     return;
   }
 
-  // Přepnutí na dalšího hráče
+  // Přepnutí indexu na dalšího hráče (na další hod bude použit tento)
   if (players.length > 1) {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
   }
-  
-  // Aktualizace textu "Kdo hází" pro nového hráče
-  updateTurnIndicator();
 }
 
 function resetGame() {
@@ -208,16 +214,18 @@ function resetGame() {
   });
   currentPlayerIndex = 0;
   updatePlayerPositions();
-  document.getElementById('dice-value').innerHTML = '';
   document.getElementById('task-text').innerHTML = '';
   displayPlayerInfo();
-  updateTurnIndicator(); // Reset ukazatele na prvního hráče
+  updateTurnIndicator(); 
 }
 
+// Funkce se teď volá jen při spuštění/restartu hry pro výchozí hlášku
 function updateTurnIndicator() {
   if (players.length > 0) {
     const player = players[currentPlayerIndex];
-    document.getElementById('turn-indicator').innerHTML = `<strong style="color: ${player.color}; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.2em;">${player.name}</strong> hází kostkou`;
+    document.getElementById('turn-indicator').innerHTML = `
+      <span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${player.name}</span> začíná hru!
+    `;
   }
 }
 
@@ -251,7 +259,8 @@ function showTask(playerOrPosition) {
     playerColor = playerOrPosition.color;
   } else {
     position = playerOrPosition;
-    const fallbackPlayer = players[currentPlayerIndex];
+    // Ukazujeme úkol toho, kdo právě odjel svůj tah (tedy byl na řadě)
+    const fallbackPlayer = players[(currentPlayerIndex - 1 + players.length) % players.length];
     if (fallbackPlayer) {
       playerName = fallbackPlayer.name;
       playerColor = fallbackPlayer.color;
