@@ -109,7 +109,6 @@ function rollDice() {
   
   const currentPlayer = players[currentPlayerIndex];
   
-  // PŘIDÁNO: Vložení jména hráče, který zrovna hodil kostkou
   document.getElementById('dice-value').innerHTML = `<span class="roll-label">${currentPlayer.name} hodil:</span>${diceValue}`;
   
   players[currentPlayerIndex].lastRoll = diceValue;
@@ -280,7 +279,6 @@ function displayPlayerInfo() {
     const playerInfoItem = document.createElement('div');
     playerInfoItem.className = 'player-info-item';
     
-    // PŘESUNUTO: Smazáno zobrazení hodu a ponecháno jen jméno hráče
     playerInfoItem.innerHTML = `
       <span class="player-number">${index + 1}.</span>
       <span class="player-color" style="background-color: ${player.color};"></span>
