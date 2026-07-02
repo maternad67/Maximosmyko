@@ -12,7 +12,7 @@ document.getElementById('back-to-menu').addEventListener('click', () => {
   }
 });
 
-// NOVÉ: Tlačítko pro restart hry
+// Tlačítko pro restart hry
 document.getElementById('restart-game').addEventListener('click', () => {
   const confirmRestart = confirm("Opravdu chcete restartovat hru? Všichni hráči se vrátí na start!");
   if (confirmRestart) {
