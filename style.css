@@ -141,6 +141,13 @@ body {
 }
 
 /* OVLÁDÁNÍ KOSTKY */
+.roll-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 10px; /* Mezera pod tlačítky */
+}
+
 #turn-indicator {
   font-size: 16px;
   text-align: center;
@@ -149,12 +156,6 @@ body {
   border-radius: 8px;
   border: 2px solid #ccc;
   margin-bottom: 10px;
-}
-
-.roll-group {
-  display: flex;
-  gap: 8px;
-  width: 100%;
 }
 
 button {
@@ -174,11 +175,12 @@ button:hover {
 }
 
 #roll-dice {
-  flex: 2; 
+  flex: 1.5; 
 }
 
 #manual-roll {
   flex: 1; 
+  min-width: 0; /* TOTO ZABRÁNÍ PŘETÉKÁNÍ INPUTU */
   padding: 10px;
   box-sizing: border-box;
   border-radius: 6px;
