@@ -106,7 +106,12 @@ function rollDice() {
   if (isNaN(diceValue)) {
     diceValue = Math.floor(Math.random() * 6) + 1;
   }
-  document.getElementById('dice-value').innerText = diceValue;
+  
+  const currentPlayer = players[currentPlayerIndex];
+  
+  // PŘIDÁNO: Vložení jména hráče, který zrovna hodil kostkou
+  document.getElementById('dice-value').innerHTML = `<span class="roll-label">${currentPlayer.name} hodil:</span>${diceValue}`;
+  
   players[currentPlayerIndex].lastRoll = diceValue;
   movePlayer(diceValue);
   displayPlayerInfo();
@@ -204,8 +209,8 @@ function resetGame() {
   });
   currentPlayerIndex = 0;
   updatePlayerPositions();
-  document.getElementById('dice-value').innerText = '';
-  document.getElementById('task-text').innerText = '';
+  document.getElementById('dice-value').innerHTML = '';
+  document.getElementById('task-text').innerHTML = '';
   displayPlayerInfo();
   updateTurnIndicator(); // Reset ukazatele na prvního hráče
 }
@@ -257,7 +262,6 @@ function showTask(playerOrPosition) {
   const task = tasks[position];
   
   if (task && task !== "Nic" && task !== "") {
-    // OPRAVA zalamování: celé oslovení i s čárkou je teď v jednom bloku
     document.getElementById('task-text').innerHTML = `
       <div style="margin-bottom: 8px;">
         <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:
@@ -275,10 +279,12 @@ function displayPlayerInfo() {
   players.forEach((player, index) => {
     const playerInfoItem = document.createElement('div');
     playerInfoItem.className = 'player-info-item';
+    
+    // PŘESUNUTO: Smazáno zobrazení hodu a ponecháno jen jméno hráče
     playerInfoItem.innerHTML = `
       <span class="player-number">${index + 1}.</span>
       <span class="player-color" style="background-color: ${player.color};"></span>
-      <span>${player.name}</span> – hodil: <strong>${player.lastRoll}</strong>
+      <span style="font-weight: bold;">${player.name}</span>
     `;
     playerInfoDiv.appendChild(playerInfoItem);
   });
