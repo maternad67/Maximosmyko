@@ -1,14 +1,19 @@
+/* ========================================= */
+/* ZÁKLADNÍ NASTAVENÍ A POZADÍ               */
+/* ========================================= */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden; 
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
+  /* Mírně tmavší překryv pozadí, aby skleněný efekt víc vynikl */
+  background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3)), url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
+  color: #2c3e50;
 }
 
 /* Hlavička */
@@ -19,37 +24,65 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 10px;
 }
 
 .header img {
-  height: 40px;
+  height: 45px;
   object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .header h1 {
   margin: 0;
-  font-size: 24px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* ========================================= */
+/* GLASSMORPHISM PANELY (Efekt matného skla) */
+/* ========================================= */
+#setup, .left-col, .right-col {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
 }
 
 /* Nastavení uprostřed obrazovky */
 #setup {
   margin: auto;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 15px;
-  width: 300px;
+  padding: 35px 30px;
+  width: 320px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-#setup input, #setup select, #setup button {
+#setup h2 {
+  margin-top: 0;
+  color: #1a252f;
+}
+
+#setup input, #setup select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 8px 0;
   box-sizing: border-box;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.9);
+  font-size: 15px;
+  transition: box-shadow 0.2s;
+}
+
+#setup input:focus, #setup select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.3);
+  border-color: #f1c40f;
 }
 
 /* Hlavní herní obal */
@@ -74,11 +107,8 @@ body {
 
 /* Boční panely */
 .left-col, .right-col {
-  width: 260px;
-  background: rgba(255,255,255,0.9);
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 270px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -87,7 +117,9 @@ body {
   box-sizing: border-box;
 }
 
-/* Střed s herní deskou */
+/* ========================================= */
+/* HERNÍ DESKA A 3D DLAŽDICE                 */
+/* ========================================= */
 .center-col {
   flex: 1;
   height: 100%;
@@ -100,25 +132,35 @@ body {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 4px;
+  gap: 6px; /* Větší mezery mezi dlaždicemi */
   height: 100%;
   max-height: 75vh;
   aspect-ratio: 9 / 8;
+  padding: 10px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .cell {
-  background: rgba(240, 240, 240, 0.95);
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 6px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  font-size: clamp(12px, 2vh, 22px);
+  font-weight: 900;
+  color: #333;
+  font-size: clamp(14px, 2.2vh, 24px);
   position: relative;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-  overflow: hidden; 
+  /* 3D efekt dlaždice */
+  box-shadow: 0 4px 0px #b3b3b3, 0 5px 5px rgba(0,0,0,0.2);
+  border: 1px solid #fff;
+  transition: transform 0.1s;
 }
+
+/* První a poslední pole odlišné barvy */
+.cell[data-index="0"] { background: linear-gradient(145deg, #2ecc71, #27ae60); color: white; box-shadow: 0 4px 0px #1e8449, 0 5px 5px rgba(0,0,0,0.2); border: none; }
+.cell[data-index="71"] { background: linear-gradient(145deg, #f1c40f, #f39c12); color: white; box-shadow: 0 4px 0px #d68910, 0 5px 5px rgba(0,0,0,0.2); border: none; }
 
 .players-container {
   position: absolute;
@@ -133,49 +175,60 @@ body {
 }
 
 .player {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.8);
-  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.5);
+  border: 1px solid rgba(0,0,0,0.3);
 }
 
-/* OVLÁDÁNÍ KOSTKY */
-.roll-group {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-#turn-indicator {
-  font-size: 18px;
-  text-align: center;
-  background: #fff;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
+/* ========================================= */
+/* TLAČÍTKA A OVLÁDÁNÍ                       */
+/* ========================================= */
 button {
-  background: #6c6c6c;
+  background: linear-gradient(to bottom, #7f8c8d, #636e72);
   color: white;
   border: none;
   font-weight: bold;
   cursor: pointer;
-  padding: 12px;
-  border-radius: 6px;
-  transition: background 0.2s;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
   width: 100%;
+  box-shadow: 0 4px 0 #2d3436, 0 5px 10px rgba(0,0,0,0.2);
+  transition: all 0.1s ease-in-out;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-button:hover {
-  background: #393939;
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #2d3436, 0 0px 0px rgba(0,0,0,0.2);
+}
+
+#restart-game {
+  background: linear-gradient(to bottom, #e74c3c, #c0392b);
+  box-shadow: 0 4px 0 #922b21, 0 5px 10px rgba(0,0,0,0.2);
+}
+
+#restart-game:active {
+  box-shadow: 0 0 0 #922b21;
 }
 
 #roll-dice {
+  background: linear-gradient(to bottom, #3498db, #2980b9);
+  box-shadow: 0 4px 0 #1f618d, 0 5px 10px rgba(0,0,0,0.2);
   flex: 1.5; 
+}
+
+#roll-dice:active {
+  box-shadow: 0 0 0 #1f618d;
+}
+
+.roll-group {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 #manual-roll {
@@ -183,51 +236,59 @@ button:hover {
   min-width: 0; 
   padding: 10px;
   box-sizing: border-box;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
   text-align: center;
+  font-weight: bold;
 }
 
-#restart-game {
-  background: #c0392b;
-}
-
-#restart-game:hover {
-  background: #a12d22;
+#turn-indicator {
+  font-size: 18px;
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 #task-text {
   text-align: center;
   font-size: 16px;
-  padding: 15px;
-  border: 2px dashed #6c6c6c;
-  border-radius: 8px;
-  min-height: 70px;
-  background: white;
+  padding: 20px;
+  border: 2px dashed rgba(0,0,0,0.2);
+  border-radius: 12px;
+  min-height: 80px;
+  background: rgba(255,255,255,0.85);
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 0;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
 }
 
-/* ZKOMPAKTNĚNÝ SEZNAM HRÁČŮ */
+/* ========================================= */
+/* SEZNAM HRÁČŮ A ŠTÍTKY                     */
+/* ========================================= */
 #player-info {
   display: flex;
   flex-direction: row; 
   flex-wrap: wrap; 
   justify-content: center;
   gap: 8px;
+  margin-top: 5px;
 }
 
 .player-info-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: #fff;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.95);
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   font-size: 14px;
+  border: 1px solid rgba(0,0,0,0.03);
 }
 
 .player-color {
@@ -235,7 +296,62 @@ button:hover {
   height: 14px;
   border-radius: 50%;
   display: inline-block;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
+
+/* ========================================= */
+/* PŘEPÍNAČ REŽIMU (MODERNÍ POSUVNÍK)        */
+/* ========================================= */
+.mode-switch {
+  margin: 20px 0;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 15px;
+  color: #2c3e50;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #cbd5e1;
+  transition: .4s;
+  border-radius: 34px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider { background-color: #2ecc71; } /* Zelená pro tábor */
+input:checked + .slider:before { transform: translateX(22px); }
 
 /* ========================================= */
 /* VLASTNÍ VYSKAKOVACÍ OKNO (MODAL)          */
@@ -244,7 +360,9 @@ button:hover {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -259,113 +377,50 @@ button:hover {
 }
 
 .modal-box {
-  background: white;
-  padding: 25px 20px;
-  border-radius: 16px;
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 20px;
   text-align: center;
-  max-width: 350px;
+  max-width: 360px;
   width: 85%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   transform: scale(1);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border-top: 8px solid #f1c40f; 
 }
 
 #custom-modal.hidden .modal-box {
-  transform: scale(0.9);
+  transform: scale(0.8);
 }
 
 .modal-box h3 {
   margin-top: 0;
-  font-size: 20px;
-  color: #333;
+  font-size: 22px;
+  color: #2c3e50;
   margin-bottom: 15px;
 }
 
 .modal-box p {
-  font-size: 16px;
-  color: #444;
+  font-size: 17px;
+  color: #34495e;
   margin-bottom: 25px;
   line-height: 1.5;
 }
 
 #modal-btn {
-  background: #333;
+  background: #2c3e50;
   color: #fff;
-  padding: 12px 30px;
+  padding: 14px 35px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  width: auto;
+  box-shadow: 0 4px 0 #1a252f;
+  margin-bottom: 4px; /* Prostor pro animaci */
 }
 
-#modal-btn:hover {
-  background: #000;
-}
-
-/* ========================================= */
-/* PŘEPÍNAČ REŽIMU (MODERNÍ POSUVNÍK)        */
-/* ========================================= */
-.mode-switch {
-  margin: 15px 0;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #f1c40f; /* Žlutá barva korunky po zapnutí */
-}
-
-input:checked + .slider:before {
-  transform: translateX(22px);
+#modal-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #1a252f;
 }
 
 /* ========================================= */
@@ -378,15 +433,9 @@ input:checked + .slider:before {
     padding-bottom: 20px;
   }
   
-  .header {
-    height: 60px;
-  }
-  .header img {
-    height: 30px;
-  }
-  .header h1 {
-    font-size: 20px;
-  }
+  .header { height: 60px; }
+  .header img { height: 32px; }
+  .header h1 { font-size: 22px; }
   
   #game {
     height: auto;
@@ -396,36 +445,34 @@ input:checked + .slider:before {
   .game-layout {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px; 
+    gap: 15px; 
   }
   
   .left-col, .center-col, .right-col {
     width: 100%;
     max-width: 100%;
+    background: rgba(255, 255, 255, 0.85); /* Na mobilu mírně méně průhledné pro lepší čitelnost */
   }
 
   .left-col, .right-col {
-    padding: 10px;
-    gap: 8px;
+    padding: 15px;
+    gap: 12px;
   }
 
   button {
-    padding: 10px; 
-    font-size: 14px;
+    padding: 12px; 
+    font-size: 15px;
   }
 
-  #manual-roll {
-    padding: 10px;
-    font-size: 14px;
-  }
+  #manual-roll { padding: 12px; }
 
   #turn-indicator {
     font-size: 16px;
-    padding: 10px;
+    padding: 12px;
   }
 
   .player-info-item {
-    padding: 4px 10px; 
+    padding: 6px 12px; 
     font-size: 13px;
   }
   
@@ -433,21 +480,23 @@ input:checked + .slider:before {
     width: 100%;
     height: auto;
     max-height: none;
-    gap: 2px;
+    gap: 4px;
+    padding: 8px;
   }
   
   .cell {
-    font-size: clamp(10px, 3.5vw, 18px); 
+    font-size: clamp(12px, 4vw, 20px); 
+    box-shadow: 0 3px 0px #b3b3b3, 0 3px 4px rgba(0,0,0,0.15);
   }
   
   .player {
-    width: 10px; 
-    height: 10px;
+    width: 12px; 
+    height: 12px;
   }
 
   #task-text {
     font-size: 16px;
     min-height: 70px;
-    padding: 12px;
+    padding: 15px;
   }
 }
