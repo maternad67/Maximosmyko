@@ -1,138 +1,126 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 10px;
-  min-height: 100vh;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden; 
   display: flex;
-  align-items: center;
   flex-direction: column;
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
-.logo {
-  max-width: 80px;
-  display: block;
-  margin: 0 auto;
-}
-
-h1 {
+/* Hlavička */
+.header {
   text-align: center;
-  text-shadow: 2px 2px 5px #333;
-  font-size: 2.2rem;
-  margin: 5px 0 15px 0;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- Nastavení --- */
+.header img {
+  height: 40px;
+  object-fit: contain;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Nastavení uprostřed obrazovky */
 #setup {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px 30px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 #setup input, #setup select, #setup button {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
-  font-size: 16px;
-  border: 1px solid #ccc;
+  box-sizing: border-box;
   border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Hlavní herní obal */
+#game {
+  width: 100%;
+  height: calc(100vh - 80px);
+  padding: 10px 20px 20px 20px;
   box-sizing: border-box;
 }
 
-/* --- Herní plocha: Dashboard --- */
-#game {
-  display: none; /* Skryto ve výchozím stavu */
-  gap: 20px;
+/* Třísloupcový layout */
+.game-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   max-width: 1400px;
-  align-items: start;
+  height: 100%;
+  margin: 0 auto;
+  gap: 20px;
 }
 
-#game.active {
-  display: grid;
-  grid-template-columns: 250px 1fr 300px;
-}
-
-/* Panely */
-.left-panel, .right-panel {
-  background-color: rgba(255, 255, 255, 0.85);
+/* Boční panely */
+.left-col, .right-col {
+  width: 260px;
+  background: rgba(255,255,255,0.9);
   padding: 15px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   gap: 15px;
+  max-height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
-.center-panel {
+/* Střed s herní deskou */
+.center-col {
+  flex: 1;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
 }
 
-/* Hráči vlevo */
-#player-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.player-info-item {
-  background-color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  box-shadow: 1px 1px 4px rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-.player-color {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-}
-
-/* Deska uprostřed */
 #board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(8, 1fr);
   gap: 4px;
-  width: 100%;
-  max-width: 800px;
+  height: 100%;
+  max-height: 75vh;
   aspect-ratio: 9 / 8;
 }
 
 .cell {
-  background-color: rgba(240, 240, 240, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
+  background: rgba(240, 240, 240, 0.95);
+  border: 1px solid rgba(0,0,0,0.4);
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: clamp(12px, 1.5vw, 24px);
+  font-size: clamp(12px, 2vh, 22px);
   position: relative;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
 }
 
-/* Figurky uvnitř buněk */
 .players-container {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -140,123 +128,96 @@ h1 {
   justify-content: center;
   align-items: center;
   gap: 2px;
-  padding: 2px;
-  box-sizing: border-box;
-  pointer-events: none; /* Aby šlo klikat skrz na číslo, pokud by to bylo potřeba */
+  pointer-events: none;
 }
 
 .player {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  border: 1px solid rgba(255,255,255,0.6);
 }
 
-/* Ovládání a úkoly vpravo */
-#controls {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-#manual-roll {
-  width: 100%;
-  text-align: center;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
+/* Tlačítka a inputy */
 button {
-  background-color: #6c6c6c;
+  background: #6c6c6c;
   color: white;
-  padding: 12px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
   width: 100%;
 }
 
 button:hover {
-  background-color: #393939;
+  background: #393939;
+}
+
+/* Odlišení tlačítka restartu */
+#restart-game {
+  background: #c0392b;
+}
+
+#restart-game:hover {
+  background: #a12d22;
+}
+
+#controls input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
 }
 
 #dice-value {
-  font-size: 3rem;
+  font-size: 3.5rem;
+  text-align: center;
   margin: 10px 0;
   font-weight: bold;
-  text-align: center;
-  animation: rollFlash 0.5s ease;
-  min-height: 55px; /* Rezerva, aby neposkakoval text pod ním */
+  min-height: 65px;
 }
 
 #task-text {
-  font-size: 16px;
   text-align: center;
+  font-size: 16px;
   padding: 15px;
-  border-radius: 10px;
-  background-color: #fff;
   border: 2px dashed #6c6c6c;
+  border-radius: 8px;
+  min-height: 80px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0;
-  min-height: 60px;
 }
 
-@keyframes rollFlash {
-  0% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(1); }
+/* Hráči vlevo */
+#player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* Responzivita pro menší monitory a tablety */
-@media (max-width: 1024px) {
-  #game.active {
-    grid-template-columns: 200px 1fr;
-    grid-template-rows: auto auto;
-  }
-  .right-panel {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start;
-  }
-  #controls, #task {
-    width: 48%;
-  }
+.player-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
 }
 
-/* Responzivita pro mobily */
-@media (max-width: 768px) {
-  #game.active {
-    display: flex;
-    flex-direction: column;
-  }
-  .left-panel, .right-panel {
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .right-panel {
-    flex-direction: column;
-  }
-  #controls, #task {
-    width: 100%;
-  }
-  #board {
-    aspect-ratio: auto;
-    grid-template-columns: repeat(9, 1fr);
-    gap: 2px;
-  }
-  .cell {
-    aspect-ratio: 1 / 1;
-    font-size: 12px;
-  }
-  .player {
-    width: 10px;
-    height: 10px;
-  }
+.player-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
 }
