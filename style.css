@@ -213,8 +213,8 @@ button:hover {
 /* ZKOMPAKTNĚNÝ SEZNAM HRÁČŮ */
 #player-info {
   display: flex;
-  flex-direction: row; /* Řadí štítky vedle sebe */
-  flex-wrap: wrap; /* Zalomí na další řádek, pokud se nevejdou */
+  flex-direction: row; 
+  flex-wrap: wrap; 
   justify-content: center;
   gap: 8px;
 }
@@ -235,6 +235,75 @@ button:hover {
   height: 14px;
   border-radius: 50%;
   display: inline-block;
+}
+
+/* ========================================= */
+/* VLASTNÍ VYSKAKOVACÍ OKNO (MODAL)          */
+/* ========================================= */
+#custom-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+#custom-modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-box {
+  background: white;
+  padding: 25px 20px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 350px;
+  width: 85%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transform: scale(1);
+  transition: transform 0.2s ease;
+  border-top: 8px solid #f1c40f; /* Barva korunky */
+}
+
+#custom-modal.hidden .modal-box {
+  transform: scale(0.9);
+}
+
+.modal-box h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  font-size: 16px;
+  color: #444;
+  white-space: pre-line; /* Zachová odřádkování (\n) z JavaScriptu */
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+#modal-btn {
+  background: #333;
+  color: #fff;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: auto;
+}
+
+#modal-btn:hover {
+  background: #000;
 }
 
 /* ========================================= */
