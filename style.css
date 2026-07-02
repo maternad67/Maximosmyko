@@ -223,9 +223,9 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px; /* Zmenšené vnitřní okraje */
+  padding: 6px 12px;
   background: #fff;
-  border-radius: 20px; /* Moderní zakulacený tvar pilulky */
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   font-size: 14px;
 }
@@ -293,7 +293,6 @@ button:hover {
     padding: 10px;
   }
 
-  /* Na mobilu jsou štítky ještě menší */
   .player-info-item {
     padding: 4px 10px; 
     font-size: 13px;
