@@ -109,7 +109,6 @@ function rollDice() {
   
   const currentPlayer = players[currentPlayerIndex];
   
-  // Vložení textu o tom, kdo co hodil
   document.getElementById('turn-indicator').innerHTML = `
     <span style="color: ${currentPlayer.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${currentPlayer.name}</span> 
     hodil kostkou: <strong style="font-size: 1.3em; color: #333;">${diceValue}</strong>
@@ -117,7 +116,6 @@ function rollDice() {
   
   players[currentPlayerIndex].lastRoll = diceValue;
   
-  // Zpoždění spuštění tahu, aby se text nahoře stihl bezpečně vykreslit
   setTimeout(() => {
     movePlayer(diceValue);
     displayPlayerInfo();
@@ -201,7 +199,6 @@ function movePlayer(steps) {
     return;
   }
 
-  // Přepnutí indexu na dalšího hráče (na další hod bude použit tento)
   if (players.length > 1) {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
   }
@@ -219,7 +216,6 @@ function resetGame() {
   updateTurnIndicator(); 
 }
 
-// Funkce se teď volá jen při spuštění/restartu hry pro výchozí hlášku
 function updateTurnIndicator() {
   if (players.length > 0) {
     const player = players[currentPlayerIndex];
@@ -250,31 +246,19 @@ function updatePlayerPositions() {
 
 function showTask(playerOrPosition) {
   let position;
-  let playerName = "";
-  let playerColor = "black";
 
   if (typeof playerOrPosition === 'object' && playerOrPosition !== null) {
     position = playerOrPosition.position;
-    playerName = playerOrPosition.name;
-    playerColor = playerOrPosition.color;
   } else {
     position = playerOrPosition;
-    // Ukazujeme úkol toho, kdo právě odjel svůj tah (tedy byl na řadě)
-    const fallbackPlayer = players[(currentPlayerIndex - 1 + players.length) % players.length];
-    if (fallbackPlayer) {
-      playerName = fallbackPlayer.name;
-      playerColor = fallbackPlayer.color;
-    }
   }
 
   const task = tasks[position];
   
   if (task && task !== "Nic" && task !== "") {
+    // Smazáno oslovení, zůstává jen zvětšený a vycentrovaný text úkolu
     document.getElementById('task-text').innerHTML = `
-      <div style="margin-bottom: 8px;">
-        <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:
-      </div>
-      <div style="font-size: 1.1em; font-weight: bold;">${task}</div>
+      <div style="font-size: 1.3em; font-weight: bold; color: #111;">${task}</div>
     `;
   } else {
     document.getElementById('task-text').innerHTML = '';
