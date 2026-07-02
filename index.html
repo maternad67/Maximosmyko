@@ -5,47 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAXIMO SMYKO</title>
     <link rel="stylesheet" href="style.css">
-   
 </head>
 <body>
-<img src="korunka.png" alt="MAXIMOSMYKO">
-       <h1 style="text-align: center;">MAXIMO SMYKO</h1> 
+    <img src="korunka.png" alt="MAXIMOSMYKO" class="logo">
+    <h1>MAXIMO SMYKO</h1> 
        
     <div id="setup">
-        <h2 style="text-align: center;">Nastavení hry</h2>
+        <h2>Nastavení hry</h2>
         <form id="setup-form">
             <label for="player-count">Počet hráčů:</label>
             <select id="player-count">
-                <option value="1">1</option> <!-- Přidáno! -->
-                <option value="2">2</option>
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
                 <option value="7">7</option>
                 <option value="8">8</option>
-</select>
-
+            </select>
             <div id="player-names"></div>
             <button type="submit">Start</button>
         </form>
     </div>
-    <div id="game" style="display: none;">
-        <div id="player-info"></div>
-        <div id="controls">
-            <input type="number" id="manual-roll" placeholder="Zadej hod (+/-)">
-            <button id="roll-dice">Hodit kostkou</button>
-            <p id="dice-value"></p>
+
+    <div id="game">
+        <div class="left-panel">
+            <button id="back-to-menu">Zpět do menu</button>
+            <div id="player-info"></div>
         </div>
-        <div id="task">
-            <p id="task-text"></p>
+
+        <div class="center-panel">
+            <div id="board"></div>
         </div>
-        <div id="board"></div>
         
-        <!-- Tlačítko pro návrat do menu -->
-        <button id="back-to-menu">Zpět do menu</button>
-        
+        <div class="right-panel">
+            <div id="controls">
+                <button id="roll-dice">Hodit kostkou</button>
+                <input type="number" id="manual-roll" placeholder="Zadej hod (+/-)">
+                <p id="dice-value"></p>
+            </div>
+            <div id="task">
+                <p id="task-text"></p>
+            </div>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
