@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAXIMO SMYKO</title>
     <link rel="stylesheet" href="style.css">
+    <!-- PROPOJENÍ S APLIKACÍ -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -29,10 +30,12 @@
             </select>
             <div id="player-names"></div>
             
+            <!-- NOVÝ PŘEPÍNAČ REŽIMU (Posuvník) -->
             <div class="mode-switch">
-                <label>
+                <span>Dětský / Táborový režim 🏕️</span>
+                <label class="switch">
                     <input type="checkbox" id="camp-mode-toggle">
-                    Dětský / Táborový režim 🏕️
+                    <span class="slider"></span>
                 </label>
             </div>
 
