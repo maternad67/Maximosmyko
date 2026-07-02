@@ -33,23 +33,28 @@
 
     <div id="game" style="display: none;">
         <div class="game-layout">
+            <!-- LEVÝ SLOUPEC: Tlačítka a Hráči -->
             <div class="left-col">
                 <button id="back-to-menu">Zpět do menu</button>
                 <button id="restart-game">Restartovat hru</button>
                 <div id="player-info"></div>
             </div>
 
+            <!-- STŘEDNÍ SLOUPEC: Herní deska -->
             <div class="center-col">
                 <div id="board"></div>
             </div>
             
+            <!-- PRAVÝ SLOUPEC: Zkompaktněné ovládání a úkoly -->
             <div class="right-col">
                 <div id="controls">
-                    <div id="turn-indicator">Připravte hru...</div>
+                    <!-- TLAČÍTKA JSOU TEĎ ÚPLNĚ NAHOŘE -->
                     <div class="roll-group">
                         <button id="roll-dice">Hodit kostkou</button>
                         <input type="number" id="manual-roll" placeholder="Hod (+/-)">
                     </div>
+                    
+                    <div id="turn-indicator">Připravte hru...</div>
                     <p id="dice-value"></p>
                 </div>
                 <div id="task">
