@@ -208,8 +208,6 @@ function movePlayer(steps) {
     player.position -= random;
     if (player.position < 0) player.position = 0;
     gameAlert(`${getColoredName(player)} hodil ${random} a vrací se o tolik zpět na pole ${player.position}.`);
-  
-  // --- UPRAVENÁ LOGIKA PRO POLE 46 ---
   } else if (player.position === 46) {
     player.position = 63;
     showSpecialTask = false; 
@@ -219,17 +217,24 @@ function movePlayer(steps) {
       gameAlert(`${getColoredName(player)} stoupl na pole 46!<br><br>EXNI SVŮJ DRINK a přesouváš se na pole 63!`);
     }
     document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Byl jsi přesunut z pole 46 na pole 63!</div>`;
-  // -----------------------------------
-
   } else if (player.position === 47) {
     const lastPlayerPosition = Math.min(...players.map(p => p.position));
     player.position = lastPlayerPosition;
     gameAlert(`${getColoredName(player)} se přesouvá na pole ${player.position} k hráči, který je poslední.`);
+  
+  // --- UPRAVENÁ LOGIKA PRO POLE 63 ---
   } else if (player.position === 63) {
     player.position = 46;
     showSpecialTask = false; 
-    gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi z pole 63 zpět na pole 46!`);
-    document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Spadl jsi z pole 63 zpět na pole 46!</div>`;
+    if (isCampMode) {
+      gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc vyskočit 5x co nejvýš! (Zůstáváš ale už tady)`);
+      document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Spadl jsi na 46! Vyskoč 5x co nejvýš!</div>`;
+    } else {
+      gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc EXNOUT DRINK! (Zůstáváš ale už tady)`);
+      document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Spadl jsi na 46! EXNI SVŮJ DRINK!</div>`;
+    }
+  // -----------------------------------
+
   } else if (player.position === 64) {
     const extraRoll = Math.floor(Math.random() * 6) + 1;
     let msg = `${getColoredName(player)} skončil na poli 64 – Házíš znovu!<br><br>`;
