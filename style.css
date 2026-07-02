@@ -285,7 +285,6 @@ button:hover {
 .modal-box p {
   font-size: 16px;
   color: #444;
-  /* ODEBRÁNO white-space: pre-line; kvůli použití <br> */
   margin-bottom: 25px;
   line-height: 1.5;
 }
@@ -305,31 +304,68 @@ button:hover {
 #modal-btn:hover {
   background: #000;
 }
-/* TÁBOROVÝ PŘEPÍNACH */
+
+/* ========================================= */
+/* PŘEPÍNAČ REŽIMU (MODERNÍ POSUVNÍK)        */
+/* ========================================= */
 .mode-switch {
   margin: 15px 0;
   background: rgba(255, 255, 255, 0.9);
-  padding: 12px;
+  padding: 12px 15px;
   border-radius: 8px;
   border: 2px solid #ccc;
-}
-
-.mode-switch label {
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-between;
   font-weight: bold;
   font-size: 16px;
   color: #333;
 }
 
-.mode-switch input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
-  margin: 0;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
   cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #f1c40f; /* Žlutá barva korunky po zapnutí */
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
 }
 
 /* ========================================= */
@@ -415,4 +451,3 @@ button:hover {
     padding: 12px;
   }
 }
-
