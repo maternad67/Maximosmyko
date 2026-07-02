@@ -25,10 +25,15 @@ document.getElementById('modal-btn').addEventListener('click', () => {
   document.getElementById('custom-modal').classList.add('hidden');
 });
 
-// Funkce pro zobrazení vlastního upozornění
+// ZMĚNĚNO NA innerHTML kvůli formátování barev
 function gameAlert(message) {
-  document.getElementById('modal-text').innerText = message;
+  document.getElementById('modal-text').innerHTML = message;
   document.getElementById('custom-modal').classList.remove('hidden');
+}
+
+// POMOCNÁ FUNKCE: Obarví a ztuční jméno hráče
+function getColoredName(player) {
+  return `<span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.15);">${player.name}</span>`;
 }
 
 updatePlayerNameFields();
@@ -121,8 +126,7 @@ function rollDice() {
   const currentPlayer = players[currentPlayerIndex];
   
   document.getElementById('turn-indicator').innerHTML = `
-    <span style="color: ${currentPlayer.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${currentPlayer.name}</span> 
-    hodil kostkou: <strong style="font-size: 1.3em; color: #333;">${diceValue}</strong>
+    ${getColoredName(currentPlayer)} hodil kostkou: <strong style="font-size: 1.3em; color: #333;">${diceValue}</strong>
   `;
   
   players[currentPlayerIndex].lastRoll = diceValue;
@@ -143,31 +147,31 @@ function movePlayer(steps) {
   if (player.position > 71) {
     const overshoot = player.position - 71;
     player.position = 71 - overshoot;
-    gameAlert(`${player.name} přehodil cíl a vrací se na pole ${player.position}.`);
+    gameAlert(`${getColoredName(player)} přehodil cíl a vrací se na pole ${player.position}.`);
   }
 
   if (player.position === 5) {
     player.position = 32;
-    gameAlert(`${player.name} skončil na poli 5 a přesouvá se na pole 32.`);
+    gameAlert(`${getColoredName(player)} skončil na poli 5 a přesouvá se na pole 32.`);
   } else if (player.position === 13) {
-    let resultMessage = `${player.name} stoupl na pole 13!\nVšichni hráči nyní házejí kostkou:\n\n`;
+    let resultMessage = `${getColoredName(player)} stoupl na pole 13!<br>Všichni hráči nyní házejí kostkou:<br><br>`;
     players.forEach(p => {
       const throwValue = Math.floor(Math.random() * 6) + 1;
-      resultMessage += `${p.name} hodil ${throwValue}. `;
+      resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
       if (throwValue % 2 === 0) { 
-        resultMessage += "Je to sudé, PIJE!\n";
+        resultMessage += "Je to sudé, PIJE!<br>";
       } else {
-        resultMessage += "Nepije.\n";
+        resultMessage += "Nepije.<br>";
       }
     });
     gameAlert(resultMessage);
   } else if (player.position === 19) {
     const extraRoll = Math.floor(Math.random() * 6) + 1;
-    gameAlert(`${player.name} skončil na poli 19 a hází ještě jednou!\n\nHodil ${extraRoll} a posouvá se o ${extraRoll} dál.`);
+    gameAlert(`${getColoredName(player)} skončil na poli 19 a hází ještě jednou!<br><br>Hodil ${extraRoll} a posouvá se o ${extraRoll} dál.`);
     player.position += extraRoll;
   } else if (player.position === 22) {
     player.position -= 2;
-    gameAlert(`${player.name} skončil na poli 22 a vrací se na pole ${player.position}.`);
+    gameAlert(`${getColoredName(player)} skončil na poli 22 a vrací se na pole ${player.position}.`);
   } else if (player.position === 24) {
     player.position = 26;
     gameAlert("Piješ! a posouváš se na pole 26");
@@ -175,7 +179,7 @@ function movePlayer(steps) {
     const random = Math.floor(Math.random() * 6) + 1;
     player.position -= random;
     if (player.position < 0) player.position = 0;
-    gameAlert(`${player.name} hodil ${random} a vrací se o tolik zpět na pole ${player.position}.`);
+    gameAlert(`${getColoredName(player)} hodil ${random} a vrací se o tolik zpět na pole ${player.position}.`);
   } else if (player.position === 46) {
     player.position = 63;
     showSpecialTask = false; 
@@ -183,14 +187,14 @@ function movePlayer(steps) {
   } else if (player.position === 47) {
     const lastPlayerPosition = Math.min(...players.map(p => p.position));
     player.position = lastPlayerPosition;
-    gameAlert(`${player.name} se přesouvá na pole ${player.position} k hráči, který je poslední.`);
+    gameAlert(`${getColoredName(player)} se přesouvá na pole ${player.position} k hráči, který je poslední.`);
   } else if (player.position === 63) {
     player.position = 46;
     showSpecialTask = false; 
     document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #111;">Spadl jsi z pole 63 zpět na pole 46!</div>`;
   } else if (player.position === 64) {
     const extraRoll = Math.floor(Math.random() * 6) + 1;
-    let msg = `${player.name} skončil na poli 64 – Házíš znovu!\n\n`;
+    let msg = `${getColoredName(player)} skončil na poli 64 – Házíš znovu!<br><br>`;
     if (extraRoll % 2 === 0) {
       msg += `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!`;
     } else {
@@ -198,20 +202,20 @@ function movePlayer(steps) {
     }
     gameAlert(msg);
   } else if (player.position === 66) {
-    let resultMessage = `${player.name} skončil na poli 66 – všichni hráči hází!\n\n`;
+    let resultMessage = `${getColoredName(player)} skončil na poli 66 – všichni hráči hází!<br><br>`;
     players.forEach(p => {
       const throwValue = Math.floor(Math.random() * 6) + 1;
-      resultMessage += `${p.name} hodil ${throwValue}. `;
+      resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
       if (throwValue === 6) {
-        resultMessage += "Pije!\n";
+        resultMessage += "Pije!<br>";
       } else {
-        resultMessage += "Nepije.\n";
+        resultMessage += "Nepije.<br>";
       }
     });
     gameAlert(resultMessage);
   } else if (player.position === 70) {
     player.position = 61;
-    gameAlert(`${player.name} se vrací na pole 61.`);
+    gameAlert(`${getColoredName(player)} se vrací na pole 61.`);
   }
 
   updatePlayerPositions();
@@ -221,7 +225,7 @@ function movePlayer(steps) {
   }
 
   if (player.position === 71) {
-    gameAlert(`Gratulujeme! ${player.name} vyhrál!`);
+    gameAlert(`Gratulujeme! ${getColoredName(player)} vyhrál!`);
     resetGame();
     return;
   }
@@ -247,7 +251,7 @@ function updateTurnIndicator() {
   if (players.length > 0) {
     const player = players[currentPlayerIndex];
     document.getElementById('turn-indicator').innerHTML = `
-      <span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${player.name}</span> začíná hru!
+      ${getColoredName(player)} začíná hru!
     `;
   }
 }
