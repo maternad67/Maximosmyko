@@ -138,6 +138,22 @@ function movePlayer(steps) {
   if (player.position === 5) {
     player.position = 32;
     alert(`${player.name} skončil na poli 5 a přesouvá se na pole 32.`);
+    
+  // --- PŘIDÁNA LOGIKA PRO POLE 13 ---
+  } else if (player.position === 13) {
+    let resultMessage = `${player.name} stoupl na pole 13!\nVšichni hráči nyní házejí kostkou:\n\n`;
+    players.forEach(p => {
+      const throwValue = Math.floor(Math.random() * 6) + 1;
+      resultMessage += `${p.name} hodil ${throwValue}. `;
+      if (throwValue % 2 === 0) { // Pokud je zbytek po dělení dvěma nula (sudé číslo)
+        resultMessage += "Je to sudé, PIJE!\n";
+      } else {
+        resultMessage += "Nepije.\n";
+      }
+    });
+    alert(resultMessage);
+  // ----------------------------------
+
   } else if (player.position === 19) {
     alert(`${player.name} skončil na poli 19 a hází ještě jednou!`);
     const extraRoll = Math.floor(Math.random() * 6) + 1;
