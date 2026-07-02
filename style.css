@@ -140,7 +140,7 @@ body {
   border: 1px solid rgba(255,255,255,0.6);
 }
 
-/* NOVÉ OVLÁDÁNÍ KOSTKY */
+/* OVLÁDÁNÍ KOSTKY */
 #turn-indicator {
   font-size: 16px;
   text-align: center;
@@ -174,11 +174,11 @@ button:hover {
 }
 
 #roll-dice {
-  flex: 2; /* Tlačítko na hod kostkou bude širší */
+  flex: 2; 
 }
 
 #manual-roll {
-  flex: 1; /* Input na podvádění bude užší */
+  flex: 1; 
   padding: 10px;
   box-sizing: border-box;
   border-radius: 6px;
@@ -194,13 +194,22 @@ button:hover {
   background: #a12d22;
 }
 
+/* Zobrazení hodu a jména */
 #dice-value {
   font-size: 3.5rem;
   text-align: center;
-  margin: 5px 0; /* Zmenšený okraj */
+  margin: 10px 0; 
   font-weight: bold;
-  min-height: 50px; /* Zmenšená výška */
+  min-height: 85px; 
   line-height: 1;
+}
+
+.roll-label {
+  font-size: 18px;
+  display: block;
+  color: #555;
+  font-weight: normal;
+  margin-bottom: 5px;
 }
 
 #task-text {
@@ -316,9 +325,13 @@ button:hover {
   }
   
   #dice-value {
-    font-size: 2.5rem;
-    min-height: 40px; 
-    margin: 5px 0;
+    font-size: 3rem;
+    min-height: 75px; 
+    margin: 10px 0;
+  }
+  
+  .roll-label {
+    font-size: 16px;
   }
 
   #task-text {
