@@ -305,6 +305,32 @@ button:hover {
 #modal-btn:hover {
   background: #000;
 }
+/* TÁBOROVÝ PŘEPÍNACH */
+.mode-switch {
+  margin: 15px 0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+}
+
+.mode-switch label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.mode-switch input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  cursor: pointer;
+}
 
 /* ========================================= */
 /* RESPONZIVITA PRO MOBILY A TABLETY         */
@@ -389,3 +415,4 @@ button:hover {
     padding: 12px;
   }
 }
+
