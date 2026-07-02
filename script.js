@@ -5,7 +5,7 @@ document.getElementById('roll-dice').addEventListener('click', rollDice);
 document.getElementById('back-to-menu').addEventListener('click', () => {
   const confirmBack = confirm("Opravdu chcete zpět do nastavení? Přerušíte tím aktuální hru!");
   if (confirmBack) {
-    document.getElementById('game').style.display = 'none';
+    document.getElementById('game').classList.remove('active');
     document.getElementById('setup').style.display = 'block';
   }
 });
@@ -45,7 +45,7 @@ function startGame(event) {
   }
   currentPlayerIndex = 0;
   document.getElementById('setup').style.display = 'none';
-  document.getElementById('game').style.display = 'block';
+  document.getElementById('game').classList.add('active'); // Místo inline stylu používáme třídu pro responzivitu
   generateBoard();
   displayPlayerInfo();
 }
@@ -204,10 +204,6 @@ function updatePlayerPositions() {
     const playerElement = document.createElement('div');
     playerElement.className = 'player';
     playerElement.style.backgroundColor = player.color;
-    playerElement.style.width = "12px";
-    playerElement.style.height = "12px";
-    playerElement.style.borderRadius = "50%";
-    playerElement.style.margin = "1px";
     
     if (index === currentPlayerIndex) {
       playerElement.style.boxShadow = '0 0 8px 3px gold';
@@ -240,7 +236,7 @@ function showTask(playerOrPosition) {
   if (task && task !== "Nic" && task !== "") {
     document.getElementById('task-text').innerHTML = `
       <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:<br>
-      <span style="font-size: 1.1em;">${task}</span>
+      <span style="font-size: 1.1em; display: block; margin-top: 10px;">${task}</span>
     `;
   } else {
     document.getElementById('task-text').innerHTML = '';
