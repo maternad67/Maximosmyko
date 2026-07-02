@@ -145,17 +145,17 @@ body {
   display: flex;
   gap: 8px;
   width: 100%;
-  margin-bottom: 10px; /* Mezera pod tlačítky */
+  margin-bottom: 10px;
 }
 
 #turn-indicator {
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   background: #fff;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   border: 2px solid #ccc;
-  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 button {
@@ -180,7 +180,7 @@ button:hover {
 
 #manual-roll {
   flex: 1; 
-  min-width: 0; /* TOTO ZABRÁNÍ PŘETÉKÁNÍ INPUTU */
+  min-width: 0; 
   padding: 10px;
   box-sizing: border-box;
   border-radius: 6px;
@@ -194,24 +194,6 @@ button:hover {
 
 #restart-game:hover {
   background: #a12d22;
-}
-
-/* Zobrazení hodu a jména */
-#dice-value {
-  font-size: 3.5rem;
-  text-align: center;
-  margin: 10px 0; 
-  font-weight: bold;
-  min-height: 85px; 
-  line-height: 1;
-}
-
-.roll-label {
-  font-size: 18px;
-  display: block;
-  color: #555;
-  font-weight: normal;
-  margin-bottom: 5px;
 }
 
 #task-text {
@@ -305,6 +287,11 @@ button:hover {
     font-size: 14px;
   }
 
+  #turn-indicator {
+    font-size: 16px;
+    padding: 10px;
+  }
+
   .player-info-item {
     padding: 6px; 
     font-size: 13px;
@@ -324,16 +311,6 @@ button:hover {
   .player {
     width: 10px; 
     height: 10px;
-  }
-  
-  #dice-value {
-    font-size: 3rem;
-    min-height: 75px; 
-    margin: 10px 0;
-  }
-  
-  .roll-label {
-    font-size: 16px;
   }
 
   #task-text {
