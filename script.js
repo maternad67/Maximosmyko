@@ -58,6 +58,7 @@ function startGame(event) {
   document.getElementById('game').style.display = 'block';
   generateBoard();
   displayPlayerInfo();
+  updateTurnIndicator(); // Zobrazení prvního hráče na tahu
 }
 
 // Seznam úkolů pro každé pole
@@ -187,9 +188,13 @@ function movePlayer(steps) {
     return;
   }
 
+  // Přepnutí na dalšího hráče
   if (players.length > 1) {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
   }
+  
+  // Aktualizace textu "Kdo hází" pro nového hráče
+  updateTurnIndicator();
 }
 
 function resetGame() {
@@ -202,6 +207,14 @@ function resetGame() {
   document.getElementById('dice-value').innerText = '';
   document.getElementById('task-text').innerText = '';
   displayPlayerInfo();
+  updateTurnIndicator(); // Reset ukazatele na prvního hráče
+}
+
+function updateTurnIndicator() {
+  if (players.length > 0) {
+    const player = players[currentPlayerIndex];
+    document.getElementById('turn-indicator').innerHTML = `<strong style="color: ${player.color}; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.2em;">${player.name}</strong> hází kostkou`;
+  }
 }
 
 function updatePlayerPositions() {
@@ -244,9 +257,12 @@ function showTask(playerOrPosition) {
   const task = tasks[position];
   
   if (task && task !== "Nic" && task !== "") {
+    // OPRAVA zalamování: celé oslovení i s čárkou je teď v jednom bloku
     document.getElementById('task-text').innerHTML = `
-      <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:<br>
-      <span style="font-size: 1.1em; display: block; margin-top: 10px;">${task}</span>
+      <div style="margin-bottom: 8px;">
+        <span style="color: ${playerColor}; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">${playerName}</span>, tvůj úkol:
+      </div>
+      <div style="font-size: 1.1em; font-weight: bold;">${task}</div>
     `;
   } else {
     document.getElementById('task-text').innerHTML = '';
