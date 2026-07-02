@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img src="korunka.png" alt="MAXIMOSMYKO" class="logo">
-    <h1>MAXIMO SMYKO</h1> 
+    <div class="header">
+        <img src="korunka.png" alt="MAXIMOSMYKO">
+        <h1>MAXIMO SMYKO</h1> 
+    </div>
        
     <div id="setup">
         <h2>Nastavení hry</h2>
@@ -29,24 +31,27 @@
         </form>
     </div>
 
-    <div id="game">
-        <div class="left-panel">
-            <button id="back-to-menu">Zpět do menu</button>
-            <div id="player-info"></div>
-        </div>
-
-        <div class="center-panel">
-            <div id="board"></div>
-        </div>
-        
-        <div class="right-panel">
-            <div id="controls">
-                <button id="roll-dice">Hodit kostkou</button>
-                <input type="number" id="manual-roll" placeholder="Zadej hod (+/-)">
-                <p id="dice-value"></p>
+    <div id="game" style="display: none;">
+        <div class="game-layout">
+            <div class="left-col">
+                <button id="back-to-menu">Zpět do menu</button>
+                <button id="restart-game">Restartovat hru</button>
+                <div id="player-info"></div>
             </div>
-            <div id="task">
-                <p id="task-text"></p>
+
+            <div class="center-col">
+                <div id="board"></div>
+            </div>
+            
+            <div class="right-col">
+                <div id="controls">
+                    <input type="number" id="manual-roll" placeholder="Zadej hod (+/-)">
+                    <button id="roll-dice">Hodit kostkou</button>
+                    <p id="dice-value"></p>
+                </div>
+                <div id="task">
+                    <p id="task-text"></p>
+                </div>
             </div>
         </div>
     </div>
