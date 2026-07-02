@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAXIMO SMYKO</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="header">
@@ -27,6 +28,14 @@
                 <option value="8">8</option>
             </select>
             <div id="player-names"></div>
+            
+            <div class="mode-switch">
+                <label>
+                    <input type="checkbox" id="camp-mode-toggle">
+                    Dětský / Táborový režim 🏕️
+                </label>
+            </div>
+
             <button type="submit">Start</button>
         </form>
     </div>
@@ -67,5 +76,12 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // REGISTRACE OFFLINE APLIKACE
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .catch(err => console.error('SW chyba:', err));
+        }
+    </script>
 </body>
 </html>
