@@ -197,7 +197,7 @@ button:hover {
   margin: 0;
 }
 
-/* Hráči vlevo */
+/* Hráči přesunuti doprava */
 #player-info {
   display: flex;
   flex-direction: column;
