@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  overflow: hidden; 
+  overflow: hidden; /* Na PC zamezí scrolování */
   display: flex;
   flex-direction: column;
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('vnitrekmaximo.jpg');
@@ -156,7 +156,6 @@ button:hover {
   background: #393939;
 }
 
-/* Odlišení tlačítka restartu */
 #restart-game {
   background: #c0392b;
 }
@@ -197,7 +196,6 @@ button:hover {
   margin: 0;
 }
 
-/* Hráči přesunuti doprava */
 #player-info {
   display: flex;
   flex-direction: column;
@@ -220,4 +218,49 @@ button:hover {
   height: 16px;
   border-radius: 50%;
   display: inline-block;
+}
+
+/* ========================================= */
+/* RESPONZIVITA PRO MOBILNÍ TELEFONY         */
+/* ========================================= */
+@media (max-width: 950px) {
+  body {
+    height: auto;
+    overflow: auto; /* Na mobilu se MŮŽE scrollovat */
+    padding-bottom: 20px;
+  }
+  
+  #game {
+    height: auto;
+  }
+  
+  .game-layout {
+    flex-direction: column; /* Skládá prvky pod sebe */
+    gap: 20px;
+  }
+  
+  .left-col, .right-col {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  #board {
+    width: 100%;
+    max-height: none;
+    gap: 2px;
+  }
+  
+  .cell {
+    font-size: clamp(10px, 3.5vw, 18px); /* Menší čísla na mobilu */
+  }
+  
+  .player {
+    width: 10px; /* Menší figurky, ať se vejdou */
+    height: 10px;
+  }
+  
+  #dice-value {
+    font-size: 2.5rem;
+    min-height: 50px;
+  }
 }
