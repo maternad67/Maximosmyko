@@ -140,7 +140,23 @@ body {
   border: 1px solid rgba(255,255,255,0.6);
 }
 
-/* Tlačítka a inputy */
+/* NOVÉ OVLÁDÁNÍ KOSTKY */
+#turn-indicator {
+  font-size: 16px;
+  text-align: center;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.roll-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
 button {
   background: #6c6c6c;
   color: white;
@@ -157,6 +173,19 @@ button:hover {
   background: #393939;
 }
 
+#roll-dice {
+  flex: 2; /* Tlačítko na hod kostkou bude širší */
+}
+
+#manual-roll {
+  flex: 1; /* Input na podvádění bude užší */
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
 #restart-game {
   background: #c0392b;
 }
@@ -165,22 +194,13 @@ button:hover {
   background: #a12d22;
 }
 
-#controls input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-
 #dice-value {
   font-size: 3.5rem;
   text-align: center;
-  margin: 10px 0;
+  margin: 5px 0; /* Zmenšený okraj */
   font-weight: bold;
-  min-height: 65px;
+  min-height: 50px; /* Zmenšená výška */
+  line-height: 1;
 }
 
 #task-text {
@@ -189,7 +209,7 @@ button:hover {
   padding: 15px;
   border: 2px dashed #6c6c6c;
   border-radius: 8px;
-  min-height: 80px;
+  min-height: 70px;
   background: white;
   display: flex;
   flex-direction: column;
@@ -233,7 +253,6 @@ button:hover {
     padding-bottom: 20px;
   }
   
-  /* Zmenšení hlavičky na telefonu */
   .header {
     height: 60px;
   }
@@ -246,13 +265,13 @@ button:hover {
   
   #game {
     height: auto;
-    padding: 10px; /* Menší vnější okraje */
+    padding: 10px;
   }
   
   .game-layout {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px; /* Menší mezera mezi hlavními sekcemi */
+    gap: 10px; 
   }
   
   .left-col, .center-col, .right-col {
@@ -260,25 +279,23 @@ button:hover {
     max-width: 100%;
   }
 
-  /* Zmenšení vnitřních okrajů panelů a tlačítek */
   .left-col, .right-col {
     padding: 10px;
     gap: 8px;
   }
 
   button {
-    padding: 8px; /* Tlačítka budou užší na výšku */
+    padding: 10px; 
     font-size: 14px;
   }
 
-  #controls input {
-    padding: 8px;
-    margin-bottom: 5px;
+  #manual-roll {
+    padding: 10px;
     font-size: 14px;
   }
 
   .player-info-item {
-    padding: 6px; /* Hráči zaberou méně místa */
+    padding: 6px; 
     font-size: 13px;
   }
   
@@ -300,14 +317,13 @@ button:hover {
   
   #dice-value {
     font-size: 2.5rem;
-    min-height: 40px; /* Menší prostor pro zobrazení kostky */
+    min-height: 40px; 
     margin: 5px 0;
   }
 
-  /* RÁMEČEK S ÚKOLEM ZŮSTÁVÁ VELKÝ A ČITELNÝ */
   #task-text {
     font-size: 16px;
-    min-height: 80px;
-    padding: 15px;
+    min-height: 70px;
+    padding: 12px;
   }
 }
