@@ -2,11 +2,21 @@
 document.getElementById('setup-form').addEventListener('submit', startGame);
 document.getElementById('player-count').addEventListener('change', updatePlayerNameFields);
 document.getElementById('roll-dice').addEventListener('click', rollDice);
+
+// Tlačítko zpět do menu
 document.getElementById('back-to-menu').addEventListener('click', () => {
   const confirmBack = confirm("Opravdu chcete zpět do nastavení? Přerušíte tím aktuální hru!");
   if (confirmBack) {
-    document.getElementById('game').classList.remove('active');
+    document.getElementById('game').style.display = 'none';
     document.getElementById('setup').style.display = 'block';
+  }
+});
+
+// NOVÉ: Tlačítko pro restart hry
+document.getElementById('restart-game').addEventListener('click', () => {
+  const confirmRestart = confirm("Opravdu chcete restartovat hru? Všichni hráči se vrátí na start!");
+  if (confirmRestart) {
+    resetGame();
   }
 });
 
@@ -45,7 +55,7 @@ function startGame(event) {
   }
   currentPlayerIndex = 0;
   document.getElementById('setup').style.display = 'none';
-  document.getElementById('game').classList.add('active'); // Místo inline stylu používáme třídu pro responzivitu
+  document.getElementById('game').style.display = 'block';
   generateBoard();
   displayPlayerInfo();
 }
