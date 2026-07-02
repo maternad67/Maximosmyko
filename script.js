@@ -159,14 +159,10 @@ function movePlayer(steps) {
     player.position = 63;
     showSpecialTask = false; 
     document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #111;">Byl jsi přesunut z pole 46 na pole 63!</div>`;
-  
-  // OPRAVENÁ LOGIKA PRO POLE 47
   } else if (player.position === 47) {
-    // Najde pozici hráče, který je nejvíce vzadu (nejmenší hodnota pozice ze všech)
     const lastPlayerPosition = Math.min(...players.map(p => p.position));
     player.position = lastPlayerPosition;
     alert(`${player.name} se přesouvá na pole ${player.position} k hráči, který je poslední.`);
-  
   } else if (player.position === 63) {
     alert(`Úkol z pole 63: Přesouváš se zpět na pole 46!`);
     player.position = 46;
@@ -204,4 +200,88 @@ function movePlayer(steps) {
   }
 
   if (player.position === 71) {
-    alert(`Gratulujeme! ${player.name} vy
+    alert(`Gratulujeme! ${player.name} vyhrál!`);
+    resetGame();
+    return;
+  }
+
+  if (players.length > 1) {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+  }
+}
+
+function resetGame() {
+  players.forEach(player => {
+    player.position = 0;
+    player.lastRoll = 0;
+  });
+  currentPlayerIndex = 0;
+  updatePlayerPositions();
+  document.getElementById('task-text').innerHTML = '';
+  displayPlayerInfo();
+  updateTurnIndicator(); 
+}
+
+function updateTurnIndicator() {
+  if (players.length > 0) {
+    const player = players[currentPlayerIndex];
+    document.getElementById('turn-indicator').innerHTML = `
+      <span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); font-size: 1.1em;">${player.name}</span> začíná hru!
+    `;
+  }
+}
+
+function updatePlayerPositions() {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach(cell => {
+    cell.querySelector('.players-container').innerHTML = '';
+  });
+  players.forEach((player, index) => {
+    const playerCell = cells[player.position].querySelector('.players-container');
+    const playerElement = document.createElement('div');
+    playerElement.className = 'player';
+    playerElement.style.backgroundColor = player.color;
+    
+    if (index === currentPlayerIndex) {
+      playerElement.style.boxShadow = '0 0 8px 3px gold';
+    }
+    
+    playerCell.appendChild(playerElement);
+  });
+}
+
+function showTask(playerOrPosition) {
+  let position;
+
+  if (typeof playerOrPosition === 'object' && playerOrPosition !== null) {
+    position = playerOrPosition.position;
+  } else {
+    position = playerOrPosition;
+  }
+
+  const task = tasks[position];
+  
+  if (task && task !== "Nic" && task !== "") {
+    document.getElementById('task-text').innerHTML = `
+      <div style="font-size: 1.3em; font-weight: bold; color: #111;">${task}</div>
+    `;
+  } else {
+    document.getElementById('task-text').innerHTML = '';
+  }
+}
+
+function displayPlayerInfo() {
+  const playerInfoDiv = document.getElementById('player-info');
+  playerInfoDiv.innerHTML = '';
+  players.forEach((player, index) => {
+    const playerInfoItem = document.createElement('div');
+    playerInfoItem.className = 'player-info-item';
+    
+    playerInfoItem.innerHTML = `
+      <span class="player-number">${index + 1}.</span>
+      <span class="player-color" style="background-color: ${player.color};"></span>
+      <span style="font-weight: bold;">${player.name}</span>
+    `;
+    playerInfoDiv.appendChild(playerInfoItem);
+  });
+}
