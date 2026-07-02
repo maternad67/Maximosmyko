@@ -233,20 +233,53 @@ button:hover {
     padding-bottom: 20px;
   }
   
+  /* Zmenšení hlavičky na telefonu */
+  .header {
+    height: 60px;
+  }
+  .header img {
+    height: 30px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+  
   #game {
     height: auto;
+    padding: 10px; /* Menší vnější okraje */
   }
   
   .game-layout {
     flex-direction: column;
-    align-items: stretch; /* OPRAVA: Roztáhne sloupce na celou šířku místo scvrknutí do prostředka */
-    gap: 20px;
+    align-items: stretch;
+    gap: 10px; /* Menší mezera mezi hlavními sekcemi */
   }
   
-  /* OPRAVA: Střední sloupec musí mít 100% šířku, aby se do něj mohla deska rozvalit */
   .left-col, .center-col, .right-col {
     width: 100%;
     max-width: 100%;
+  }
+
+  /* Zmenšení vnitřních okrajů panelů a tlačítek */
+  .left-col, .right-col {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  button {
+    padding: 8px; /* Tlačítka budou užší na výšku */
+    font-size: 14px;
+  }
+
+  #controls input {
+    padding: 8px;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .player-info-item {
+    padding: 6px; /* Hráči zaberou méně místa */
+    font-size: 13px;
   }
   
   #board {
@@ -267,6 +300,14 @@ button:hover {
   
   #dice-value {
     font-size: 2.5rem;
-    min-height: 50px;
+    min-height: 40px; /* Menší prostor pro zobrazení kostky */
+    margin: 5px 0;
+  }
+
+  /* RÁMEČEK S ÚKOLEM ZŮSTÁVÁ VELKÝ A ČITELNÝ */
+  #task-text {
+    font-size: 16px;
+    min-height: 80px;
+    padding: 15px;
   }
 }
