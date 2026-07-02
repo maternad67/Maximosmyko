@@ -1,5 +1,5 @@
 /* ========================================= */
-/* ZÁKLADNÍ NASTAVENÍ A POZADÍ               */
+/* ZÁKLADNÍ NASTAVENÍ A TEMNÉ POZADÍ         */
 /* ========================================= */
 body {
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -9,11 +9,11 @@ body {
   overflow: hidden; 
   display: flex;
   flex-direction: column;
-  /* Mírně tmavší překryv pozadí, aby skleněný efekt víc vynikl */
-  background-image: linear-gradient(rgba(200, 200, 200, 0.3), rgba(200, 200, 200, 0.3)), url('vnitrekmaximo.jpg');
+  /* Tmavý "hospodský" překryv přes fotku lahví */
+  background-image: linear-gradient(rgba(18, 18, 20, 0.85), rgba(18, 18, 20, 0.95)), url('vnitrekmaximo.jpg');
   background-size: cover;
   background-position: center;
-  color: #2c3e50;
+  color: #e0e0e0;
 }
 
 /* Hlavička */
@@ -28,43 +28,44 @@ body {
 }
 
 .header img {
-  height: 45px;
+  height: 40px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
 }
 
 .header h1 {
-  margin: 0;
-  font-size: 26px;
+  margin: 5px 0 0 0;
+  font-size: 24px;
   font-weight: 900;
-  letter-spacing: 1px;
-  color: #fff;
-  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 4px 10px rgba(0,0,0,0.5);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f39c12; /* Jantarová / Zlatá */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 /* ========================================= */
-/* GLASSMORPHISM PANELY (Efekt matného skla) */
+/* TEMNÉ PANELY (Dark Pub Style)             */
 /* ========================================= */
 #setup, .left-col, .right-col {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
+  background: #242526;
+  border: 1px solid #3a3b3c;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
 }
 
 /* Nastavení uprostřed obrazovky */
 #setup {
   margin: auto;
-  padding: 35px 30px;
+  padding: 30px;
   width: 320px;
   text-align: center;
 }
 
 #setup h2 {
   margin-top: 0;
-  color: #1a252f;
+  color: #f39c12;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 #setup input, #setup select {
@@ -72,17 +73,17 @@ body {
   padding: 12px;
   margin: 8px 0;
   box-sizing: border-box;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.9);
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #18191a;
+  color: #fff;
   font-size: 15px;
-  transition: box-shadow 0.2s;
+  transition: border-color 0.2s;
 }
 
 #setup input:focus, #setup select:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.3);
-  border-color: #f1c40f;
+  border-color: #f39c12;
 }
 
 /* Hlavní herní obal */
@@ -118,7 +119,7 @@ body {
 }
 
 /* ========================================= */
-/* HERNÍ DESKA A 3D DLAŽDICE                 */
+/* HERNÍ DESKA A POLÍČKA                     */
 /* ========================================= */
 .center-col {
   flex: 1;
@@ -132,35 +133,34 @@ body {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 6px; /* Větší mezery mezi dlaždicemi */
+  gap: 4px;
   height: 100%;
   max-height: 75vh;
   aspect-ratio: 9 / 8;
-  padding: 10px;
-  background: rgba(0,0,0,0.1);
-  border-radius: 12px;
-  box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+  padding: 8px;
+  background: #18191a;
+  border-radius: 6px;
+  border: 1px solid #333;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
 }
 
 .cell {
-  background: linear-gradient(145deg, #ffffff, #e6e6e6);
-  border-radius: 8px;
+  background: #2a2b2c;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 900;
-  color: #333;
+  font-weight: bold;
+  color: #aaa;
   font-size: clamp(14px, 2.2vh, 24px);
   position: relative;
-  /* 3D efekt dlaždice */
-  box-shadow: 0 4px 0px #b3b3b3, 0 5px 5px rgba(0,0,0,0.2);
-  border: 1px solid #fff;
-  transition: transform 0.1s;
+  border: 1px solid #3a3b3c;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
 }
 
-/* První a poslední pole odlišné barvy */
-.cell[data-index="0"] { background: linear-gradient(145deg, #2ecc71, #27ae60); color: white; box-shadow: 0 4px 0px #1e8449, 0 5px 5px rgba(0,0,0,0.2); border: none; }
-.cell[data-index="71"] { background: linear-gradient(145deg, #f1c40f, #f39c12); color: white; box-shadow: 0 4px 0px #d68910, 0 5px 5px rgba(0,0,0,0.2); border: none; }
+/* První a poslední pole */
+.cell[data-index="0"] { background: #1e8449; color: white; border-color: #11572f; }
+.cell[data-index="71"] { background: #d35400; color: white; border-color: #a04000; }
 
 .players-container {
   position: absolute;
@@ -175,58 +175,66 @@ body {
 }
 
 .player {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.5);
-  border: 1px solid rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.9), inset 0 1px 2px rgba(255,255,255,0.4);
+  border: 1px solid #000;
 }
 
 /* ========================================= */
 /* TLAČÍTKA A OVLÁDÁNÍ                       */
 /* ========================================= */
 button {
-  background: linear-gradient(to bottom, #7f8c8d, #636e72);
-  color: white;
-  border: none;
+  background: #3a3b3c;
+  color: #e0e0e0;
+  border: 1px solid #444;
   font-weight: bold;
+  text-transform: uppercase;
   cursor: pointer;
   padding: 14px;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 4px;
+  font-size: 14px;
   width: 100%;
-  box-shadow: 0 4px 0 #2d3436, 0 5px 10px rgba(0,0,0,0.2);
-  transition: all 0.1s ease-in-out;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  background: #4e4f50;
+  color: #fff;
 }
 
 button:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 #2d3436, 0 0px 0px rgba(0,0,0,0.2);
+  background: #242526;
 }
 
 #restart-game {
-  background: linear-gradient(to bottom, #e74c3c, #c0392b);
-  box-shadow: 0 4px 0 #922b21, 0 5px 10px rgba(0,0,0,0.2);
+  background: #7b241c;
+  border-color: #641e16;
+  color: #f2d7d5;
 }
 
-#restart-game:active {
-  box-shadow: 0 0 0 #922b21;
+#restart-game:hover {
+  background: #922b21;
 }
 
+/* Hlavní tlačítko HODIT KOSTKOU v pivní barvě */
 #roll-dice {
-  background: linear-gradient(to bottom, #3498db, #2980b9);
-  box-shadow: 0 4px 0 #1f618d, 0 5px 10px rgba(0,0,0,0.2);
+  background: #d35400;
+  color: #fff;
+  border-color: #a04000;
   flex: 1.5; 
+  box-shadow: 0 4px 10px rgba(211, 84, 0, 0.3);
 }
 
-#roll-dice:active {
-  box-shadow: 0 0 0 #1f618d;
+#roll-dice:hover {
+  background: #e67e22;
 }
 
 .roll-group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   margin-bottom: 15px;
 }
@@ -236,35 +244,46 @@ button:active {
   min-width: 0; 
   padding: 10px;
   box-sizing: border-box;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #18191a;
+  color: #fff;
   text-align: center;
   font-weight: bold;
 }
 
 #turn-indicator {
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
-  background: rgba(255,255,255,0.9);
-  padding: 15px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background: #18191a;
+  color: #aaa;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #333;
 }
 
+#turn-indicator strong {
+  color: #fff !important; /* Přepíše výchozí tmavou u čísla */
+}
+
+/* Rámeček s úkolem */
 #task-text {
   text-align: center;
   font-size: 16px;
   padding: 20px;
-  border: 2px dashed rgba(0,0,0,0.2);
-  border-radius: 12px;
+  border: 2px dashed #555;
+  border-radius: 6px;
   min-height: 80px;
-  background: rgba(255,255,255,0.85);
+  background: #1c1d1e;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 0;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* Násilné přepsání tmavého textu z JS na světlý pro Dark Mode */
+#task-text div {
+  color: #e0e0e0 !important; 
 }
 
 /* ========================================= */
@@ -283,45 +302,45 @@ button:active {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  background: rgba(255,255,255,0.95);
-  border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 6px 12px;
+  background: #18191a;
+  border-radius: 4px;
+  border: 1px solid #333;
   font-size: 14px;
-  border: 1px solid rgba(0,0,0,0.03);
+  color: #ccc;
 }
 
 .player-color {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: inline-block;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 0 4px rgba(0,0,0,0.8);
 }
 
 /* ========================================= */
-/* PŘEPÍNAČ REŽIMU (MODERNÍ POSUVNÍK)        */
+/* PŘEPÍNAČ REŽIMU (Hospodský Posuvník)      */
 /* ========================================= */
 .mode-switch {
   margin: 20px 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: #18191a;
   padding: 12px 15px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 4px;
+  border: 1px solid #444;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-weight: bold;
-  font-size: 15px;
-  color: #2c3e50;
+  font-size: 14px;
+  color: #aaa;
+  text-transform: uppercase;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 28px;
+  width: 46px;
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -331,38 +350,35 @@ button:active {
   position: absolute;
   cursor: pointer;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #cbd5e1;
-  transition: .4s;
-  border-radius: 34px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #3a3b3c;
+  transition: .3s;
+  border-radius: 24px;
+  border: 1px solid #222;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #aaa;
+  transition: .3s;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-input:checked + .slider { background-color: #2ecc71; } /* Zelená pro tábor */
-input:checked + .slider:before { transform: translateX(22px); }
+input:checked + .slider { background-color: #d35400; border-color: #a04000; }
+input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
 
 /* ========================================= */
-/* VLASTNÍ VYSKAKOVACÍ OKNO (MODAL)          */
+/* TEMNÉ VYSKAKOVACÍ OKNO (MODAL)            */
 /* ========================================= */
 #custom-modal {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -377,51 +393,41 @@ input:checked + .slider:before { transform: translateX(22px); }
 }
 
 .modal-box {
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 20px;
+  background: #242526;
+  padding: 25px 20px;
+  border-radius: 6px;
   text-align: center;
-  max-width: 360px;
+  max-width: 350px;
   width: 85%;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  transform: scale(1);
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border-top: 8px solid #f1c40f; 
-}
-
-#custom-modal.hidden .modal-box {
-  transform: scale(0.8);
+  border: 1px solid #444;
+  border-top: 4px solid #f39c12; 
+  box-shadow: 0 15px 40px rgba(0,0,0,0.8);
 }
 
 .modal-box h3 {
   margin-top: 0;
-  font-size: 22px;
-  color: #2c3e50;
+  font-size: 20px;
+  color: #f39c12;
   margin-bottom: 15px;
+  text-transform: uppercase;
 }
 
 .modal-box p {
-  font-size: 17px;
-  color: #34495e;
+  font-size: 16px;
+  color: #ccc;
   margin-bottom: 25px;
   line-height: 1.5;
 }
 
 #modal-btn {
-  background: #2c3e50;
+  background: #d35400;
   color: #fff;
-  padding: 14px 35px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  box-shadow: 0 4px 0 #1a252f;
-  margin-bottom: 4px; /* Prostor pro animaci */
+  border-color: #a04000;
+  padding: 12px 30px;
+  width: auto;
 }
 
-#modal-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 #1a252f;
-}
+#modal-btn:hover { background: #e67e22; }
 
 /* ========================================= */
 /* RESPONZIVITA PRO MOBILY A TABLETY         */
@@ -434,24 +440,20 @@ input:checked + .slider:before { transform: translateX(22px); }
   }
   
   .header { height: 60px; }
-  .header img { height: 32px; }
-  .header h1 { font-size: 22px; }
+  .header img { height: 30px; }
+  .header h1 { font-size: 20px; }
   
-  #game {
-    height: auto;
-    padding: 10px;
-  }
+  #game { height: auto; padding: 10px; }
   
   .game-layout {
     flex-direction: column;
     align-items: stretch;
-    gap: 15px; 
+    gap: 10px; 
   }
   
   .left-col, .center-col, .right-col {
     width: 100%;
     max-width: 100%;
-    background: rgba(255, 255, 255, 0.85); /* Na mobilu mírně méně průhledné pro lepší čitelnost */
   }
 
   .left-col, .right-col {
@@ -459,20 +461,18 @@ input:checked + .slider:before { transform: translateX(22px); }
     gap: 12px;
   }
 
-  button {
+  button, #manual-roll {
     padding: 12px; 
-    font-size: 15px;
+    font-size: 14px;
   }
 
-  #manual-roll { padding: 12px; }
-
   #turn-indicator {
-    font-size: 16px;
-    padding: 12px;
+    font-size: 15px;
+    padding: 10px;
   }
 
   .player-info-item {
-    padding: 6px 12px; 
+    padding: 6px 10px; 
     font-size: 13px;
   }
   
@@ -480,23 +480,16 @@ input:checked + .slider:before { transform: translateX(22px); }
     width: 100%;
     height: auto;
     max-height: none;
-    gap: 4px;
-    padding: 8px;
+    gap: 3px;
+    padding: 6px;
   }
   
-  .cell {
-    font-size: clamp(12px, 4vw, 20px); 
-    box-shadow: 0 3px 0px #b3b3b3, 0 3px 4px rgba(0,0,0,0.15);
-  }
-  
-  .player {
-    width: 12px; 
-    height: 12px;
-  }
+  .cell { font-size: clamp(12px, 3.5vw, 18px); }
+  .player { width: 10px; height: 10px; }
 
   #task-text {
-    font-size: 16px;
+    font-size: 15px;
     min-height: 70px;
-    padding: 15px;
+    padding: 12px;
   }
 }
