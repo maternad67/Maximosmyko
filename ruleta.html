@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Maximo smyko - Tvorba týmů</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('vnitrekmaximo.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(10, 20, 22, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            font-size: 34px;
+            letter-spacing: 1px;
+            color: #ffd700;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        input[type="number"] {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: 2px solid #1c5253;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 20px;
+            width: 120px;
+            text-align: center;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus, .name-row input:focus {
+            border-color: #ffd700;
+        }
+
+        #names-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .name-row input {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: 2px solid #1c5253;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 18px;
+            width: 200px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .name-row input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-style: italic;
+        }
+
+        .remove-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0;
+            line-height: 30px;
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .add-btn {
+            background: #1c5253;
+            color: white;
+            border: 1px solid #2a7a7c;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 25px;
+            box-shadow: 0 0 10px rgba(28, 82, 83, 0.5);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .primary-btn {
+            background: linear-gradient(90deg, #d4af37, #f9a825);
+            border: none;
+            padding: 15px 40px;
+            color: #111;
+            font-size: 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .primary-btn:disabled {
+            background: #4a4a4a;
+            color: #888;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .secondary-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #d4af37;
+            padding: 15px 30px;
+            color: #d4af37;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        #roulette-screen {
+            display: none;
+            margin-top: 0;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            margin: 0 auto 20px auto;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+            border: 6px solid #1c5253;
+            background: #000;
+        }
+
+        #center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20%;  
+            max-width: 80px;
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; 
+            height: 0; 
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #ffffff;
+            z-index: 10;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
+        }
+
+        #status-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #winner-text {
+            height: 40px;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-shadow: 0 0 15px #d4af37, 0 0 30px #f9a825;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #teams-display {
+            margin-top: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .team-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 140px;
+            flex: 1 1 40%;
+            max-width: 200px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .team-card h3 {
+            margin: 0 0 10px 0;
+            color: #ffd700;
+            border-bottom: 2px solid #1c5253;
+            padding-bottom: 8px;
+            font-size: 18px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .team-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .team-card li {
+            margin-bottom: 6px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        @media (max-width: 500px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            h2 { font-size: 26px; margin-bottom: 20px; }
+            .name-row input { width: 160px; }
+            #status-text { font-size: 20px; }
+            #winner-text { font-size: 26px; margin-bottom: 20px; }
+            .primary-btn { padding: 12px 25px; font-size: 16px; }
+            .secondary-btn { padding: 12px 20px; font-size: 14px; }
+            .action-buttons { gap: 10px; }
+            .team-card { min-width: 120px; padding: 10px; }
+            .team-card h3 { font-size: 16px; }
+            .team-card li { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="menu-screen" class="container">
+        <h2>Maximálně smyková ruleta</h2>
+        
+        <div class="input-group">
+            <label for="team-size">Počet hráčů v jednom týmu:</label>
+            <input type="number" id="team-size" value="2" min="1">
+        </div>
+
+        <div class="input-group">
+            <label>Jména hráčů:</label>
+            <div id="names-list"></div>
+            <button class="add-btn" onclick="addNameField()">+ Přidat hráče</button>
+        </div>
+        
+        <button class="primary-btn" onclick="startRoulette()">Začít losovat</button>
+    </div>
+
+    <div id="roulette-screen" class="container">
+        <div id="status-text">Točíme pro: Tým 1</div>
+        <div id="winner-text"></div>
+        
+        <div class="wheel-wrapper" id="wheel-container">
+            <div class="pointer"></div>
+            <img src="korunka.png" id="center-logo" alt="Maximo smyko">
+            <canvas id="wheel" width="400" height="400"></canvas>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="secondary-btn" onclick="goBack()">Zpět</button>
+            <button class="primary-btn" id="spin-btn" onclick="spin()">Zatočit</button>
+        </div>
+
+        <div id="teams-display"></div>
+    </div>
+
+    <script>
+        let playerCount = 0; 
+        
+        function addNameField(value = "") {
+            playerCount++;
+            const list = document.getElementById("names-list");
+            const row = document.createElement("div");
+            row.className = "name-row";
+            
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = value;
+            input.placeholder = "Hráč " + playerCount;
+            
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "remove-btn";
+            removeBtn.innerText = "×";
+            removeBtn.onclick = function() {
+                list.removeChild(row);
+            };
+            
+            row.appendChild(input);
+            row.appendChild(removeBtn);
+            list.appendChild(row);
+        }
+
+        for(let i = 0; i < 6; i++) {
+            addNameField();
+        }
+
+        function goBack() {
+            document.getElementById("roulette-screen").style.display = "none";
+            document.getElementById("menu-screen").style.display = "block";
+            document.getElementById("wheel-container").style.display = "flex";
+        }
+
+        const canvas = document.getElementById("wheel");
+        const ctx = canvas.getContext("2d");
+        const radius = canvas.width / 2;
+        
+        let remainingNames = [];
+        let teamSize = 2;
+        let teams = [[]];
+        let currentTeamIndex = 0;
+        let currentAngle = 0;
+        let isSpinning = false;
+        
+        const colors = ["#143a3b", "#d4af37", "#1c5253", "#f9a825", "#0d2728", "#c5a030"];
+
+        // --- VYLEPŠENÝ ZVUKOVÝ SYSTÉM (BÍLÝ ŠUM = MECHANICKÉ KLAPNUTÍ) ---
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playClickSound() {
+            if (!audioCtx) return;
+            
+            // Vytvoříme buffer pro bílý šum (velmi krátký)
+            const bufferSize = audioCtx.sampleRate * 0.05; // 0.05 sekundy
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Naplníme buffer náhodnými hodnotami (šum)
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            
+            // Použijeme filtr, abychom odřízli vysoké frekvence a znělo to tupěji (více jako plast/dřevo)
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+            
+            // Gain node pro utlumení zvuku
+            const gainNode = audioCtx.createGain();
+            
+            // Zvuk musí velmi prudce klesnout (perkusivní obálka)
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+            
+            noise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            noise.start();
+        }
+        // -------------------------------------------------------------------
+
+        function normalizeName(name) {
+            return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        }
+
+        const secretPairs = [
+            ["vasa", "terka"],
+            ["david", "eliska"]
+        ];
+
+        function isHalfOfAvailablePair(name) {
+            let n = normalizeName(name);
+            for (let pair of secretPairs) {
+                let p1 = pair[0], p2 = pair[1];
+                if (n === p1 && remainingNames.some(x => normalizeName(x) === p2)) return true;
+                if (n === p2 && remainingNames.some(x => normalizeName(x) === p1)) return true;
+            }
+            return false;
+        }
+
+        function determineWinnerIndex() {
+            let targetName = null;
+            let currentTeam = teams[currentTeamIndex];
+            let isLastSlot = (currentTeam.length === teamSize - 1);
+
+            for (let pair of secretPairs) {
+                let p1 = pair[0];
+                let p2 = pair[1];
+
+                let hasP1 = currentTeam.some(name => normalizeName(name) === p1);
+                let hasP2 = currentTeam.some(name => normalizeName(name) === p2);
+                
+                let p1Available = remainingNames.find(name => normalizeName(name) === p1);
+                let p2Available = remainingNames.find(name => normalizeName(name) === p2);
+
+                if (hasP1 && p2Available) targetName = p2Available;
+                if (hasP2 && p1Available) targetName = p1Available;
+            }
+
+            if (targetName) {
+                return remainingNames.indexOf(targetName);
+            }
+
+            let validCandidates = remainingNames.map((n, i) => i);
+            
+            if (isLastSlot && teamSize >= 2) {
+                validCandidates = validCandidates.filter(i => !isHalfOfAvailablePair(remainingNames[i]));
+                if (validCandidates.length === 0) {
+                    validCandidates = remainingNames.map((n, i) => i);
+                }
+            }
+            
+            return validCandidates[Math.floor(Math.random() * validCandidates.length)];
+        }
+
+        function startRoulette() {
+            const inputs = document.querySelectorAll("#names-list input");
+            remainingNames = Array.from(inputs).map(inp => inp.value.trim()).filter(n => n !== "");
+            teamSize = parseInt(document.getElementById("team-size").value);
+            
+            if(remainingNames.length < 2) {
+                alert("Zadej prosím jména alespoň do 2 políček.");
+                return;
+            }
+            if(teamSize < 1 || isNaN(teamSize)) {
+                alert("Velikost týmu musí být alespoň 1.");
+                return;
+            }
+
+            teams = [[]];
+            currentTeamIndex = 0;
+            currentAngle = 0;
+
+            document.getElementById("menu-screen").style.display = "none";
+            document.getElementById("roulette-screen").style.display = "block";
+            document.getElementById("spin-btn").disabled = false;
+            document.getElementById("winner-text").innerText = "";
+            
+            updateStatusText();
+            renderTeamsUI();
+            drawWheel();
+        }
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (remainingNames.length === 0) return;
+
+            const sliceAngle = (2 * Math.PI) / remainingNames.length;
+
+            for (let i = 0; i < remainingNames.length; i++) {
+                const startAngle = currentAngle + i * sliceAngle;
+                const endAngle = startAngle + sliceAngle;
+
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, startAngle, endAngle);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#0a1416";
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = "right";
+                
+                if (colors[i % colors.length] === "#d4af37" || colors[i % colors.length] === "#f9a825" || colors[i % colors.length] === "#c5a030") {
+                    ctx.fillStyle = "#111111";
+                } else {
+                    ctx.fillStyle = "#ffffff";
+                }
+                
+                ctx.font = "bold 22px sans-serif";
+                
+                if (remainingNames.length === 1) {
+                    ctx.textAlign = "center";
+                    ctx.fillText(remainingNames[i], 0, -radius/2);
+                } else {
+                    ctx.fillText(remainingNames[i], radius - 25, 8);
+                }
+                ctx.restore();
+            }
+            
+            ctx.beginPath();
+            ctx.arc(radius, radius, 65, 0, 2 * Math.PI);
+            ctx.fillStyle = "#0a1416";
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#d4af37";
+            ctx.stroke();
+        }
+
+        function easeOutCubic(t, b, c, d) {
+            t /= d;
+            t--;
+            return c * (t * t * t + 1) + b;
+        }
+
+        function spin() {
+            if (isSpinning || remainingNames.length === 0) return;
+            isSpinning = true;
+            
+            initAudio(); 
+            
+            document.getElementById("winner-text").innerText = "Losování...";
+            document.getElementById("spin-btn").disabled = true;
+
+            let targetIndex = determineWinnerIndex();
+            
+            const sliceAngle = (2 * Math.PI) / remainingNames.length;
+            let baseEndAngle = (3 * Math.PI / 2) - (targetIndex + 0.5) * sliceAngle;
+            
+            let startAngle = currentAngle;
+            let endAngle = baseEndAngle;
+            
+            let extraSpins = Math.floor(Math.random() * 3) + 4;
+            while(endAngle <= startAngle + (extraSpins * 2 * Math.PI)) {
+                endAngle += 2 * Math.PI;
+            }
+
+            const spinTimeTotal = Math.random() * 1000 + 3500; 
+            let startTime = null;
+            let lastSliceIndex = -1; 
+
+            function rotate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                let progress = timestamp - startTime;
+                
+                if (progress >= spinTimeTotal) {
+                    currentAngle = endAngle % (2 * Math.PI);
+                    isSpinning = false;
+                    drawWheel();
+                    processWinner(targetIndex);
+                    return;
+                }
+                
+                currentAngle = easeOutCubic(progress, startAngle, endAngle - startAngle, spinTimeTotal);
+                
+                let currentDeg = currentAngle % (2 * Math.PI);
+                let pointerAngle = (3 * Math.PI / 2) - currentDeg;
+                if (pointerAngle < 0) pointerAngle += 2 * Math.PI;
+                let currentSliceIndex = Math.floor(pointerAngle / sliceAngle);
+                
+                if (lastSliceIndex !== -1 && currentSliceIndex !== lastSliceIndex) {
+                    playClickSound();
+                }
+                lastSliceIndex = currentSliceIndex;
+                
+                drawWheel();
+                requestAnimationFrame(rotate);
+            }
+            requestAnimationFrame(rotate);
+        }
+
+        function processWinner(index) {
+            const winner = remainingNames[index];
+            document.getElementById("winner-text").innerText = winner + "!";
+
+            teams[currentTeamIndex].push(winner);
+            remainingNames.splice(index, 1);
+
+            if (teams[currentTeamIndex].length >= teamSize && remainingNames.length > 0) {
+                teams.push([]); 
+                currentTeamIndex++; 
+            }
+
+            renderTeamsUI();
+            updateStatusText();
+
+            if (remainingNames.length > 0) {
+                drawWheel();
+                document.getElementById("spin-btn").disabled = false;
+            } else {
+                document.getElementById("wheel-container").style.display = "none";
+                document.getElementById("status-text").innerText = "Rozlosování je kompletní!";
+            }
+        }
+
+        function updateStatusText() {
+            if (remainingNames.length > 0) {
+                const currentTeamNumber = currentTeamIndex + 1;
+                const currentMembers = teams[currentTeamIndex].length;
+                document.getElementById("status-text").innerText = `Točíme pro: Tým ${currentTeamNumber} (${currentMembers}/${teamSize})`;
+            }
+        }
+
+        function renderTeamsUI() {
+            const container = document.getElementById("teams-display");
+            container.innerHTML = ""; 
+
+            teams.forEach((team, index) => {
+                if (team.length === 0 && index !== 0) return;
+
+                const card = document.createElement("div");
+                card.className = "team-card";
+                
+                const title = document.createElement("h3");
+                title.innerText = `Tým ${index + 1}`;
+                card.appendChild(title);
+
+                const list = document.createElement("ul");
+                team.forEach(member => {
+                    const li = document.createElement("li");
+                    li.innerText = member;
+                    list.appendChild(li);
+                });
+                
+                card.appendChild(list);
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
