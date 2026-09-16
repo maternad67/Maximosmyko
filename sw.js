@@ -1,11 +1,12 @@
 // PŘI KAŽDÉ DALŠÍ ZMĚNĚ WEBU ZVEDNI TOTO ČÍSLO (v2, v3, v4...)
-const CACHE_NAME = 'maximosmyko-v2'; 
+const CACHE_NAME = 'maximosmyko-v3'; 
 
 const urlsToCache = [
-  './',
+'./',
   './index.html',
   './style.css',
   './script.js',
+  './ruleta.html', // <-- ZDE PŘIDANÁ RULETA
   './korunka.png',
   './vnitrekmaximo.jpg'
 ];
