@@ -3,38 +3,43 @@ let currentPlayerIndex = 0;
 let isCampMode = false; 
 let currentTasks = [];
 
-// TOTO JE TA HLAVNÍ ZMĚNA: Všechno úvodní spouštění zabalíme sem!
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Napojíme všechna tlačítka
-    document.getElementById('setup-form').addEventListener('submit', startGame);
-    document.getElementById('roll-dice').addEventListener('click', rollDice);
-    document.getElementById('add-player-btn').addEventListener('click', addPlayerField);
+// Zabalíme vše do window.onload, aby HTML bylo 100% připravené
+window.onload = function() {
+    console.log("✅ Skript byl úspěšně spuštěn!");
 
-    document.getElementById('back-to-menu').addEventListener('click', () => {
-        const confirmBack = confirm("Opravdu chcete zpět do nastavení? Přerušíte tím aktuální hru!");
-        if (confirmBack) {
+    // Bezpečné napojení tlačítek (pokud prvek existuje, napojí se)
+    const form = document.getElementById('setup-form');
+    if (form) form.addEventListener('submit', startGame);
+
+    const btnRoll = document.getElementById('roll-dice');
+    if (btnRoll) btnRoll.addEventListener('click', rollDice);
+
+    const btnAddPlayer = document.getElementById('add-player-btn');
+    if (btnAddPlayer) btnAddPlayer.addEventListener('click', addPlayerField);
+
+    const btnBack = document.getElementById('back-to-menu');
+    if (btnBack) btnBack.addEventListener('click', () => {
+        if (confirm("Opravdu chcete zpět do nastavení? Přerušíte tím aktuální hru!")) {
             document.getElementById('game').style.display = 'none';
             document.getElementById('setup').style.display = 'block';
         }
     });
 
-    document.getElementById('restart-game').addEventListener('click', () => {
-        const confirmRestart = confirm("Opravdu chcete restartovat hru? Všichni hráči se vrátí na start!");
-        if (confirmRestart) {
+    const btnRestart = document.getElementById('restart-game');
+    if (btnRestart) btnRestart.addEventListener('click', () => {
+        if (confirm("Opravdu chcete restartovat hru? Všichni hráči se vrátí na start!")) {
             resetGame();
         }
     });
 
-    document.getElementById('modal-btn').addEventListener('click', () => {
+    const btnModal = document.getElementById('modal-btn');
+    if (btnModal) btnModal.addEventListener('click', () => {
         document.getElementById('custom-modal').classList.add('hidden');
     });
 
-    // 2. Vykreslíme úvodních 6 políček
+    // Spuštění generování políček
     initPlayerFields();
-});
-
-// --- DEFINICE FUNKCÍ ---
+};
 
 function gameAlert(message) {
     document.getElementById('modal-text').innerHTML = message;
@@ -47,7 +52,10 @@ function getColoredName(player) {
 
 function addPlayerField() {
     const container = document.getElementById('player-names-container');
-    if (!container) return; // Pojistka, aby to nespadlo
+    if (!container) {
+        console.error("Kontejner pro jména nebyl nalezen!");
+        return;
+    }
     
     const count = container.children.length + 1;
     const input = document.createElement('input');
@@ -75,6 +83,3 @@ function initPlayerFields() {
         addPlayerField();
     }
 }
-
-function startGame(event) {
-// ... odsud dolů už pokračuje tvůj původní kód (startGame atd.)
