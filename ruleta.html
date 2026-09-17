@@ -324,10 +324,15 @@
             <input type="number" id="team-size" value="2" min="1">
         </div>
 
-        <div class="input-group">
+<div class="input-group">
             <label>Jména hráčů:</label>
             <div id="names-list"></div>
             <button class="add-btn" onclick="addNameField()">+ Přidat hráče</button>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            <button class="primary-btn" onclick="startRoulette()">Začít losovat</button>
+            <a href="index.html" class="secondary-btn" style="text-decoration: none; display: inline-block; width: fit-content;">⬅ Zpět do hry</a>
         </div>
         
         <button class="primary-btn" onclick="startRoulette()">Začít losovat</button>
