@@ -47,8 +47,27 @@
                 </label>
             </div>
             
-            <!-- 5. Tlačítko Rozlosovat týmy -->
-            <button type="button" onclick="window.goToRouletteFromSetup()" style="display: block; background: #2a7a7c; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
+            <!-- 5. Tlačítko Rozlosovat týmy (NAPEVNO OBEJITÁ MEZIPAMĚŤ) -->
+            <button type="button" onclick="
+                let names = [];
+                document.querySelectorAll('#player-names-container input').forEach(inp => {
+                    if(inp.value.trim() !== '') names.push(inp.value.trim());
+                });
+                if(names.length < 2) {
+                    alert('Pro ruletu musíte vyplnit alespoň 2 hráče!');
+                    return;
+                }
+                
+                /* Přímé ukládání do trvalé paměti bez spoléhání na starý script.js */
+                localStorage.setItem('maximo_roulette_names', JSON.stringify(names));
+                localStorage.setItem('maximo_roulette_size', document.getElementById('team-size-input').value);
+                
+                let toggle = document.getElementById('camp-mode-toggle');
+                localStorage.setItem('maximo_camp_mode', toggle ? toggle.checked : false);
+                
+                /* Přesměrování s kódem navíc, aby se nenačetla stará ruleta */
+                window.location.href = 'ruleta.html?t=' + new Date().getTime();
+            " style="display: block; background: #2a7a7c; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
                 🎲 ROZLOSOVAT TÝMY
             </button>
 
@@ -95,9 +114,10 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- TRIK PROTI MEZIPAMĚTI: ?v=999 donutí prohlížeč stáhnout novou verzi tvého script.js -->
+    <script src="script.js?v=999"></script>
+    
     <script>
-        // REGISTRACE OFFLINE APLIKACE
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
             .catch(err => console.error('SW chyba:', err));
