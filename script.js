@@ -37,7 +37,7 @@ window.onload = function() {
         document.getElementById('custom-modal').classList.add('hidden');
     });
 
-    // Spuštění generování políček
+    // Spuštění generování kompaktních políček
     initPlayerFields();
 };
 
@@ -50,6 +50,7 @@ function getColoredName(player) {
     return `<span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.15);">${player.name}</span>`;
 }
 
+// Kompaktní verze přidávání hráčů
 function addPlayerField() {
     const container = document.getElementById('player-names-container');
     if (!container) {
@@ -61,25 +62,35 @@ function addPlayerField() {
     const input = document.createElement('input');
     
     input.type = 'text';
-    input.placeholder = `Jméno hráče ${count}`;
+    input.placeholder = `Hráč ${count}`;
     input.style.width = '100%';
-    input.style.padding = '12px';
-    input.style.borderRadius = '6px';
+    input.style.padding = '8px 10px';
+    input.style.borderRadius = '4px';
     input.style.border = '1px solid #444';
     input.style.background = '#1a1a1a';
     input.style.color = 'white';
     input.style.boxSizing = 'border-box';
     input.style.outline = 'none';
+    input.style.fontSize = '14px';
     
     container.appendChild(input);
 }
 
+// Vytvoření mřížky pro políčka při startu
 function initPlayerFields() {
     const container = document.getElementById('player-names-container');
     if (!container) return; 
     
     container.innerHTML = '';
-    for(let i = 0; i < 6; i++) {
+    
+    // Zapnutí kompaktní mřížky (2 sloupce vedle sebe)
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = 'repeat(2, 1fr)'; 
+    container.style.gap = '8px';
+    container.style.marginBottom = '15px';
+    
+    // Vygenerujeme v základu 4 políčka
+    for(let i = 0; i < 4; i++) {
         addPlayerField();
     }
 }
