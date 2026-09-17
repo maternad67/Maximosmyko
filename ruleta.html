@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Maximo smyko - Tvorba týmů</title>
+    <title>Maximo smyko - Ruleta</title>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
         }
 
         body {
-            background-image: url('vnitrekmaximo.png');
+            background-image: url('vnitrekmaximo.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             
-            color: #ffffff;
+            color: #dddddd;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -28,115 +28,25 @@
             padding: 20px;
         }
 
+        /* Vzhled kontejneru sladěný s hlavní hrou */
         .container {
-            background: rgba(10, 20, 22, 0.95);
+            background: #252525;
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 8px;
             text-align: center;
-            max-width: 800px;
+            max-width: 600px;
             width: 100%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            border: 2px solid rgba(212, 175, 55, 0.4);
-            backdrop-filter: blur(5px);
+            border: 1px solid #3d3d3d;
         }
 
         h2 {
             margin-top: 0;
             margin-bottom: 25px;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-            font-size: 34px;
+            font-size: 28px;
             letter-spacing: 1px;
-            color: #ffd700;
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #ffffff;
-            font-size: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        input[type="number"] {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: 2px solid #1c5253;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 20px;
-            width: 120px;
-            text-align: center;
-            outline: none;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            transition: border-color 0.3s;
-        }
-        
-        input[type="number"]:focus, .name-row input:focus {
-            border-color: #ffd700;
-        }
-
-        #names-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .name-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .name-row input {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: 2px solid #1c5253;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 18px;
-            width: 200px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        
-        .name-row input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            font-style: italic;
-        }
-
-        .remove-btn {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            padding: 0;
-            line-height: 30px;
-            box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
-        }
-
-        .add-btn {
-            background: #1c5253;
-            color: white;
-            border: 1px solid #2a7a7c;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 25px;
-            box-shadow: 0 0 10px rgba(28, 82, 83, 0.5);
+            color: #f7a800; /* Oranžová z hlavní hry */
+            text-transform: uppercase;
         }
 
         .action-buttons {
@@ -148,52 +58,48 @@
         }
 
         .primary-btn {
-            background: linear-gradient(90deg, #d4af37, #f9a825);
+            background: #dfb331; /* Žlutá z hlavní hry */
             border: none;
-            padding: 15px 40px;
-            color: #111;
-            font-size: 20px;
-            border-radius: 30px;
+            padding: 12px 30px;
+            color: #222;
+            font-size: 18px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
-            transition: transform 0.2s, box-shadow 0.2s;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
+            transition: opacity 0.2s;
         }
+        
+        .primary-btn:hover { opacity: 0.9; }
 
         .primary-btn:disabled {
-            background: #4a4a4a;
+            background: #555;
             color: #888;
-            box-shadow: none;
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 1;
         }
 
         .secondary-btn {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #d4af37;
-            padding: 15px 30px;
-            color: #d4af37;
-            font-size: 18px;
-            border-radius: 30px;
+            background: #444; /* Tmavá z hlavní hry */
+            border: none;
+            padding: 12px 25px;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.2s;
+            transition: background 0.2s;
             text-transform: uppercase;
+            text-decoration: none;
         }
 
-        #roulette-screen {
-            display: none;
-            margin-top: 0;
-        }
+        .secondary-btn:hover { background: #555; }
 
         .wheel-wrapper {
             position: relative;
             margin: 0 auto 20px auto;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -203,8 +109,8 @@
             width: 100%;
             height: auto;
             border-radius: 50%;
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
-            border: 6px solid #1c5253;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border: 6px solid #1c1c1c;
             background: #000;
         }
 
@@ -213,7 +119,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20%;  
+            width: 25%;  
             max-width: 80px;
             height: auto;
             z-index: 5;
@@ -223,7 +129,7 @@
 
         .pointer {
             position: absolute;
-            top: -18px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
             width: 0; 
@@ -232,24 +138,22 @@
             border-right: 20px solid transparent;
             border-top: 35px solid #ffffff;
             z-index: 10;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.6));
         }
 
         #status-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #ffd700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            color: #f7a800;
         }
 
         #winner-text {
             height: 40px;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #ffffff;
-            text-shadow: 0 0 15px #d4af37, 0 0 30px #f9a825;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -264,25 +168,24 @@
         }
 
         .team-card {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #d4af37;
-            border-radius: 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
             padding: 15px;
-            min-width: 140px;
+            min-width: 130px;
             flex: 1 1 40%;
-            max-width: 200px;
+            max-width: 180px;
             text-align: left;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .team-card h3 {
             margin: 0 0 10px 0;
-            color: #ffd700;
-            border-bottom: 2px solid #1c5253;
+            color: #dfb331;
+            border-bottom: 1px solid #333;
             padding-bottom: 8px;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .team-card ul {
@@ -293,53 +196,28 @@
 
         .team-card li {
             margin-bottom: 6px;
-            font-size: 16px;
+            font-size: 15px;
             text-align: center;
-            font-weight: 500;
+            color: #eee;
         }
 
         @media (max-width: 500px) {
             body { padding: 10px; }
-            .container { padding: 15px; }
-            h2 { font-size: 26px; margin-bottom: 20px; }
-            .name-row input { width: 160px; }
-            #status-text { font-size: 20px; }
-            #winner-text { font-size: 26px; margin-bottom: 20px; }
-            .primary-btn { padding: 12px 25px; font-size: 16px; }
-            .secondary-btn { padding: 12px 20px; font-size: 14px; }
-            .action-buttons { gap: 10px; }
-            .team-card { min-width: 120px; padding: 10px; }
-            .team-card h3 { font-size: 16px; }
-            .team-card li { font-size: 15px; }
+            .container { padding: 20px; }
+            h2 { font-size: 24px; }
+            #status-text { font-size: 18px; }
+            #winner-text { font-size: 24px; margin-bottom: 15px; }
+            .primary-btn { padding: 12px 20px; font-size: 16px; }
+            .secondary-btn { padding: 12px 15px; font-size: 14px; }
+            .team-card { min-width: 110px; padding: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="menu-screen" class="container">
+    <div class="container" id="roulette-screen" style="display: none;">
         <h2>Maximálně smyková ruleta</h2>
-        
-        <div class="input-group">
-            <label for="team-size">Počet hráčů v jednom týmu:</label>
-            <input type="number" id="team-size" value="2" min="1">
-        </div>
-
-<div class="input-group">
-            <label>Jména hráčů:</label>
-            <div id="names-list"></div>
-            <button class="add-btn" onclick="addNameField()">+ Přidat hráče</button>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-            <button class="primary-btn" onclick="startRoulette()">Začít losovat</button>
-            <a href="index.html" class="secondary-btn" style="text-decoration: none; display: inline-block; width: fit-content;">⬅ Zpět do hry</a>
-        </div>
-        
-        <button class="primary-btn" onclick="startRoulette()">Začít losovat</button>
-    </div>
-
-    <div id="roulette-screen" class="container">
-        <div id="status-text">Točíme pro: Tým 1</div>
+        <div id="status-text">Připravuji losování...</div>
         <div id="winner-text"></div>
         
         <div class="wheel-wrapper" id="wheel-container">
@@ -349,49 +227,14 @@
         </div>
         
         <div class="action-buttons">
-            <button class="secondary-btn" onclick="goBack()">Zpět</button>
-            <button class="primary-btn" id="spin-btn" onclick="spin()">Zatočit</button>
+            <a href="index.html" class="secondary-btn">Zpět do hry</a>
+            <button class="primary-btn" id="spin-btn" onclick="spin()">ZATOČIT</button>
         </div>
 
         <div id="teams-display"></div>
     </div>
 
     <script>
-        let playerCount = 0; 
-        
-        function addNameField(value = "") {
-            playerCount++;
-            const list = document.getElementById("names-list");
-            const row = document.createElement("div");
-            row.className = "name-row";
-            
-            const input = document.createElement("input");
-            input.type = "text";
-            input.value = value;
-            input.placeholder = "Hráč " + playerCount;
-            
-            const removeBtn = document.createElement("button");
-            removeBtn.className = "remove-btn";
-            removeBtn.innerText = "×";
-            removeBtn.onclick = function() {
-                list.removeChild(row);
-            };
-            
-            row.appendChild(input);
-            row.appendChild(removeBtn);
-            list.appendChild(row);
-        }
-
-        for(let i = 0; i < 6; i++) {
-            addNameField();
-        }
-
-        function goBack() {
-            document.getElementById("roulette-screen").style.display = "none";
-            document.getElementById("menu-screen").style.display = "block";
-            document.getElementById("wheel-container").style.display = "flex";
-        }
-
         const canvas = document.getElementById("wheel");
         const ctx = canvas.getContext("2d");
         const radius = canvas.width / 2;
@@ -403,56 +246,61 @@
         let currentAngle = 0;
         let isSpinning = false;
         
-        const colors = ["#143a3b", "#d4af37", "#1c5253", "#f9a825", "#0d2728", "#c5a030"];
+        // Barvy rulety upravené do tmavých tónů a oranžové z hlavní hry
+        const colors = ["#2a2a2a", "#dfb331", "#1f1f1f", "#d9a128", "#111111", "#c5901b"];
 
-        // --- VYLEPŠENÝ ZVUKOVÝ SYSTÉM (BÍLÝ ŠUM = MECHANICKÉ KLAPNUTÍ) ---
+        // --- AUTOMATICKÉ NAČTENÍ JMEN Z HLAVNÍ HRY ---
+        window.onload = function() {
+            const storedNames = sessionStorage.getItem('maximo_roulette_names');
+            const storedSize = sessionStorage.getItem('maximo_roulette_size');
+            
+            if (storedNames) {
+                remainingNames = JSON.parse(storedNames);
+                teamSize = parseInt(storedSize) || 2;
+                document.getElementById('roulette-screen').style.display = 'block';
+                
+                updateStatusText();
+                renderTeamsUI();
+                drawWheel();
+            } else {
+                // Pokud sem někdo zabloudí bez zadání jmen, pošleme ho zpět
+                window.location.href = 'index.html';
+            }
+        };
+
+        // --- ZVUKOVÝ SYSTÉM (SYNTETIZÁTOR) ---
         let audioCtx;
-
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playClickSound() {
             if (!audioCtx) return;
-            
-            // Vytvoříme buffer pro bílý šum (velmi krátký)
-            const bufferSize = audioCtx.sampleRate * 0.05; // 0.05 sekundy
+            const bufferSize = audioCtx.sampleRate * 0.05;
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
-            
-            // Naplníme buffer náhodnými hodnotami (šum)
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
+            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
             
             const noise = audioCtx.createBufferSource();
             noise.buffer = buffer;
-            
-            // Použijeme filtr, abychom odřízli vysoké frekvence a znělo to tupěji (více jako plast/dřevo)
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.value = 1000;
-            
-            // Gain node pro utlumení zvuku
             const gainNode = audioCtx.createGain();
             
-            // Zvuk musí velmi prudce klesnout (perkusivní obálka)
-            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
             
             noise.connect(filter);
             filter.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-            
             noise.start();
         }
-        // -------------------------------------------------------------------
 
+        // --- TAJNÁ LOGIKA PRO PÁROVÁNÍ ---
         function normalizeName(name) {
             return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
         }
@@ -478,12 +326,9 @@
             let isLastSlot = (currentTeam.length === teamSize - 1);
 
             for (let pair of secretPairs) {
-                let p1 = pair[0];
-                let p2 = pair[1];
-
+                let p1 = pair[0], p2 = pair[1];
                 let hasP1 = currentTeam.some(name => normalizeName(name) === p1);
                 let hasP2 = currentTeam.some(name => normalizeName(name) === p2);
-                
                 let p1Available = remainingNames.find(name => normalizeName(name) === p1);
                 let p2Available = remainingNames.find(name => normalizeName(name) === p2);
 
@@ -491,48 +336,14 @@
                 if (hasP2 && p1Available) targetName = p1Available;
             }
 
-            if (targetName) {
-                return remainingNames.indexOf(targetName);
-            }
+            if (targetName) return remainingNames.indexOf(targetName);
 
             let validCandidates = remainingNames.map((n, i) => i);
-            
             if (isLastSlot && teamSize >= 2) {
                 validCandidates = validCandidates.filter(i => !isHalfOfAvailablePair(remainingNames[i]));
-                if (validCandidates.length === 0) {
-                    validCandidates = remainingNames.map((n, i) => i);
-                }
+                if (validCandidates.length === 0) validCandidates = remainingNames.map((n, i) => i);
             }
-            
             return validCandidates[Math.floor(Math.random() * validCandidates.length)];
-        }
-
-        function startRoulette() {
-            const inputs = document.querySelectorAll("#names-list input");
-            remainingNames = Array.from(inputs).map(inp => inp.value.trim()).filter(n => n !== "");
-            teamSize = parseInt(document.getElementById("team-size").value);
-            
-            if(remainingNames.length < 2) {
-                alert("Zadej prosím jména alespoň do 2 políček.");
-                return;
-            }
-            if(teamSize < 1 || isNaN(teamSize)) {
-                alert("Velikost týmu musí být alespoň 1.");
-                return;
-            }
-
-            teams = [[]];
-            currentTeamIndex = 0;
-            currentAngle = 0;
-
-            document.getElementById("menu-screen").style.display = "none";
-            document.getElementById("roulette-screen").style.display = "block";
-            document.getElementById("spin-btn").disabled = false;
-            document.getElementById("winner-text").innerText = "";
-            
-            updateStatusText();
-            renderTeamsUI();
-            drawWheel();
         }
 
         function drawWheel() {
@@ -550,8 +361,8 @@
                 ctx.arc(radius, radius, radius, startAngle, endAngle);
                 ctx.fillStyle = colors[i % colors.length];
                 ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = "#0a1416";
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "#000";
                 ctx.stroke();
 
                 ctx.save();
@@ -559,7 +370,7 @@
                 ctx.rotate(startAngle + sliceAngle / 2);
                 ctx.textAlign = "right";
                 
-                if (colors[i % colors.length] === "#d4af37" || colors[i % colors.length] === "#f9a825" || colors[i % colors.length] === "#c5a030") {
+                if (colors[i % colors.length].includes("dfb") || colors[i % colors.length].includes("c59") || colors[i % colors.length].includes("d9a")) {
                     ctx.fillStyle = "#111111";
                 } else {
                     ctx.fillStyle = "#ffffff";
@@ -578,17 +389,15 @@
             
             ctx.beginPath();
             ctx.arc(radius, radius, 65, 0, 2 * Math.PI);
-            ctx.fillStyle = "#0a1416";
+            ctx.fillStyle = "#1a1a1a";
             ctx.fill();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = "#d4af37";
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#dfb331";
             ctx.stroke();
         }
 
         function easeOutCubic(t, b, c, d) {
-            t /= d;
-            t--;
-            return c * (t * t * t + 1) + b;
+            t /= d; t--; return c * (t * t * t + 1) + b;
         }
 
         function spin() {
@@ -596,7 +405,6 @@
             isSpinning = true;
             
             initAudio(); 
-            
             document.getElementById("winner-text").innerText = "Losování...";
             document.getElementById("spin-btn").disabled = true;
 
@@ -607,11 +415,8 @@
             
             let startAngle = currentAngle;
             let endAngle = baseEndAngle;
-            
             let extraSpins = Math.floor(Math.random() * 3) + 4;
-            while(endAngle <= startAngle + (extraSpins * 2 * Math.PI)) {
-                endAngle += 2 * Math.PI;
-            }
+            while(endAngle <= startAngle + (extraSpins * 2 * Math.PI)) endAngle += 2 * Math.PI;
 
             const spinTimeTotal = Math.random() * 1000 + 3500; 
             let startTime = null;
@@ -636,9 +441,7 @@
                 if (pointerAngle < 0) pointerAngle += 2 * Math.PI;
                 let currentSliceIndex = Math.floor(pointerAngle / sliceAngle);
                 
-                if (lastSliceIndex !== -1 && currentSliceIndex !== lastSliceIndex) {
-                    playClickSound();
-                }
+                if (lastSliceIndex !== -1 && currentSliceIndex !== lastSliceIndex) playClickSound();
                 lastSliceIndex = currentSliceIndex;
                 
                 drawWheel();
@@ -667,7 +470,7 @@
                 document.getElementById("spin-btn").disabled = false;
             } else {
                 document.getElementById("wheel-container").style.display = "none";
-                document.getElementById("status-text").innerText = "Rozlosování je kompletní!";
+                document.getElementById("status-text").innerText = "Rozlosování dokončeno!";
             }
         }
 
