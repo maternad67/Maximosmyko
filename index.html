@@ -16,7 +16,7 @@
         <h1>MAXIMO SMYKO</h1> 
     </div>
 
-   <div id="setup">
+    <div id="setup">
         <h2>Nastavení hry</h2>
         <form id="setup-form">
             
@@ -46,29 +46,17 @@
                 </label>
             </div>
             
-            <!-- 5. Tlačítko Rozlosovat týmy (přesunuto nad START) -->
-            <a href="#" id="go-to-roulette-link" style="display: block; background: #dfb331; color: #222; text-decoration: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; margin-bottom: 15px; box-sizing: border-box;"
-               onclick="
-                   event.preventDefault();
-                   let names = [];
-                   document.querySelectorAll('#player-names-container input').forEach(inp => {
-                       if(inp.value.trim() !== '') names.push(inp.value.trim());
-                   });
-                   if(names.length < 2) {
-                       alert('Pro ruletu musíte vyplnit alespoň 2 jména!');
-                       return;
-                   }
-                   sessionStorage.setItem('maximo_roulette_names', JSON.stringify(names));
-                   sessionStorage.setItem('maximo_roulette_size', document.getElementById('team-size-input').value);
-                   window.location.href = 'ruleta.html';
-               ">
-                🎲 ROZLOSOVAT TÝMY
-            </a>
-
-            <!-- 6. Tlačítko START -->
-            <button type="submit" style="width: 100%;">START</button>
+            <!-- 5. Tlačítka pro start hry (Jednotlivci / Týmy z rulety) -->
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
+                <!-- Tlačítko pro spuštění rulety -->
+                <button type="button" onclick="goToRouletteFromSetup()" style="width: 100%; background: #2a7a7c; color: white; box-shadow: 0 0 10px rgba(42, 122, 124, 0.5);">🎲 ROZLOSOVAT TÝMY</button>
+                
+                <!-- Tlačítko pro klasickou hru -->
+                <button type="button" onclick="startGame(event)" style="width: 100%; background: #dfb331; color: #222;">HRÁT JAKO JEDNOTLIVCI</button>
+            </div>
+            
         </form>
-    </div>>
+    </div>
 
     <div id="game" style="display: none;">
         <div class="game-layout">
