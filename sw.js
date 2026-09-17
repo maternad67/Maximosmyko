@@ -1,5 +1,5 @@
 // PŘI KAŽDÉ DALŠÍ ZMĚNĚ WEBU ZVEDNI TOTO ČÍSLO (v2, v3, v4...)
-const CACHE_NAME = 'maximosmyko-v7'; 
+const CACHE_NAME = 'maximosmyko-v8'; 
 
 const urlsToCache = [
   './',
