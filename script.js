@@ -6,29 +6,27 @@ let currentTasks = [];
 window.onload = function() {
     console.log("✅ Skript byl úspěšně spuštěn!");
 
-    // --- 1. KONTROLA NÁVRATU Z RULETY ---
-    const readyTeams = sessionStorage.getItem('maximo_teams_ready');
+    // --- 1. KONTROLA NÁVRATU Z RULETY (přes localStorage) ---
+    const readyTeams = localStorage.getItem('maximo_teams_ready');
     if (readyTeams) {
-        // Vymažeme paměť, aby se hra po obnovení stránky neustále nezapínala
-        sessionStorage.removeItem('maximo_teams_ready');
+        console.log("Týmy nalezeny, startuji hru z rulety!");
+        localStorage.removeItem('maximo_teams_ready'); // Vyčistíme paměť
         
-        // Získáme týmy z rulety a spojíme je plusem
         const parsedTeams = JSON.parse(readyTeams);
-        const teamNames = parsedTeams.map(team => team.join(" + "));
+        const teamNames = parsedTeams
+            .filter(team => team.length > 0) // Pojistka proti prázdným týmům
+            .map(team => team.join(" + "));
         
-        // Obnovíme nastavení táborového režimu, jaké bylo před ruletou
-        const savedCampMode = sessionStorage.getItem('maximo_camp_mode') === 'true';
+        const savedCampMode = localStorage.getItem('maximo_camp_mode') === 'true';
         const toggle = document.getElementById('camp-mode-toggle');
         if (toggle) toggle.checked = savedCampMode;
         
-        // Spustíme hru s těmito týmovými jmény
         setTimeout(() => {
             isCampMode = savedCampMode;
             startGameCore(teamNames);
         }, 100);
-        return; // Zastavíme zbytek onload funkce, abychom zbytečně negenerovali menu
+        return; 
     }
-
 
     // --- 2. NAPOJENÍ TLAČÍTEK V MENU ---
     const form = document.getElementById('setup-form');
@@ -74,10 +72,7 @@ function getColoredName(player) {
 
 function addPlayerField() {
     const container = document.getElementById('player-names-container');
-    if (!container) {
-        console.error("Kontejner pro jména nebyl nalezen!");
-        return;
-    }
+    if (!container) return;
     
     const count = container.children.length + 1;
     const input = document.createElement('input');
@@ -102,7 +97,6 @@ function initPlayerFields() {
     if (!container) return; 
     
     container.innerHTML = '';
-    
     container.style.display = 'grid';
     container.style.gridTemplateColumns = 'repeat(2, 1fr)'; 
     container.style.gap = '8px';
@@ -113,14 +107,11 @@ function initPlayerFields() {
     }
 }
 
-
-// --- LOGIKA STARTU HRY ---
-
+// --- LOGIKA STARTU HRY (Jednotlivci) ---
 window.startGame = function(event) {
     if(event) event.preventDefault();
     
     isCampMode = document.getElementById('camp-mode-toggle').checked;
-
     const nameInputs = document.querySelectorAll('#player-names-container input');
     
     const validNames = Array.from(nameInputs)
@@ -135,7 +126,7 @@ window.startGame = function(event) {
     startGameCore(validNames);
 };
 
-// Společné jádro pro start jednotlivců i týmů
+// Společné jádro pro start
 function startGameCore(namesArray) {
     currentTasks = isCampMode ? campTasks : adultTasks;
     players = [];
@@ -159,31 +150,6 @@ function startGameCore(namesArray) {
     displayPlayerInfo();
     updateTurnIndicator(); 
 }
-
-// --- FUNKCE PRO ODESLÁNÍ DAT DO RULETY ---
-window.goToRouletteFromSetup = function() {
-    const nameInputs = document.querySelectorAll('#player-names-container input');
-    const validNames = Array.from(nameInputs).map(inp => inp.value.trim()).filter(n => n !== "");
-    
-    if (validNames.length < 2) {
-        alert("Pro ruletu musíte vyplnit alespoň 2 hráče!");
-        return;
-    }
-
-    let teamSize = 2;
-    const sizeInput = document.getElementById('team-size-input');
-    if (sizeInput) teamSize = parseInt(sizeInput.value) || 2;
-
-    const toggle = document.getElementById('camp-mode-toggle');
-    const isCamp = toggle ? toggle.checked : false;
-    
-    sessionStorage.setItem('maximo_roulette_names', JSON.stringify(validNames));
-    sessionStorage.setItem('maximo_roulette_size', teamSize);
-    sessionStorage.setItem('maximo_camp_mode', isCamp);
-    
-    window.location.href = 'ruleta.html';
-};
-
 
 // KLASICKÉ ÚKOLY
 const adultTasks = [
