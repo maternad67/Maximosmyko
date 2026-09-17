@@ -3,11 +3,34 @@ let currentPlayerIndex = 0;
 let isCampMode = false; 
 let currentTasks = [];
 
-// Zabalíme vše do window.onload, aby HTML bylo 100% připravené
 window.onload = function() {
     console.log("✅ Skript byl úspěšně spuštěn!");
 
-    // Bezpečné napojení tlačítek (pokud prvek existuje, napojí se)
+    // --- 1. KONTROLA NÁVRATU Z RULETY ---
+    const readyTeams = sessionStorage.getItem('maximo_teams_ready');
+    if (readyTeams) {
+        // Vymažeme paměť, aby se hra po obnovení stránky neustále nezapínala
+        sessionStorage.removeItem('maximo_teams_ready');
+        
+        // Získáme týmy z rulety a spojíme je plusem
+        const parsedTeams = JSON.parse(readyTeams);
+        const teamNames = parsedTeams.map(team => team.join(" + "));
+        
+        // Obnovíme nastavení táborového režimu, jaké bylo před ruletou
+        const savedCampMode = sessionStorage.getItem('maximo_camp_mode') === 'true';
+        const toggle = document.getElementById('camp-mode-toggle');
+        if (toggle) toggle.checked = savedCampMode;
+        
+        // Spustíme hru s těmito týmovými jmény
+        setTimeout(() => {
+            isCampMode = savedCampMode;
+            startGameCore(teamNames);
+        }, 100);
+        return; // Zastavíme zbytek onload funkce, abychom zbytečně negenerovali menu
+    }
+
+
+    // --- 2. NAPOJENÍ TLAČÍTEK V MENU ---
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
 
@@ -37,7 +60,6 @@ window.onload = function() {
         document.getElementById('custom-modal').classList.add('hidden');
     });
 
-    // Spuštění generování kompaktních políček
     initPlayerFields();
 };
 
@@ -50,7 +72,6 @@ function getColoredName(player) {
     return `<span style="color: ${player.color}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.15);">${player.name}</span>`;
 }
 
-// Kompaktní verze přidávání hráčů
 function addPlayerField() {
     const container = document.getElementById('player-names-container');
     if (!container) {
@@ -76,37 +97,32 @@ function addPlayerField() {
     container.appendChild(input);
 }
 
-// Vytvoření mřížky pro políčka při startu
 function initPlayerFields() {
     const container = document.getElementById('player-names-container');
     if (!container) return; 
     
     container.innerHTML = '';
     
-    // Zapnutí kompaktní mřížky (2 sloupce vedle sebe)
     container.style.display = 'grid';
     container.style.gridTemplateColumns = 'repeat(2, 1fr)'; 
     container.style.gap = '8px';
     container.style.marginBottom = '15px';
     
-    // Vygenerujeme v základu 4 políčka
     for(let i = 0; i < 4; i++) {
         addPlayerField();
     }
 }
 
+
 // --- LOGIKA STARTU HRY ---
 
-function startGame(event) {
-    event.preventDefault();
+window.startGame = function(event) {
+    if(event) event.preventDefault();
     
     isCampMode = document.getElementById('camp-mode-toggle').checked;
-    currentTasks = isCampMode ? campTasks : adultTasks;
 
-    // Najdeme všechna políčka pro jména
     const nameInputs = document.querySelectorAll('#player-names-container input');
     
-    // Vyfiltrujeme jen ty, kam uživatel reálně něco napsal (prázdná ignorujeme)
     const validNames = Array.from(nameInputs)
                           .map(inp => inp.value.trim())
                           .filter(name => name !== "");
@@ -116,15 +132,21 @@ function startGame(event) {
         return;
     }
 
+    startGameCore(validNames);
+};
+
+// Společné jádro pro start jednotlivců i týmů
+function startGameCore(namesArray) {
+    currentTasks = isCampMode ? campTasks : adultTasks;
     players = [];
-    // Rozšířené barvy, kdybyste hráli v hodně lidech
+    
     const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'brown', 'cyan', 'lime', 'white', 'gray'];
     
-    for (let i = 0; i < validNames.length; i++) {
+    for (let i = 0; i < namesArray.length; i++) {
         players.push({
-            name: validNames[i],
+            name: namesArray[i],
             position: 0,
-            color: colors[i % colors.length], // Když je víc hráčů než barev, točí se barvy od znova
+            color: colors[i % colors.length], 
             number: i,
             lastRoll: 0
         });
@@ -137,6 +159,31 @@ function startGame(event) {
     displayPlayerInfo();
     updateTurnIndicator(); 
 }
+
+// --- FUNKCE PRO ODESLÁNÍ DAT DO RULETY ---
+window.goToRouletteFromSetup = function() {
+    const nameInputs = document.querySelectorAll('#player-names-container input');
+    const validNames = Array.from(nameInputs).map(inp => inp.value.trim()).filter(n => n !== "");
+    
+    if (validNames.length < 2) {
+        alert("Pro ruletu musíte vyplnit alespoň 2 hráče!");
+        return;
+    }
+
+    let teamSize = 2;
+    const sizeInput = document.getElementById('team-size-input');
+    if (sizeInput) teamSize = parseInt(sizeInput.value) || 2;
+
+    const toggle = document.getElementById('camp-mode-toggle');
+    const isCamp = toggle ? toggle.checked : false;
+    
+    sessionStorage.setItem('maximo_roulette_names', JSON.stringify(validNames));
+    sessionStorage.setItem('maximo_roulette_size', teamSize);
+    sessionStorage.setItem('maximo_camp_mode', isCamp);
+    
+    window.location.href = 'ruleta.html';
+};
+
 
 // KLASICKÉ ÚKOLY
 const adultTasks = [
