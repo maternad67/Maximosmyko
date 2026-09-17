@@ -21,20 +21,24 @@
         
         <div id="setup-form">
             
+            <!-- 1. Počet hráčů v týmu -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #1f1f1f; padding: 15px; border-radius: 8px; border: 1px solid #333;">
                 <label for="team-size-input" style="font-size: 15px; margin: 0; color: #fff;">Počet hráčů v týmu pro ruletu:</label>
                 <input type="number" id="team-size-input" value="2" min="1" style="background: #111; color: white; border: 1px solid #dfb331; border-radius: 4px; padding: 8px; width: 60px; text-align: center; outline: none; font-weight: bold;">
             </div>
 
+            <!-- 2. Políčka pro jména hráčů -->
             <label style="display: block; margin-bottom: 10px; color: #ccc; font-size: 14px; text-align: center;">Jména hráčů:</label>
             <div id="player-names-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
                 <!-- Vygeneruje se přes JS -->
             </div>
             
+            <!-- 3. Tlačítko pro přidání dalšího hráče -->
             <button type="button" id="add-player-btn" style="background: transparent; color: #dfb331; border: 1px dashed #dfb331; border-radius: 6px; padding: 12px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 30px; transition: background 0.2s;">
                 + PŘIDAT DALŠÍHO HRÁČE
             </button>
 
+            <!-- 4. Přepínač režimu -->
             <div class="mode-switch" style="margin-bottom: 30px; background: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
                 <span style="color: #ccc; font-weight: bold;">DĚTSKÝ / TÁBOROVÝ REŽIM 🏕️</span>
                 <label class="switch" style="margin: 0;">
@@ -43,11 +47,13 @@
                 </label>
             </div>
             
-            <button type="button" id="btn-rozlosovat" style="display: block; background: #2a7a7c; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
+            <!-- 5. Tlačítko Rozlosovat týmy -->
+            <button type="button" onclick="window.goToRouletteFromSetup()" style="display: block; background: #2a7a7c; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
                 🎲 ROZLOSOVAT TÝMY
             </button>
 
-            <button type="button" id="btn-jednotlivci" style="display: block; background: #dfb331; color: #222; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
+            <!-- 6. Tlačítko HRÁT JAKO JEDNOTLIVCI -->
+            <button type="button" onclick="window.startGame(event)" style="display: block; background: #dfb331; color: #222; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; text-align: center; width: 100%; box-sizing: border-box; cursor: pointer; transition: opacity 0.2s;">
                 HRÁT JAKO JEDNOTLIVCI
             </button>
         </div>
@@ -89,62 +95,8 @@
         </div>
     </div>
 
-    <!-- TVŮJ EXTERNÍ SCRIPT (herní logika) -->
     <script src="script.js"></script>
-    
-    <!-- INLINE SCRIPT PRO BEZPEČNÉ KLIKÁNÍ -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- TLAČÍTKO ROZLOSOVAT ---
-            const btnRozlosovat = document.getElementById('btn-rozlosovat');
-            if (btnRozlosovat) {
-                btnRozlosovat.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log("Kliknuto na ROZLOSOVAT TÝMY");
-                    
-                    const nameInputs = document.querySelectorAll('#player-names-container input');
-                    const validNames = Array.from(nameInputs).map(inp => inp.value.trim()).filter(n => n !== "");
-                    
-                    if (validNames.length < 2) {
-                        alert("Pro ruletu musíte vyplnit alespoň 2 hráče!");
-                        return;
-                    }
-
-                    let teamSize = 2;
-                    const sizeInput = document.getElementById('team-size-input');
-                    if (sizeInput) teamSize = parseInt(sizeInput.value) || 2;
-
-                    const toggle = document.getElementById('camp-mode-toggle');
-                    const isCamp = toggle ? toggle.checked : false;
-                    
-                    sessionStorage.setItem('maximo_roulette_names', JSON.stringify(validNames));
-                    sessionStorage.setItem('maximo_roulette_size', teamSize);
-                    sessionStorage.setItem('maximo_camp_mode', isCamp);
-                    
-                    // Tvrdé přesměrování (přidán parametr pro obejití cache)
-                    window.location.href = 'ruleta.html?t=' + new Date().getTime();
-                });
-            } else {
-                console.error("Tlačítko btn-rozlosovat nebylo nalezeno v HTML!");
-            }
-
-            // --- TLAČÍTKO JEDNOTLIVCI ---
-            const btnJednotlivci = document.getElementById('btn-jednotlivci');
-            if (btnJednotlivci) {
-                btnJednotlivci.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log("Kliknuto na JEDNOTLIVCE");
-                    // Voláme tvoji stávající funkci ze script.js
-                    if (typeof window.startGame === 'function') {
-                        window.startGame(e);
-                    } else {
-                        console.error("Funkce startGame nebyla nalezena ve script.js!");
-                    }
-                });
-            }
-        });
-
         // REGISTRACE OFFLINE APLIKACE
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
