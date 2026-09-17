@@ -450,7 +450,7 @@
             requestAnimationFrame(rotate);
         }
 
-        function processWinner(index) {
+       function processWinner(index) {
             const winner = remainingNames[index];
             document.getElementById("winner-text").innerText = winner + "!";
 
@@ -470,8 +470,18 @@
                 document.getElementById("spin-btn").disabled = false;
             } else {
                 document.getElementById("wheel-container").style.display = "none";
-                document.getElementById("status-text").innerText = "Rozlosování dokončeno!";
+                document.getElementById("status-text").innerText = "Týmy jsou připraveny!";
+                
+                // ZMĚNA: Nahradíme tlačítka dole za jedno velké tlačítko HRÁT
+                const actionBtns = document.querySelector('.action-buttons');
+                actionBtns.innerHTML = `<button class="primary-btn" style="background: #2ed573; color: #111; width: 100%; font-size: 20px; box-shadow: 0 0 20px #2ed573;" onclick="goToGame()">HRÁT V TÝMECH</button>`;
             }
+        }
+
+        // Nová funkce, která uloží týmy a přesměruje zpět na mapu
+        function goToGame() {
+            sessionStorage.setItem('maximo_teams_ready', JSON.stringify(teams));
+            window.location.href = 'index.html';
         }
 
         function updateStatusText() {
