@@ -64,15 +64,17 @@ function addPlayerField() {
 // Při startu aplikace vygenerujeme základních 6 políček
 function initPlayerFields() {
   const container = document.getElementById('player-names-container');
+  // Pojistka: zkontrolujeme, jestli kontejner vůbec existuje
+  if (!container) return; 
+  
   container.innerHTML = '';
   for(let i = 0; i < 6; i++) {
     addPlayerField();
   }
 }
 
-// Spustíme generování
+// ---> TOTO ZAVOLÁNÍ JE KLÍČOVÉ, ABY SE POLÍČKA OBJEVILA <---
 initPlayerFields();
-
 // --- LOGIKA STARTU HRY ---
 
 function startGame(event) {
