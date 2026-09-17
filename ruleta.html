@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Maximo smyko - Ruleta</title>
+    <title>Maximo smyko - Tvorba týmů</title>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -17,7 +17,7 @@
             background-position: center;
             background-attachment: fixed;
             
-            color: #dddddd;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -28,25 +28,86 @@
             padding: 20px;
         }
 
-        /* Vzhled kontejneru sladěný s hlavní hrou */
         .container {
-            background: #252525;
+            background: rgba(10, 20, 22, 0.95);
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 20px;
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            border: 1px solid #3d3d3d;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            backdrop-filter: blur(5px);
         }
 
-        h2 {
+        #roulette-screen {
             margin-top: 0;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            margin: 0 auto 20px auto;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+            border: 6px solid #1c5253;
+            background: #000;
+        }
+
+        #center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20%;  
+            max-width: 80px;
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; 
+            height: 0; 
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #ffffff;
+            z-index: 10;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
+        }
+
+        #status-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #winner-text {
+            height: 40px;
+            font-size: 32px;
+            font-weight: bold;
             margin-bottom: 25px;
-            font-size: 28px;
-            letter-spacing: 1px;
-            color: #f7a800; /* Oranžová z hlavní hry */
-            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 0 15px #d4af37, 0 0 30px #f9a825;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .action-buttons {
@@ -58,105 +119,41 @@
         }
 
         .primary-btn {
-            background: #dfb331; /* Žlutá z hlavní hry */
+            background: linear-gradient(90deg, #d4af37, #f9a825);
             border: none;
-            padding: 12px 30px;
-            color: #222;
-            font-size: 18px;
-            border-radius: 4px;
+            padding: 15px 40px;
+            color: #111;
+            font-size: 20px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
             text-transform: uppercase;
-            transition: opacity 0.2s;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
-        
-        .primary-btn:hover { opacity: 0.9; }
 
         .primary-btn:disabled {
-            background: #555;
+            background: #4a4a4a;
             color: #888;
+            box-shadow: none;
             cursor: not-allowed;
-            opacity: 1;
+            opacity: 0.6;
         }
 
         .secondary-btn {
-            background: #444; /* Tmavá z hlavní hry */
-            border: none;
-            padding: 12px 25px;
-            color: #fff;
-            font-size: 16px;
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #d4af37;
+            padding: 15px 30px;
+            color: #d4af37;
+            font-size: 18px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
+            transition: all 0.2s;
             text-transform: uppercase;
             text-decoration: none;
-        }
-
-        .secondary-btn:hover { background: #555; }
-
-        .wheel-wrapper {
-            position: relative;
-            margin: 0 auto 20px auto;
-            width: 100%;
-            max-width: 380px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        canvas {
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            border: 6px solid #1c1c1c;
-            background: #000;
-        }
-
-        #center-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 25%;  
-            max-width: 80px;
-            height: auto;
-            z-index: 5;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
-            pointer-events: none;
-        }
-
-        .pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0; 
-            height: 0; 
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 35px solid #ffffff;
-            z-index: 10;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.6));
-        }
-
-        #status-text {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #f7a800;
-        }
-
-        #winner-text {
-            height: 40px;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         #teams-display {
@@ -168,24 +165,25 @@
         }
 
         .team-card {
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #d4af37;
+            border-radius: 12px;
             padding: 15px;
-            min-width: 130px;
+            min-width: 140px;
             flex: 1 1 40%;
-            max-width: 180px;
+            max-width: 200px;
             text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .team-card h3 {
             margin: 0 0 10px 0;
-            color: #dfb331;
-            border-bottom: 1px solid #333;
+            color: #ffd700;
+            border-bottom: 2px solid #1c5253;
             padding-bottom: 8px;
-            font-size: 16px;
+            font-size: 18px;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .team-card ul {
@@ -196,28 +194,39 @@
 
         .team-card li {
             margin-bottom: 6px;
-            font-size: 15px;
+            font-size: 16px;
             text-align: center;
-            color: #eee;
+            font-weight: 500;
+        }
+
+        #go-to-game-btn {
+            display: none;
+            margin: 30px auto 0 auto;
+            background: linear-gradient(90deg, #2a7a7c, #3a9a9c);
+            color: white;
+            padding: 18px 40px;
+            font-size: 22px;
         }
 
         @media (max-width: 500px) {
             body { padding: 10px; }
-            .container { padding: 20px; }
-            h2 { font-size: 24px; }
-            #status-text { font-size: 18px; }
-            #winner-text { font-size: 24px; margin-bottom: 15px; }
-            .primary-btn { padding: 12px 20px; font-size: 16px; }
-            .secondary-btn { padding: 12px 15px; font-size: 14px; }
-            .team-card { min-width: 110px; padding: 10px; }
+            .container { padding: 15px; }
+            #status-text { font-size: 20px; }
+            #winner-text { font-size: 26px; margin-bottom: 20px; }
+            .primary-btn { padding: 12px 25px; font-size: 16px; }
+            .secondary-btn { padding: 12px 20px; font-size: 14px; }
+            .action-buttons { gap: 10px; }
+            .team-card { min-width: 120px; padding: 10px; }
+            .team-card h3 { font-size: 16px; }
+            .team-card li { font-size: 15px; }
+            #go-to-game-btn { font-size: 18px; padding: 15px 30px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="roulette-screen" style="display: none;">
-        <h2>Maximálně smyková ruleta</h2>
-        <div id="status-text">Připravuji losování...</div>
+    <div id="roulette-screen" class="container">
+        <div id="status-text">Točíme pro: Tým 1</div>
         <div id="winner-text"></div>
         
         <div class="wheel-wrapper" id="wheel-container">
@@ -226,10 +235,12 @@
             <canvas id="wheel" width="400" height="400"></canvas>
         </div>
         
-        <div class="action-buttons">
-            <a href="index.html" class="secondary-btn">Zpět do hry</a>
-            <button class="primary-btn" id="spin-btn" onclick="spin()">ZATOČIT</button>
+        <div class="action-buttons" id="spin-actions">
+            <a href="index.html" class="secondary-btn">Zpět</a>
+            <button class="primary-btn" id="spin-btn" onclick="spin()">Zatočit</button>
         </div>
+
+        <button id="go-to-game-btn" class="primary-btn" onclick="goToGame()">🎲 HRÁT V TÝMECH</button>
 
         <div id="teams-display"></div>
     </div>
@@ -246,76 +257,45 @@
         let currentAngle = 0;
         let isSpinning = false;
         
-        // Barvy rulety upravené do tmavých tónů a oranžové z hlavní hry
-        const colors = ["#2a2a2a", "#dfb331", "#1f1f1f", "#d9a128", "#111111", "#c5901b"];
+        const colors = ["#143a3b", "#d4af37", "#1c5253", "#f9a825", "#0d2728", "#c5a030"];
 
-        // --- AUTOMATICKÉ NAČTENÍ JMEN Z HLAVNÍ HRY ---
+        // --- NAČTENÍ DAT Z LOCAL STORAGE ---
         window.onload = function() {
-            const storedNames = sessionStorage.getItem('maximo_roulette_names');
-            const storedSize = sessionStorage.getItem('maximo_roulette_size');
+            const savedNames = localStorage.getItem('maximo_roulette_names');
+            const savedSize = localStorage.getItem('maximo_roulette_size');
             
-            if (storedNames) {
-                remainingNames = JSON.parse(storedNames);
-                teamSize = parseInt(storedSize) || 2;
-                document.getElementById('roulette-screen').style.display = 'block';
+            if (savedNames && savedSize) {
+                remainingNames = JSON.parse(savedNames);
+                teamSize = parseInt(savedSize);
+                
+                if (remainingNames.length < 2) {
+                    alert("Nedostatek jmen pro ruletu.");
+                    window.location.href = 'index.html';
+                    return;
+                }
                 
                 updateStatusText();
                 renderTeamsUI();
                 drawWheel();
             } else {
-                // Pokud sem někdo zabloudí bez zadání jmen, pošleme ho zpět
+                alert("Data se nepodařilo načíst z hlavní stránky.");
                 window.location.href = 'index.html';
             }
         };
 
-        // --- ZVUKOVÝ SYSTÉM (SYNTETIZÁTOR) ---
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
-
-        function playClickSound() {
-            if (!audioCtx) return;
-            const bufferSize = audioCtx.sampleRate * 0.05;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-            
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 1000;
-            const gainNode = audioCtx.createGain();
-            
-            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
-            
-            noise.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            noise.start();
-        }
-
-        // --- TAJNÁ LOGIKA PRO PÁROVÁNÍ ---
-        function normalizeName(name) {
-            return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-        }
-
         const secretPairs = [
-            ["vasa", "terka"],
+            ["váša", "terka"],
+            ["vaša", "terka"],
+            ["david", "eliška"],
             ["david", "eliska"]
         ];
 
         function isHalfOfAvailablePair(name) {
-            let n = normalizeName(name);
+            let n = name.toLowerCase();
             for (let pair of secretPairs) {
                 let p1 = pair[0], p2 = pair[1];
-                if (n === p1 && remainingNames.some(x => normalizeName(x) === p2)) return true;
-                if (n === p2 && remainingNames.some(x => normalizeName(x) === p1)) return true;
+                if (n === p1 && remainingNames.some(x => x.toLowerCase() === p2)) return true;
+                if (n === p2 && remainingNames.some(x => x.toLowerCase() === p1)) return true;
             }
             return false;
         }
@@ -326,23 +306,31 @@
             let isLastSlot = (currentTeam.length === teamSize - 1);
 
             for (let pair of secretPairs) {
-                let p1 = pair[0], p2 = pair[1];
-                let hasP1 = currentTeam.some(name => normalizeName(name) === p1);
-                let hasP2 = currentTeam.some(name => normalizeName(name) === p2);
-                let p1Available = remainingNames.find(name => normalizeName(name) === p1);
-                let p2Available = remainingNames.find(name => normalizeName(name) === p2);
+                let p1 = pair[0];
+                let p2 = pair[1];
+
+                let hasP1 = currentTeam.some(name => name.toLowerCase() === p1);
+                let hasP2 = currentTeam.some(name => name.toLowerCase() === p2);
+                let p1Available = remainingNames.find(name => name.toLowerCase() === p1);
+                let p2Available = remainingNames.find(name => name.toLowerCase() === p2);
 
                 if (hasP1 && p2Available) targetName = p2Available;
                 if (hasP2 && p1Available) targetName = p1Available;
             }
 
-            if (targetName) return remainingNames.indexOf(targetName);
+            if (targetName) {
+                return remainingNames.indexOf(targetName);
+            }
 
             let validCandidates = remainingNames.map((n, i) => i);
+            
             if (isLastSlot && teamSize >= 2) {
                 validCandidates = validCandidates.filter(i => !isHalfOfAvailablePair(remainingNames[i]));
-                if (validCandidates.length === 0) validCandidates = remainingNames.map((n, i) => i);
+                if (validCandidates.length === 0) {
+                    validCandidates = remainingNames.map((n, i) => i);
+                }
             }
+            
             return validCandidates[Math.floor(Math.random() * validCandidates.length)];
         }
 
@@ -361,8 +349,8 @@
                 ctx.arc(radius, radius, radius, startAngle, endAngle);
                 ctx.fillStyle = colors[i % colors.length];
                 ctx.fill();
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#0a1416";
                 ctx.stroke();
 
                 ctx.save();
@@ -370,7 +358,7 @@
                 ctx.rotate(startAngle + sliceAngle / 2);
                 ctx.textAlign = "right";
                 
-                if (colors[i % colors.length].includes("dfb") || colors[i % colors.length].includes("c59") || colors[i % colors.length].includes("d9a")) {
+                if (colors[i % colors.length] === "#d4af37" || colors[i % colors.length] === "#f9a825" || colors[i % colors.length] === "#c5a030") {
                     ctx.fillStyle = "#111111";
                 } else {
                     ctx.fillStyle = "#ffffff";
@@ -389,22 +377,23 @@
             
             ctx.beginPath();
             ctx.arc(radius, radius, 65, 0, 2 * Math.PI);
-            ctx.fillStyle = "#1a1a1a";
+            ctx.fillStyle = "#0a1416";
             ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#dfb331";
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#d4af37";
             ctx.stroke();
         }
 
         function easeOutCubic(t, b, c, d) {
-            t /= d; t--; return c * (t * t * t + 1) + b;
+            t /= d;
+            t--;
+            return c * (t * t * t + 1) + b;
         }
 
         function spin() {
             if (isSpinning || remainingNames.length === 0) return;
             isSpinning = true;
             
-            initAudio(); 
             document.getElementById("winner-text").innerText = "Losování...";
             document.getElementById("spin-btn").disabled = true;
 
@@ -415,12 +404,14 @@
             
             let startAngle = currentAngle;
             let endAngle = baseEndAngle;
+            
             let extraSpins = Math.floor(Math.random() * 3) + 4;
-            while(endAngle <= startAngle + (extraSpins * 2 * Math.PI)) endAngle += 2 * Math.PI;
+            while(endAngle <= startAngle + (extraSpins * 2 * Math.PI)) {
+                endAngle += 2 * Math.PI;
+            }
 
             const spinTimeTotal = Math.random() * 1000 + 3500; 
             let startTime = null;
-            let lastSliceIndex = -1; 
 
             function rotate(timestamp) {
                 if (!startTime) startTime = timestamp;
@@ -435,22 +426,13 @@
                 }
                 
                 currentAngle = easeOutCubic(progress, startAngle, endAngle - startAngle, spinTimeTotal);
-                
-                let currentDeg = currentAngle % (2 * Math.PI);
-                let pointerAngle = (3 * Math.PI / 2) - currentDeg;
-                if (pointerAngle < 0) pointerAngle += 2 * Math.PI;
-                let currentSliceIndex = Math.floor(pointerAngle / sliceAngle);
-                
-                if (lastSliceIndex !== -1 && currentSliceIndex !== lastSliceIndex) playClickSound();
-                lastSliceIndex = currentSliceIndex;
-                
                 drawWheel();
                 requestAnimationFrame(rotate);
             }
             requestAnimationFrame(rotate);
         }
 
-       function processWinner(index) {
+        function processWinner(index) {
             const winner = remainingNames[index];
             document.getElementById("winner-text").innerText = winner + "!";
 
@@ -470,18 +452,10 @@
                 document.getElementById("spin-btn").disabled = false;
             } else {
                 document.getElementById("wheel-container").style.display = "none";
-                document.getElementById("status-text").innerText = "Týmy jsou připraveny!";
-                
-                // ZMĚNA: Nahradíme tlačítka dole za jedno velké tlačítko HRÁT
-                const actionBtns = document.querySelector('.action-buttons');
-                actionBtns.innerHTML = `<button class="primary-btn" style="background: #2ed573; color: #111; width: 100%; font-size: 20px; box-shadow: 0 0 20px #2ed573;" onclick="goToGame()">HRÁT V TÝMECH</button>`;
+                document.getElementById("spin-actions").style.display = "none";
+                document.getElementById("status-text").innerText = "Rozlosování je kompletní!";
+                document.getElementById("go-to-game-btn").style.display = "block";
             }
-        }
-
-        // Nová funkce, která uloží týmy a přesměruje zpět na mapu
-        function goToGame() {
-            sessionStorage.setItem('maximo_teams_ready', JSON.stringify(teams));
-            window.location.href = 'index.html';
         }
 
         function updateStatusText() {
@@ -516,6 +490,12 @@
                 card.appendChild(list);
                 container.appendChild(card);
             });
+        }
+
+        // --- NÁVRAT DO HRY S VYLOSOVANÝMI TÝMY (LOCAL STORAGE) ---
+        function goToGame() {
+            localStorage.setItem('maximo_teams_ready', JSON.stringify(teams));
+            window.location.href = 'index.html';
         }
     </script>
 </body>
