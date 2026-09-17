@@ -6,29 +6,7 @@ let currentTasks = [];
 window.onload = function() {
     console.log("✅ Skript byl úspěšně spuštěn!");
 
-    // --- 1. KONTROLA NÁVRATU Z RULETY (přes localStorage) ---
-    const readyTeams = localStorage.getItem('maximo_teams_ready');
-    if (readyTeams) {
-        console.log("Týmy nalezeny, startuji hru z rulety!");
-        localStorage.removeItem('maximo_teams_ready'); // Vyčistíme paměť
-        
-        const parsedTeams = JSON.parse(readyTeams);
-        const teamNames = parsedTeams
-            .filter(team => team.length > 0) // Pojistka proti prázdným týmům
-            .map(team => team.join(" + "));
-        
-        const savedCampMode = localStorage.getItem('maximo_camp_mode') === 'true';
-        const toggle = document.getElementById('camp-mode-toggle');
-        if (toggle) toggle.checked = savedCampMode;
-        
-        setTimeout(() => {
-            isCampMode = savedCampMode;
-            startGameCore(teamNames);
-        }, 100);
-        return; 
-    }
-
-    // --- 2. NAPOJENÍ TLAČÍTEK V MENU ---
+    // --- 1. NAPOJENÍ TLAČÍTEK (Musí být hned nahoře, aby se tlačítka vždy oživila) ---
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
 
@@ -58,6 +36,31 @@ window.onload = function() {
         document.getElementById('custom-modal').classList.add('hidden');
     });
 
+
+    // --- 2. KONTROLA NÁVRATU Z RULETY ---
+    const readyTeams = localStorage.getItem('maximo_teams_ready');
+    if (readyTeams) {
+        console.log("Týmy nalezeny, startuji hru z rulety!");
+        localStorage.removeItem('maximo_teams_ready'); // Vyčistíme paměť
+        
+        const parsedTeams = JSON.parse(readyTeams);
+        const teamNames = parsedTeams
+            .filter(team => team.length > 0) // Pojistka proti prázdným týmům
+            .map(team => team.join(" + "));
+        
+        const savedCampMode = localStorage.getItem('maximo_camp_mode') === 'true';
+        const toggle = document.getElementById('camp-mode-toggle');
+        if (toggle) toggle.checked = savedCampMode;
+        
+        setTimeout(() => {
+            isCampMode = savedCampMode;
+            startGameCore(teamNames);
+        }, 100);
+        
+        return; // Zastavíme generování úvodních políček, protože rovnou jdeme hrát
+    }
+
+    // Vygeneruje políčka jen pokud jdeme do hlavního menu (ne z rulety)
     initPlayerFields();
 };
 
