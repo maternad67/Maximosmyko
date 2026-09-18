@@ -6,7 +6,6 @@ let currentTasks = [];
 window.onload = function() {
     console.log("✅ Skript byl úspěšně spuštěn!");
 
-    // --- 1. NAPOJENÍ TLAČÍTEK (Musí být hned nahoře, aby se tlačítka vždy oživila) ---
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
 
@@ -31,21 +30,22 @@ window.onload = function() {
         }
     });
 
+    // Změna: Modal tlačítko nyní chytřeji zavírá okno
     const btnModal = document.getElementById('modal-btn');
-    if (btnModal) btnModal.addEventListener('click', () => {
-        document.getElementById('custom-modal').classList.add('hidden');
-    });
+    if (btnModal) {
+        btnModal.addEventListener('click', () => {
+            document.getElementById('custom-modal').classList.add('hidden');
+        });
+    }
 
-
-    // --- 2. KONTROLA NÁVRATU Z RULETY ---
     const readyTeams = localStorage.getItem('maximo_teams_ready');
     if (readyTeams) {
         console.log("Týmy nalezeny, startuji hru z rulety!");
-        localStorage.removeItem('maximo_teams_ready'); // Vyčistíme paměť
+        localStorage.removeItem('maximo_teams_ready');
         
         const parsedTeams = JSON.parse(readyTeams);
         const teamNames = parsedTeams
-            .filter(team => team.length > 0) // Pojistka proti prázdným týmům
+            .filter(team => team.length > 0)
             .map(team => team.join(" + "));
         
         const savedCampMode = localStorage.getItem('maximo_camp_mode') === 'true';
@@ -57,10 +57,9 @@ window.onload = function() {
             startGameCore(teamNames);
         }, 100);
         
-        return; // Zastavíme generování úvodních políček, protože rovnou jdeme hrát
+        return; 
     }
 
-    // Vygeneruje políčka jen pokud jdeme do hlavního menu (ne z rulety)
     initPlayerFields();
 };
 
@@ -110,7 +109,6 @@ function initPlayerFields() {
     }
 }
 
-// --- LOGIKA STARTU HRY (Jednotlivci) ---
 window.startGame = function(event) {
     if(event) event.preventDefault();
     
@@ -129,12 +127,11 @@ window.startGame = function(event) {
     startGameCore(validNames);
 };
 
-// Společné jádro pro start
 function startGameCore(namesArray) {
     currentTasks = isCampMode ? campTasks : adultTasks;
     players = [];
     
-    const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'brown', 'cyan', 'lime', 'white', 'gray'];
+    const colors = ['#ff4d4d', '#3399ff', '#33cc33', '#ffd633', '#cc33ff', '#ff9933', '#ff66b2', '#8c52ff', '#00e6e6', '#ccff33', '#ffffff', '#a6a6a6'];
     
     for (let i = 0; i < namesArray.length; i++) {
         players.push({
@@ -142,13 +139,26 @@ function startGameCore(namesArray) {
             position: 0,
             color: colors[i % colors.length], 
             number: i,
-            lastRoll: 0
+            lastRoll: 0,
+            // --- NOVÉ: SLEDOVÁNÍ STATISTIK ---
+            stats: {
+                rolls: 0,
+                sixes: 0,
+                ones: 0,
+                backwardMoved: 0,
+                tasksDone: 0
+            }
         });
     }
     
     currentPlayerIndex = 0;
     document.getElementById('setup').style.display = 'none';
     document.getElementById('game').style.display = 'block';
+    
+    // Skrytí případné obrazovky se statistikami z předchozí hry
+    const statsContainer = document.getElementById('stats-screen-container');
+    if (statsContainer) statsContainer.style.display = 'none';
+
     generateBoard();
     displayPlayerInfo();
     updateTurnIndicator(); 
@@ -226,11 +236,16 @@ function rollDice() {
     
     const currentPlayer = players[currentPlayerIndex];
     
+    // ZÁPIS STATISTIK HODU
+    currentPlayer.stats.rolls++;
+    if (diceValue === 6) currentPlayer.stats.sixes++;
+    if (diceValue === 1) currentPlayer.stats.ones++;
+    
     document.getElementById('turn-indicator').innerHTML = `
         ${getColoredName(currentPlayer)} hodil kostkou: <strong style="font-size: 1.3em; color: #fff;">${diceValue}</strong>
     `;
     
-    players[currentPlayerIndex].lastRoll = diceValue;
+    currentPlayer.lastRoll = diceValue;
     
     setTimeout(() => {
         movePlayer(diceValue);
@@ -242,6 +257,8 @@ function rollDice() {
 
 function movePlayer(steps) {
     const player = players[currentPlayerIndex];
+    const startPos = player.position; // Pro výpočet couvaní
+    
     player.position += steps;
     let showSpecialTask = true; 
 
@@ -251,6 +268,7 @@ function movePlayer(steps) {
         gameAlert(`${getColoredName(player)} přehodil cíl a vrací se na pole ${player.position}.`);
     }
 
+    // Speciální pole
     if (player.position === 5) {
         player.position = 32;
         gameAlert(`${getColoredName(player)} skončil na poli 5 a přesouvá se na pole 32.`);
@@ -261,6 +279,7 @@ function movePlayer(steps) {
             resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
             if (throwValue % 2 === 0) { 
                 resultMessage += isCampMode ? "Je to sudé, DŘEPUJE!<br>" : "Je to sudé, PIJE!<br>";
+                p.stats.tasksDone++; // Přidáme jim bod do statistik trestu
             } else {
                 resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
             }
@@ -268,6 +287,10 @@ function movePlayer(steps) {
         gameAlert(resultMessage);
     } else if (player.position === 19) {
         const extraRoll = Math.floor(Math.random() * 6) + 1;
+        player.stats.rolls++; // Započítáme extra hod do statistik
+        if (extraRoll === 6) player.stats.sixes++;
+        if (extraRoll === 1) player.stats.ones++;
+        
         gameAlert(`${getColoredName(player)} skončil na poli 19 a hází ještě jednou!<br><br>Hodil ${extraRoll} a posouvá se o ${extraRoll} dál.`);
         player.position += extraRoll;
     } else if (player.position === 22) {
@@ -310,11 +333,13 @@ function movePlayer(steps) {
         }
     } else if (player.position === 64) {
         const extraRoll = Math.floor(Math.random() * 6) + 1;
+        player.stats.rolls++; // Započítáme extra hod
         let msg = `${getColoredName(player)} skončil na poli 64 – Házíš znovu!<br><br>`;
         if (extraRoll % 2 === 0) {
             msg += isCampMode ? `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!` : `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!`;
         } else {
             msg += isCampMode ? `Hodil jsi liché číslo (${extraRoll}) – děláš 5 dřepů!` : `Hodil jsi liché číslo (${extraRoll}) – piješ!`;
+            player.stats.tasksDone++;
         }
         gameAlert(msg);
     } else if (player.position === 66) {
@@ -324,6 +349,7 @@ function movePlayer(steps) {
             resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
             if (throwValue === 6) {
                 resultMessage += isCampMode ? "CVIČÍ!<br>" : "Pije!<br>";
+                p.stats.tasksDone++;
             } else {
                 resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
             }
@@ -334,21 +360,118 @@ function movePlayer(steps) {
         gameAlert(`${getColoredName(player)} se vrací na pole 61.`);
     }
 
+    // STATISTIKA COUVÁNÍ
+    const netMove = player.position - startPos;
+    if (netMove < 0) {
+        player.stats.backwardMoved += Math.abs(netMove);
+    }
+
+    // STATISTIKA TRESTŮ (Kontrola klíčových slov v textu)
+    const taskText = currentTasks[player.position]?.toLowerCase() || "";
+    const keywords = ['pije', 'pijí', 'panák', 'exni', 'bodyshot', 'cvičí', 'dřep', 'klik', 'žabák', 'kotrmel'];
+    if (keywords.some(kw => taskText.includes(kw))) {
+        player.stats.tasksDone++;
+    }
+
     updatePlayerPositions();
     
     if (showSpecialTask) {
         showTask(player);
     }
 
+    // --- CÍLOVÁ ROVINKA: ZOBRAZENÍ SÍNĚ SLÁVY ---
     if (player.position === 71) {
-        gameAlert(`Gratulujeme! ${getColoredName(player)} vyhrál!`);
-        resetGame();
+        gameAlert(`Gratulujeme! ${getColoredName(player)} vyhrál hru!`);
+        showEndGameStats(player); // Vykreslí tabulku s výsledky
         return;
     }
 
     if (players.length > 1) {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
     }
+}
+
+function showEndGameStats(winner) {
+    document.getElementById('game').style.display = 'none';
+
+    // Logika výpočtu cen
+    const maxTasks = Math.max(...players.map(p => p.stats.tasksDone));
+    const maxTasksPlayers = players.filter(p => p.stats.tasksDone === maxTasks).map(p => p.name).join(', ');
+
+    const maxBack = Math.max(...players.map(p => p.stats.backwardMoved));
+    const smolar = players.filter(p => p.stats.backwardMoved === maxBack).map(p => p.name).join(', ');
+
+    const maxSixes = Math.max(...players.map(p => p.stats.sixes));
+    const lucky = players.filter(p => p.stats.sixes === maxSixes).map(p => p.name).join(', ');
+
+    // Vytvoření HTML obrazovky Síň slávy (dynamicky se vloží do stránky)
+    let statsHtml = `
+    <div id="stats-screen-container" style="padding: 30px; max-width: 900px; margin: 40px auto; color: white; text-align: center; background: rgba(10, 20, 22, 0.95); border: 2px solid #dfb331; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);">
+        <h1 style="color: #ffd700; text-shadow: 0 0 20px #dfb331; font-size: 3em; margin-top: 0;">🏆 SÍŇ SLÁVY 🏆</h1>
+        <h2 style="margin-bottom: 40px; font-size: 2em;">Vítěz: <span style="color: ${winner.color}; text-transform: uppercase;">${winner.name}</span></h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            
+            <div style="background: rgba(0,0,0,0.7); border: 2px solid #dfb331; padding: 20px; border-radius: 12px;">
+                <h3 style="color: #dfb331; margin-top:0; font-size: 1.4em;">${isCampMode ? '🏋️ Dřepař dne' : '🍻 Pijan dne'}</h3>
+                <p style="font-size: 1.4em; font-weight: bold; margin: 10px 0;">${maxTasks > 0 ? maxTasksPlayers : 'Nikdo?'}</p>
+                <p style="font-size: 1em; color: #aaa;">Plnil nejvíce úkolů (${maxTasks}x)</p>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.7); border: 2px solid #dfb331; padding: 20px; border-radius: 12px;">
+                <h3 style="color: #dfb331; margin-top:0; font-size: 1.4em;">🌧️ Smolař</h3>
+                <p style="font-size: 1.4em; font-weight: bold; margin: 10px 0;">${maxBack > 0 ? smolar : 'Nikdo?'}</p>
+                <p style="font-size: 1em; color: #aaa;">Couval o nejvíce polí (${maxBack})</p>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.7); border: 2px solid #dfb331; padding: 20px; border-radius: 12px;">
+                <h3 style="color: #dfb331; margin-top:0; font-size: 1.4em;">🍀 Štístko</h3>
+                <p style="font-size: 1.4em; font-weight: bold; margin: 10px 0;">${maxSixes > 0 ? lucky : 'Nikdo?'}</p>
+                <p style="font-size: 1em; color: #aaa;">Nejvíce hozených šestek (${maxSixes}x)</p>
+            </div>
+
+        </div>
+
+        <h3 style="font-size: 1.5em; border-bottom: 1px solid #333; padding-bottom: 10px;">Podrobné statistiky všech hráčů</h3>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(0,0,0,0.8); border-radius: 10px; font-size: 1.1em;">
+                <tr style="background: #1f1f1f; color: #dfb331;">
+                    <th style="padding: 15px;">Hráč</th>
+                    <th style="padding: 15px;">Hodů</th>
+                    <th style="padding: 15px;">Počet 6</th>
+                    <th style="padding: 15px;">Počet 1</th>
+                    <th style="padding: 15px;">Trestů / Úkolů</th>
+                </tr>
+    `;
+
+    players.forEach(p => {
+        statsHtml += `
+            <tr style="border-top: 1px solid #333; text-align: center;">
+                <td style="padding: 15px; color: ${p.color}; font-weight: bold; text-align: left;">${p.name}</td>
+                <td style="padding: 15px;">${p.stats.rolls}</td>
+                <td style="padding: 15px;">${p.stats.sixes}</td>
+                <td style="padding: 15px; color: #ff4d4d;">${p.stats.ones}</td>
+                <td style="padding: 15px;">${p.stats.tasksDone}</td>
+            </tr>
+        `;
+    });
+
+    statsHtml += `
+            </table>
+        </div>
+        <button onclick="location.reload()" style="margin-top: 40px; background: linear-gradient(90deg, #dfb331, #f7a800); color: #111; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; border-radius: 40px; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 15px rgba(223, 179, 49, 0.5);">🎲 Nová Hra / Zpět do Menu</button>
+    </div>
+    `;
+
+    // Vložení na konec stránky
+    let container = document.getElementById('stats-screen-wrapper');
+    if(!container) {
+        container = document.createElement('div');
+        container.id = 'stats-screen-wrapper';
+        document.body.appendChild(container);
+    }
+    container.innerHTML = statsHtml;
+    container.style.display = 'block';
 }
 
 function resetGame() {
