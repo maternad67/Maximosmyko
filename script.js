@@ -4,7 +4,7 @@ let isCampMode = false;
 let currentTasks = [];
 
 window.onload = function() {
-    console.log("✅ Skript v1000 spuštěn!");
+    console.log("✅ Skript v2500 (Body shot edice) spuštěn!");
 
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
@@ -39,9 +39,7 @@ window.onload = function() {
 
     const readyTeams = localStorage.getItem('maximo_teams_ready');
     if (readyTeams) {
-        console.log("Týmy nalezeny, startuji hru z rulety!");
         localStorage.removeItem('maximo_teams_ready');
-        
         const parsedTeams = JSON.parse(readyTeams);
         const teamNames = parsedTeams
             .filter(team => team.length > 0)
@@ -55,7 +53,6 @@ window.onload = function() {
             isCampMode = savedCampMode;
             startGameCore(teamNames);
         }, 100);
-        
         return; 
     }
 
@@ -139,12 +136,18 @@ function startGameCore(namesArray) {
             color: colors[i % colors.length], 
             number: i,
             lastRoll: 0,
+            // ROZŠÍŘENÉ STATISTIKY
             stats: {
                 rolls: 0,
                 sixes: 0,
                 ones: 0,
                 backwardMoved: 0,
-                tasksDone: 0
+                drinks: 0,
+                exercise: 0,
+                spicy: 0,
+                embarrassing: 0,
+                bodyShots: 0, // <-- NOVÁ STATISTIKA ZDE
+                totalTasks: 0
             }
         });
     }
@@ -273,7 +276,7 @@ function movePlayer(steps) {
             resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
             if (throwValue % 2 === 0) { 
                 resultMessage += isCampMode ? "Je to sudé, DŘEPUJE!<br>" : "Je to sudé, PIJE!<br>";
-                p.stats.tasksDone++; 
+                isCampMode ? p.stats.exercise++ : p.stats.drinks++; 
             } else {
                 resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
             }
@@ -294,8 +297,10 @@ function movePlayer(steps) {
         player.position = 26;
         if (isCampMode) {
             gameAlert(`${getColoredName(player)} stoupl na pole 24!<br><br>Udělej 3 žabáky a posouváš se o 2 pole vpřed.<br><br>Na poli 26 tě čeká dokončení úkolu!`);
+            player.stats.exercise++;
         } else {
             gameAlert(`${getColoredName(player)} stoupl na pole 24!<br><br>Piješ a posouváš se o 2 pole vpřed.<br><br>Na poli 26 tě čeká dokončení úkolu!`);
+            player.stats.drinks++;
         }
     } else if (player.position === 37) {
         const random = Math.floor(Math.random() * 6) + 1;
@@ -307,8 +312,10 @@ function movePlayer(steps) {
         showSpecialTask = false; 
         if (isCampMode) {
             gameAlert(`${getColoredName(player)} stoupl na pole 46!<br><br>Vyskoč 5x co nejvýš a přesouváš se na pole 63!`);
+            player.stats.exercise++;
         } else {
             gameAlert(`${getColoredName(player)} stoupl na pole 46!<br><br>EXNI SVŮJ DRINK a přesouváš se na pole 63!`);
+            player.stats.drinks++;
         }
         document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Byl jsi přesunut z pole 46 na pole 63!</div>`;
     } else if (player.position === 47) {
@@ -319,10 +326,12 @@ function movePlayer(steps) {
         player.position = 46;
         showSpecialTask = false; 
         if (isCampMode) {
-            gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc vyskočit 5x co nejvýš! (Zůstáváš ale už tady)`);
+            gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc vyskočit 5x co nejvýš!`);
+            player.stats.exercise++;
             document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Spadl jsi na 46! Vyskoč 5x co nejvýš!</div>`;
         } else {
-            gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc EXNOUT DRINK! (Zůstáváš ale už tady)`);
+            gameAlert(`${getColoredName(player)} stoupl na pole 63!<br><br>Spadl jsi zpět na pole 46!<br><br>A protože jsi na 46, musíš navíc EXNOUT DRINK!`);
+            player.stats.drinks++;
             document.getElementById('task-text').innerHTML = `<div style="font-size: 1.3em; font-weight: bold; color: #e0e0e0;">Spadl jsi na 46! EXNI SVŮJ DRINK!</div>`;
         }
     } else if (player.position === 64) {
@@ -333,7 +342,7 @@ function movePlayer(steps) {
             msg += isCampMode ? `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!` : `Hodil jsi sudé číslo (${extraRoll}) – nepiješ!`;
         } else {
             msg += isCampMode ? `Hodil jsi liché číslo (${extraRoll}) – děláš 5 dřepů!` : `Hodil jsi liché číslo (${extraRoll}) – piješ!`;
-            player.stats.tasksDone++;
+            isCampMode ? player.stats.exercise++ : player.stats.drinks++;
         }
         gameAlert(msg);
     } else if (player.position === 66) {
@@ -343,7 +352,7 @@ function movePlayer(steps) {
             resultMessage += `${getColoredName(p)} hodil ${throwValue}. `;
             if (throwValue === 6) {
                 resultMessage += isCampMode ? "CVIČÍ!<br>" : "Pije!<br>";
-                p.stats.tasksDone++;
+                isCampMode ? p.stats.exercise++ : p.stats.drinks++;
             } else {
                 resultMessage += isCampMode ? "Necvičí.<br>" : "Nepije.<br>";
             }
@@ -359,10 +368,27 @@ function movePlayer(steps) {
         player.stats.backwardMoved += Math.abs(netMove);
     }
 
+    // --- AUTOMATICKÁ ANALÝZA TEXTU ÚKOLU PRO STATISTIKY ---
     const taskText = currentTasks[player.position]?.toLowerCase() || "";
-    const keywords = ['pije', 'pijí', 'panák', 'exni', 'bodyshot', 'cvičí', 'dřep', 'klik', 'žabák', 'kotrmel'];
-    if (keywords.some(kw => taskText.includes(kw))) {
-        player.stats.tasksDone++;
+    
+    const drinkKw = ['pije', 'pijí', 'panák', 'exni', 'bodyshot', 'pivo', 'pivson', 'pivíčko', 'drink', 'vody', 'napít', 'nealko'];
+    if (drinkKw.some(kw => taskText.includes(kw))) player.stats.drinks++;
+
+    const exKw = ['cvičí', 'dřep', 'klik', 'žabák', 'kotrmel', 'rozcvička', 'skoč', 'most', 'prkně', 'volavka', 'oběhni'];
+    if (exKw.some(kw => taskText.includes(kw))) player.stats.exercise++;
+
+    const spicyKw = ['paliprdelkoření', 'sperma', 'kozelmeister', 'lák', 'okurek', 'citronkou', 'smykkap', 'tequilu'];
+    if (spicyKw.some(kw => taskText.includes(kw))) player.stats.spicy++;
+
+    const embKw = ['zazpívej', 'předveď', 'zvíře', 'slon', 'jazykolam', 'obejmout', 'želvu', 'bdsm', 'rým', 'pokřik'];
+    if (embKw.some(kw => taskText.includes(kw))) player.stats.embarrassing++;
+    
+    // SLEDOVÁNÍ SPECIFICKY BODYSHOTŮ
+    const bodyShotKw = ['bodyshot'];
+    if (bodyShotKw.some(kw => taskText.includes(kw))) player.stats.bodyShots++;
+    
+    if (taskText !== "" && taskText !== "nic") {
+        player.stats.totalTasks++;
     }
 
     updatePlayerPositions();
@@ -373,7 +399,6 @@ function movePlayer(steps) {
 
     // --- CÍLOVÁ ROVINKA ---
     if (player.position === 71) {
-        // TADY JSME ZRUŠILI MODAL, JDE SE ROVNOU DO SÍNĚ SLÁVY!
         showEndGameStats(player); 
         return;
     }
@@ -384,19 +409,32 @@ function movePlayer(steps) {
 }
 
 function showEndGameStats(winner) {
-    // Vypneme vizuály hry, aby nepřekážely
     document.getElementById('game').style.display = 'none';
     const modal = document.getElementById('custom-modal');
     if (modal) modal.classList.add('hidden');
 
-    const maxTasks = Math.max(...players.map(p => p.stats.tasksDone));
-    const maxTasksPlayers = players.filter(p => p.stats.tasksDone === maxTasks).map(p => p.name).join(', ');
+    // Nalezení vítězů jednotlivých kategorií
+    const maxDrinks = Math.max(...players.map(p => p.stats.drinks));
+    const drinker = players.filter(p => p.stats.drinks === maxDrinks && maxDrinks > 0).map(p => p.name).join(', ') || 'Nikdo?';
+
+    const maxEx = Math.max(...players.map(p => p.stats.exercise));
+    const gymBro = players.filter(p => p.stats.exercise === maxEx && maxEx > 0).map(p => p.name).join(', ') || 'Nikdo?';
+
+    const maxSpicy = Math.max(...players.map(p => p.stats.spicy));
+    const plechovaHuba = players.filter(p => p.stats.spicy === maxSpicy && maxSpicy > 0).map(p => p.name).join(', ') || 'Nikdo?';
+
+    const maxEmb = Math.max(...players.map(p => p.stats.embarrassing));
+    const sasek = players.filter(p => p.stats.embarrassing === maxEmb && maxEmb > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
     const maxBack = Math.max(...players.map(p => p.stats.backwardMoved));
-    const smolar = players.filter(p => p.stats.backwardMoved === maxBack).map(p => p.name).join(', ');
+    const smolar = players.filter(p => p.stats.backwardMoved === maxBack && maxBack > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
     const maxSixes = Math.max(...players.map(p => p.stats.sixes));
-    const lucky = players.filter(p => p.stats.sixes === maxSixes).map(p => p.name).join(', ');
+    const lucky = players.filter(p => p.stats.sixes === maxSixes && maxSixes > 0).map(p => p.name).join(', ') || 'Nikdo?';
+
+    // Body shot král
+    const maxBs = Math.max(...players.map(p => p.stats.bodyShots));
+    const bodyShotter = players.filter(p => p.stats.bodyShots === maxBs && maxBs > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
     let container = document.getElementById('stats-screen-wrapper');
     if(!container) {
@@ -405,56 +443,79 @@ function showEndGameStats(winner) {
         document.body.appendChild(container);
     }
     
-    // Nekompromisní vrstva přes celou obrazovku, která ignoruje veškeré CSS konflikty
-    container.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 20000; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; padding: 20px; box-sizing: border-box; backdrop-filter: blur(10px);";
+    container.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 20000; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; padding: 20px; box-sizing: border-box; backdrop-filter: blur(10px); font-family: sans-serif;";
 
     let statsHtml = `
-    <div style="background: #111; padding: 30px; border-radius: 15px; border: 3px solid #dfb331; max-width: 800px; width: 100%; text-align: center; color: white; margin-top: 40px; margin-bottom: 40px; box-shadow: 0 0 50px rgba(223, 179, 49, 0.5);">
+    <div style="background: #111; padding: 30px; border-radius: 15px; border: 3px solid #dfb331; max-width: 900px; width: 100%; text-align: center; color: white; margin-top: 40px; margin-bottom: 40px; box-shadow: 0 0 50px rgba(223, 179, 49, 0.5);">
         <h1 style="color: #ffd700; text-shadow: 0 0 20px #dfb331; font-size: 3em; margin-top: 0;">🏆 SÍŇ SLÁVY 🏆</h1>
         <h2 style="margin-bottom: 40px; font-size: 2em;">Vítěz: <span style="color: ${winner.color}; text-transform: uppercase;">${winner.name}</span></h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 40px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 40px;">
             
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
-                <h3 style="color: #dfb331; margin-top:0;">${isCampMode ? '🏋️ Dřepař dne' : '🍻 Pijan dne'}</h3>
-                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${maxTasks > 0 ? maxTasksPlayers : 'Nikdo?'}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Tresty plněny: ${maxTasks}x</p>
+                <h3 style="color: #dfb331; margin-top:0;">${isCampMode ? '💧 Vrchní vodák' : '🍻 Pijan dne'}</h3>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${drinker}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Pití plněno: ${maxDrinks > 0 ? maxDrinks : 0}x</p>
             </div>
             
+            <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #dfb331; margin-top:0;">👅 Body shot král</h3>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${bodyShotter}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Body shoty: ${maxBs > 0 ? maxBs : 0}x</p>
+            </div>
+
+            <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #dfb331; margin-top:0;">🏋️ Gym rat</h3>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${gymBro}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Cvičení: ${maxEx > 0 ? maxEx : 0}x</p>
+            </div>
+            
+            <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #dfb331; margin-top:0;">🌶️ Plechová huba</h3>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${plechovaHuba}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Hnusy / Pálivé: ${maxSpicy > 0 ? maxSpicy : 0}x</p>
+            </div>
+
+            <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #dfb331; margin-top:0;">🎭 Třídní šašek</h3>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${sasek}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Trapasy: ${maxEmb > 0 ? maxEmb : 0}x</p>
+            </div>
+
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
                 <h3 style="color: #dfb331; margin-top:0;">🌧️ Smolař</h3>
-                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${maxBack > 0 ? smolar : 'Nikdo?'}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Couval o ${maxBack} polí</p>
-            </div>
-            
-            <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
-                <h3 style="color: #dfb331; margin-top:0;">🍀 Štístko</h3>
-                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${maxSixes > 0 ? lucky : 'Nikdo?'}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Šestky padly: ${maxSixes}x</p>
+                <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${smolar}</p>
+                <p style="font-size: 0.9em; color: #aaa;">Couval o ${maxBack > 0 ? maxBack : 0} polí</p>
             </div>
 
         </div>
 
-        <h3 style="font-size: 1.5em; border-bottom: 1px solid #333; padding-bottom: 10px;">Podrobné statistiky všech hráčů</h3>
+        <h3 style="font-size: 1.5em; border-bottom: 1px solid #333; padding-bottom: 10px;">Kompletní statistiky všech týmů</h3>
         <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #0a0a0a; border-radius: 10px;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #0a0a0a; border-radius: 10px; font-size: 0.95em;">
                 <tr style="background: #222; color: #dfb331;">
-                    <th style="padding: 15px;">Hráč</th>
-                    <th style="padding: 15px;">Hodů</th>
-                    <th style="padding: 15px;">Počet 6</th>
-                    <th style="padding: 15px;">Počet 1</th>
-                    <th style="padding: 15px;">Trestů</th>
+                    <th style="padding: 12px; text-align: left;">Hráč</th>
+                    <th style="padding: 12px;">🎲 Hodů</th>
+                    <th style="padding: 12px;">🍻 Pití</th>
+                    <th style="padding: 12px;">👅 Body shot</th>
+                    <th style="padding: 12px;">🏋️ Cvičení</th>
+                    <th style="padding: 12px;">🌶️ Pálivé</th>
+                    <th style="padding: 12px;">🎭 Trapas</th>
+                    <th style="padding: 12px;">🔙 Couval</th>
                 </tr>
     `;
 
     players.forEach(p => {
         statsHtml += `
             <tr style="border-top: 1px solid #333; text-align: center;">
-                <td style="padding: 15px; color: ${p.color}; font-weight: bold; text-align: left;">${p.name}</td>
-                <td style="padding: 15px;">${p.stats.rolls}</td>
-                <td style="padding: 15px;">${p.stats.sixes}</td>
-                <td style="padding: 15px; color: #ff4d4d;">${p.stats.ones}</td>
-                <td style="padding: 15px;">${p.stats.tasksDone}</td>
+                <td style="padding: 12px; color: ${p.color}; font-weight: bold; text-align: left;">${p.name}</td>
+                <td style="padding: 12px;">${p.stats.rolls}</td>
+                <td style="padding: 12px;">${p.stats.drinks}</td>
+                <td style="padding: 12px; color: #dfb331;">${p.stats.bodyShots}</td>
+                <td style="padding: 12px;">${p.stats.exercise}</td>
+                <td style="padding: 12px;">${p.stats.spicy}</td>
+                <td style="padding: 12px;">${p.stats.embarrassing}</td>
+                <td style="padding: 12px; color: #ff4d4d;">${p.stats.backwardMoved}</td>
             </tr>
         `;
     });
