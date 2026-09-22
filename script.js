@@ -4,7 +4,7 @@ let isCampMode = false;
 let currentTasks = [];
 
 window.onload = function() {
-    console.log("✅ Skript v3000 (Šoumen a Sportovec edice) spuštěn!");
+    console.log("✅ Skript v3100 (Oprava Plechové huby) spuštěn!");
 
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
@@ -376,7 +376,8 @@ function movePlayer(steps) {
     const exKw = ['cvičí', 'dřep', 'klik', 'žabák', 'kotrmel', 'rozcvička', 'skoč', 'most', 'prkně', 'volavka', 'oběhni'];
     if (exKw.some(kw => taskText.includes(kw))) player.stats.exercise++;
 
-    const spicyKw = ['paliprdelkoření', 'sperma', 'kozelmeister', 'lák', 'okurek', 'citronkou', 'smykkap', 'tequilu'];
+    // TADY JE ZMĚNA: Počítá už jenom BDSM a Paliprdelkoření
+    const spicyKw = ['paliprdelkoření', 'bdsm'];
     if (spicyKw.some(kw => taskText.includes(kw))) player.stats.spicy++;
 
     const embKw = ['zazpívej', 'předveď', 'zvíře', 'slon', 'jazykolam', 'obejmout', 'želvu', 'bdsm', 'rým', 'pokřik'];
@@ -468,7 +469,8 @@ function showEndGameStats(winner) {
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
                 <h3 style="color: #dfb331; margin-top:0;">🌶️ Plechová huba</h3>
                 <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${plechovaHuba}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Hnusy / Pálivé: ${maxSpicy > 0 ? maxSpicy : 0}x</p>
+                <!-- Změna textu zde -->
+                <p style="font-size: 0.9em; color: #aaa;">Pálivé: ${maxSpicy > 0 ? maxSpicy : 0}x</p>
             </div>
 
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
@@ -494,7 +496,8 @@ function showEndGameStats(winner) {
                     <th style="padding: 12px;">🍻 Pití</th>
                     <th style="padding: 12px;">👅 Body shot</th>
                     <th style="padding: 12px;">🏋️ Fyzické úkoly</th>
-                    <th style="padding: 12px;">🌶️ Pálivé/Hnusy</th>
+                    <!-- Změna textu zde -->
+                    <th style="padding: 12px;">🌶️ Pálivé</th>
                     <th style="padding: 12px;">🎭 Předvádění</th>
                     <th style="padding: 12px;">🔙 Couval</th>
                 </tr>
