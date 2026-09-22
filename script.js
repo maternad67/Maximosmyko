@@ -4,7 +4,7 @@ let isCampMode = false;
 let currentTasks = [];
 
 window.onload = function() {
-    console.log("✅ Skript v2500 (Body shot edice) spuštěn!");
+    console.log("✅ Skript v3000 (Šoumen a Sportovec edice) spuštěn!");
 
     const form = document.getElementById('setup-form');
     if (form) form.addEventListener('submit', startGame);
@@ -136,7 +136,6 @@ function startGameCore(namesArray) {
             color: colors[i % colors.length], 
             number: i,
             lastRoll: 0,
-            // ROZŠÍŘENÉ STATISTIKY
             stats: {
                 rolls: 0,
                 sixes: 0,
@@ -146,7 +145,7 @@ function startGameCore(namesArray) {
                 exercise: 0,
                 spicy: 0,
                 embarrassing: 0,
-                bodyShots: 0, // <-- NOVÁ STATISTIKA ZDE
+                bodyShots: 0,
                 totalTasks: 0
             }
         });
@@ -383,7 +382,6 @@ function movePlayer(steps) {
     const embKw = ['zazpívej', 'předveď', 'zvíře', 'slon', 'jazykolam', 'obejmout', 'želvu', 'bdsm', 'rým', 'pokřik'];
     if (embKw.some(kw => taskText.includes(kw))) player.stats.embarrassing++;
     
-    // SLEDOVÁNÍ SPECIFICKY BODYSHOTŮ
     const bodyShotKw = ['bodyshot'];
     if (bodyShotKw.some(kw => taskText.includes(kw))) player.stats.bodyShots++;
     
@@ -397,7 +395,6 @@ function movePlayer(steps) {
         showTask(player);
     }
 
-    // --- CÍLOVÁ ROVINKA ---
     if (player.position === 71) {
         showEndGameStats(player); 
         return;
@@ -413,7 +410,6 @@ function showEndGameStats(winner) {
     const modal = document.getElementById('custom-modal');
     if (modal) modal.classList.add('hidden');
 
-    // Nalezení vítězů jednotlivých kategorií
     const maxDrinks = Math.max(...players.map(p => p.stats.drinks));
     const drinker = players.filter(p => p.stats.drinks === maxDrinks && maxDrinks > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
@@ -432,7 +428,6 @@ function showEndGameStats(winner) {
     const maxSixes = Math.max(...players.map(p => p.stats.sixes));
     const lucky = players.filter(p => p.stats.sixes === maxSixes && maxSixes > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
-    // Body shot král
     const maxBs = Math.max(...players.map(p => p.stats.bodyShots));
     const bodyShotter = players.filter(p => p.stats.bodyShots === maxBs && maxBs > 0).map(p => p.name).join(', ') || 'Nikdo?';
 
@@ -465,9 +460,9 @@ function showEndGameStats(winner) {
             </div>
 
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
-                <h3 style="color: #dfb331; margin-top:0;">🏋️ Gym rat</h3>
+                <h3 style="color: #dfb331; margin-top:0;">🏋️ Sportovec</h3>
                 <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${gymBro}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Cvičení: ${maxEx > 0 ? maxEx : 0}x</p>
+                <p style="font-size: 0.9em; color: #aaa;">Fyzické úkoly: ${maxEx > 0 ? maxEx : 0}x</p>
             </div>
             
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
@@ -477,9 +472,9 @@ function showEndGameStats(winner) {
             </div>
 
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
-                <h3 style="color: #dfb331; margin-top:0;">🎭 Třídní šašek</h3>
+                <h3 style="color: #dfb331; margin-top:0;">🎭 Šoumen</h3>
                 <p style="font-size: 1.3em; font-weight: bold; margin: 10px 0;">${sasek}</p>
-                <p style="font-size: 0.9em; color: #aaa;">Trapasy: ${maxEmb > 0 ? maxEmb : 0}x</p>
+                <p style="font-size: 0.9em; color: #aaa;">Předvádění a zpěv: ${maxEmb > 0 ? maxEmb : 0}x</p>
             </div>
 
             <div style="background: #1a1a1a; border: 2px solid #dfb331; padding: 20px; border-radius: 10px;">
@@ -498,9 +493,9 @@ function showEndGameStats(winner) {
                     <th style="padding: 12px;">🎲 Hodů</th>
                     <th style="padding: 12px;">🍻 Pití</th>
                     <th style="padding: 12px;">👅 Body shot</th>
-                    <th style="padding: 12px;">🏋️ Cvičení</th>
-                    <th style="padding: 12px;">🌶️ Pálivé</th>
-                    <th style="padding: 12px;">🎭 Trapas</th>
+                    <th style="padding: 12px;">🏋️ Fyzické úkoly</th>
+                    <th style="padding: 12px;">🌶️ Pálivé/Hnusy</th>
+                    <th style="padding: 12px;">🎭 Předvádění</th>
                     <th style="padding: 12px;">🔙 Couval</th>
                 </tr>
     `;
